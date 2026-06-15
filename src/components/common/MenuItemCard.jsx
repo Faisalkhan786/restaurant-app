@@ -1,59 +1,36 @@
 import { TouchableOpacity, Text, Image, View } from "react-native";
 import { CURRENCY_SYMBOL } from "../../constants/config";
+import { useTheme } from "../../hooks/useTheme";
 
 export default function MenuItemCard({ item, onPress, onAddToCart }) {
+  const { c } = useTheme();
   return (
     <TouchableOpacity
-      className="bg-white rounded-2xl mb-4 shadow-sm border border-gray-100 overflow-hidden flex-row"
+      style={{ backgroundColor: c.card, borderRadius: 16, marginBottom: 16, borderWidth: 1, borderColor: c.border, overflow: "hidden", flexDirection: "row" }}
       onPress={onPress}
       activeOpacity={0.7}
     >
-      {/* Image */}
       {item.image_url ? (
-        <Image
-          source={{ uri: item.image_url }}
-          className="w-28 h-28"
-          resizeMode="cover"
-        />
+        <Image source={{ uri: item.image_url }} style={{ width: 112, height: 112 }} resizeMode="cover" />
       ) : (
-        <View className="w-28 h-28 bg-gray-light items-center justify-center">
-          <Text className="text-4xl">🍔</Text>
+        <View style={{ width: 112, height: 112, backgroundColor: c.bgSecondary, alignItems: "center", justifyContent: "center" }}>
+          <Text style={{ fontSize: 36 }}>🍔</Text>
         </View>
       )}
-
-      {/* Info */}
-      <View className="flex-1 p-3 justify-between">
+      <View style={{ flex: 1, padding: 12, justifyContent: "space-between" }}>
         <View>
-          <Text className="text-base font-bold text-dark" numberOfLines={1}>
-            {item.name}
-          </Text>
-          {item.description ? (
-            <Text className="text-xs text-gray-medium mt-1" numberOfLines={2}>
-              {item.description}
-            </Text>
-          ) : null}
+          <Text style={{ fontSize: 15, fontWeight: "bold", color: c.text }} numberOfLines={1}>{item.name}</Text>
+          {item.description ? <Text style={{ fontSize: 11, color: c.textSecondary, marginTop: 4 }} numberOfLines={2}>{item.description}</Text> : null}
         </View>
-
-        <View className="flex-row items-center justify-between mt-2">
-          <Text className="text-lg font-bold text-primary">
-            {CURRENCY_SYMBOL}{item.price}
-          </Text>
-
-          {item.prep_time ? (
-            <Text className="text-xs text-gray-medium">
-              ⏱️ {item.prep_time} min
-            </Text>
-          ) : null}
-
+        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 8 }}>
+          <Text style={{ fontSize: 17, fontWeight: "bold", color: c.primary }}>{CURRENCY_SYMBOL}{item.price}</Text>
+          {item.prep_time ? <Text style={{ fontSize: 11, color: c.textSecondary }}>⏱️ {item.prep_time} min</Text> : null}
           <TouchableOpacity
-            className="bg-primary px-4 py-1.5 rounded-lg"
-            onPress={(e) => {
-              e.stopPropagation?.();
-              onAddToCart?.(item);
-            }}
+            style={{ backgroundColor: c.primary, paddingHorizontal: 16, paddingVertical: 6, borderRadius: 8 }}
+            onPress={(e) => { e.stopPropagation?.(); onAddToCart?.(item); }}
             activeOpacity={0.7}
           >
-            <Text className="text-white text-sm font-bold">ADD</Text>
+            <Text style={{ color: "#fff", fontSize: 13, fontWeight: "bold" }}>ADD</Text>
           </TouchableOpacity>
         </View>
       </View>

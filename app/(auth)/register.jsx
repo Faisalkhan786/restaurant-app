@@ -10,9 +10,10 @@ import {
   ActivityIndicator,
   Alert,
 } from "react-native";
-import { Link } from "expo-router";
+import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useAuth } from "../../src/hooks/useAuth";
+import { useTheme } from "../../src/hooks/useTheme";
 
 export default function RegisterScreen() {
   const [name, setName] = useState("");
@@ -21,182 +22,121 @@ export default function RegisterScreen() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
   const { register, isRegisterLoading } = useAuth();
+  const { c } = useTheme();
 
   const handleRegister = async () => {
     if (!name.trim() || !email.trim() || !password.trim()) {
       Alert.alert("Error", "Please fill in all required fields");
       return;
     }
-
     if (name.trim().length < 2) {
       Alert.alert("Error", "Name must be at least 2 characters");
       return;
     }
-
     if (password.length < 6) {
       Alert.alert("Error", "Password must be at least 6 characters");
       return;
     }
-
     if (password !== confirmPassword) {
       Alert.alert("Error", "Passwords do not match");
       return;
     }
-
     if (phone && !/^[0-9]{10,15}$/.test(phone)) {
       Alert.alert("Error", "Phone number must be 10-15 digits");
       return;
     }
-
     try {
-      await register(
-        name.trim(),
-        email.trim().toLowerCase(),
-        password,
-        phone || undefined
-      );
+      await register(name.trim(), email.trim().toLowerCase(), password, phone || undefined);
     } catch (err) {
       const message = err?.data?.message || "Registration failed. Please try again.";
       Alert.alert("Registration Failed", message);
     }
   };
 
+  const inputStyle = {
+    borderWidth: 1, borderColor: c.borderInput, borderRadius: 12,
+    paddingHorizontal: 16, paddingVertical: 14, fontSize: 15,
+    color: c.text, backgroundColor: c.inputBg,
+  };
+
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <SafeAreaView style={{ flex: 1, backgroundColor: c.bg }}>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        className="flex-1"
+        style={{ flex: 1 }}
       >
-        <ScrollView
-          contentContainerStyle={{ flexGrow: 1 }}
-          keyboardShouldPersistTaps="handled"
-        >
-          <View className="flex-1 justify-center px-6 py-8">
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
+          <View style={{ flex: 1, justifyContent: "center", paddingHorizontal: 24, paddingVertical: 32 }}>
             {/* Header */}
-            <View className="items-center mb-8">
-              <Text className="text-5xl mb-2">🍽️</Text>
-              <Text className="text-3xl font-bold text-dark">Create Account</Text>
-              <Text className="text-base text-gray-medium mt-2">
-                Sign up to get started
-              </Text>
+            <View style={{ alignItems: "center", marginBottom: 32 }}>
+              <Text style={{ fontSize: 48, marginBottom: 8 }}>🍽️</Text>
+              <Text style={{ fontSize: 28, fontWeight: "bold", color: c.text }}>Create Account</Text>
+              <Text style={{ fontSize: 15, color: c.textSecondary, marginTop: 8 }}>Sign up to get started</Text>
             </View>
 
-            {/* Name Input */}
-            <View className="mb-4">
-              <Text className="text-sm font-semibold text-dark mb-2">
-                Full Name <Text className="text-danger">*</Text>
+            {/* Name */}
+            <View style={{ marginBottom: 16 }}>
+              <Text style={{ fontSize: 13, fontWeight: "600", color: c.text, marginBottom: 8 }}>
+                Full Name <Text style={{ color: "#F44336" }}>*</Text>
               </Text>
-              <TextInput
-                className="border border-gray-300 rounded-xl px-4 py-3.5 text-base text-dark bg-gray-light"
-                placeholder="Enter your full name"
-                placeholderTextColor="#9E9E9E"
-                value={name}
-                onChangeText={setName}
-                autoCapitalize="words"
-              />
+              <TextInput style={inputStyle} placeholder="Enter your full name" placeholderTextColor={c.textSecondary} value={name} onChangeText={setName} autoCapitalize="words" />
             </View>
 
-            {/* Email Input */}
-            <View className="mb-4">
-              <Text className="text-sm font-semibold text-dark mb-2">
-                Email <Text className="text-danger">*</Text>
+            {/* Email */}
+            <View style={{ marginBottom: 16 }}>
+              <Text style={{ fontSize: 13, fontWeight: "600", color: c.text, marginBottom: 8 }}>
+                Email <Text style={{ color: "#F44336" }}>*</Text>
               </Text>
-              <TextInput
-                className="border border-gray-300 rounded-xl px-4 py-3.5 text-base text-dark bg-gray-light"
-                placeholder="Enter your email"
-                placeholderTextColor="#9E9E9E"
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                autoCorrect={false}
-              />
+              <TextInput style={inputStyle} placeholder="Enter your email" placeholderTextColor={c.textSecondary} value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" autoCorrect={false} />
             </View>
 
-            {/* Phone Input */}
-            <View className="mb-4">
-              <Text className="text-sm font-semibold text-dark mb-2">
-                Phone Number{" "}
-                <Text className="text-gray-medium font-normal">(optional)</Text>
+            {/* Phone */}
+            <View style={{ marginBottom: 16 }}>
+              <Text style={{ fontSize: 13, fontWeight: "600", color: c.text, marginBottom: 8 }}>
+                Phone Number <Text style={{ color: c.textSecondary, fontWeight: "400" }}>(optional)</Text>
               </Text>
-              <TextInput
-                className="border border-gray-300 rounded-xl px-4 py-3.5 text-base text-dark bg-gray-light"
-                placeholder="Enter your phone number"
-                placeholderTextColor="#9E9E9E"
-                value={phone}
-                onChangeText={setPhone}
-                keyboardType="phone-pad"
-                maxLength={15}
-              />
+              <TextInput style={inputStyle} placeholder="Enter your phone number" placeholderTextColor={c.textSecondary} value={phone} onChangeText={setPhone} keyboardType="phone-pad" maxLength={15} />
             </View>
 
-            {/* Password Input */}
-            <View className="mb-4">
-              <Text className="text-sm font-semibold text-dark mb-2">
-                Password <Text className="text-danger">*</Text>
+            {/* Password */}
+            <View style={{ marginBottom: 16 }}>
+              <Text style={{ fontSize: 13, fontWeight: "600", color: c.text, marginBottom: 8 }}>
+                Password <Text style={{ color: "#F44336" }}>*</Text>
               </Text>
-              <View className="relative">
-                <TextInput
-                  className="border border-gray-300 rounded-xl px-4 py-3.5 text-base text-dark bg-gray-light pr-16"
-                  placeholder="Min 6 characters"
-                  placeholderTextColor="#9E9E9E"
-                  value={password}
-                  onChangeText={setPassword}
-                  secureTextEntry={!showPassword}
-                />
-                <TouchableOpacity
-                  className="absolute right-4 top-3.5"
-                  onPress={() => setShowPassword(!showPassword)}
-                >
-                  <Text className="text-primary font-semibold">
-                    {showPassword ? "Hide" : "Show"}
-                  </Text>
+              <View style={{ position: "relative" }}>
+                <TextInput style={{ ...inputStyle, paddingRight: 64 }} placeholder="Min 6 characters" placeholderTextColor={c.textSecondary} value={password} onChangeText={setPassword} secureTextEntry={!showPassword} />
+                <TouchableOpacity style={{ position: "absolute", right: 16, top: 14 }} onPress={() => setShowPassword(!showPassword)}>
+                  <Text style={{ color: c.primary, fontWeight: "600" }}>{showPassword ? "Hide" : "Show"}</Text>
                 </TouchableOpacity>
               </View>
             </View>
 
-            {/* Confirm Password Input */}
-            <View className="mb-6">
-              <Text className="text-sm font-semibold text-dark mb-2">
-                Confirm Password <Text className="text-danger">*</Text>
+            {/* Confirm Password */}
+            <View style={{ marginBottom: 24 }}>
+              <Text style={{ fontSize: 13, fontWeight: "600", color: c.text, marginBottom: 8 }}>
+                Confirm Password <Text style={{ color: "#F44336" }}>*</Text>
               </Text>
-              <TextInput
-                className="border border-gray-300 rounded-xl px-4 py-3.5 text-base text-dark bg-gray-light"
-                placeholder="Re-enter your password"
-                placeholderTextColor="#9E9E9E"
-                value={confirmPassword}
-                onChangeText={setConfirmPassword}
-                secureTextEntry={!showPassword}
-              />
+              <TextInput style={inputStyle} placeholder="Re-enter your password" placeholderTextColor={c.textSecondary} value={confirmPassword} onChangeText={setConfirmPassword} secureTextEntry={!showPassword} />
             </View>
 
             {/* Register Button */}
             <TouchableOpacity
-              className={`rounded-xl py-4 items-center ${
-                isRegisterLoading ? "bg-orange-300" : "bg-primary"
-              }`}
+              style={{ backgroundColor: isRegisterLoading ? "#FDBA74" : c.primary, borderRadius: 12, paddingVertical: 16, alignItems: "center" }}
               onPress={handleRegister}
               disabled={isRegisterLoading}
               activeOpacity={0.8}
             >
-              {isRegisterLoading ? (
-                <ActivityIndicator color="#fff" />
-              ) : (
-                <Text className="text-white text-lg font-bold">Create Account</Text>
-              )}
+              {isRegisterLoading ? <ActivityIndicator color="#fff" /> : <Text style={{ color: "#fff", fontSize: 17, fontWeight: "bold" }}>Create Account</Text>}
             </TouchableOpacity>
 
             {/* Login Link */}
-            <View className="flex-row justify-center mt-6">
-              <Text className="text-gray-medium text-base">
-                Already have an account?{" "}
-              </Text>
-              <Link href="/(auth)/login" asChild>
-                <TouchableOpacity>
-                  <Text className="text-primary font-bold text-base">Sign In</Text>
-                </TouchableOpacity>
-              </Link>
+            <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 24 }}>
+              <Text style={{ color: c.textSecondary, fontSize: 15 }}>Already have an account? </Text>
+              <TouchableOpacity onPress={() => router.push("/(auth)/login")}>
+                <Text style={{ color: c.primary, fontWeight: "bold", fontSize: 15 }}>Sign In</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </ScrollView>

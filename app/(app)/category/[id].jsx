@@ -1,4 +1,4 @@
-import { View, Text, FlatList } from "react-native";
+import { View, Text, FlatList, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useDispatch } from "react-redux";
@@ -8,12 +8,13 @@ import MenuItemCard from "../../../src/components/common/MenuItemCard";
 import LoadingScreen from "../../../src/components/common/LoadingScreen";
 import ErrorScreen from "../../../src/components/common/ErrorScreen";
 import Toast from "react-native-toast-message";
-import { TouchableOpacity } from "react-native";
+import { useTheme } from "../../../src/hooks/useTheme";
 
 export default function CategoryDetailScreen() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
   const dispatch = useDispatch();
+  const { c } = useTheme();
   const { data, isLoading, error, refetch } = useGetByCategoryQuery(id);
 
   const category = data?.data;
@@ -32,20 +33,20 @@ export default function CategoryDetailScreen() {
   if (error) return <ErrorScreen message="Category not found" onRetry={refetch} />;
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <SafeAreaView style={{ flex: 1, backgroundColor: c.bg }}>
       {/* Header */}
-      <View className="flex-row items-center px-5 pt-4 pb-3">
+      <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 16, paddingBottom: 12 }}>
         <TouchableOpacity
-          className="mr-3 w-10 h-10 rounded-full bg-gray-light items-center justify-center"
+          style={{ marginRight: 12, width: 40, height: 40, borderRadius: 20, backgroundColor: c.bgSecondary, alignItems: "center", justifyContent: "center" }}
           onPress={() => router.back()}
         >
-          <Text className="text-lg">←</Text>
+          <Text style={{ fontSize: 18, color: c.text }}>←</Text>
         </TouchableOpacity>
         <View>
-          <Text className="text-2xl font-bold text-dark">
+          <Text style={{ fontSize: 24, fontWeight: "bold", color: c.text }}>
             {category?.name || "Category"}
           </Text>
-          <Text className="text-sm text-gray-medium">
+          <Text style={{ fontSize: 14, color: c.textSecondary }}>
             {items.length} item{items.length !== 1 ? "s" : ""}
           </Text>
         </View>
@@ -65,9 +66,9 @@ export default function CategoryDetailScreen() {
           />
         )}
         ListEmptyComponent={
-          <View className="items-center py-12">
-            <Text className="text-4xl mb-3">🍽️</Text>
-            <Text className="text-gray-medium text-base">
+          <View style={{ alignItems: "center", paddingVertical: 48 }}>
+            <Text style={{ fontSize: 36, marginBottom: 12 }}>🍽️</Text>
+            <Text style={{ color: c.textSecondary, fontSize: 16 }}>
               No items available in this category
             </Text>
           </View>

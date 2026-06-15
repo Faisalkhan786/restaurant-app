@@ -10,22 +10,24 @@ import {
   ActivityIndicator,
   Alert,
 } from "react-native";
-import { Link } from "expo-router";
+import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useAuth } from "../../src/hooks/useAuth";
+import { useTheme } from "../../src/hooks/useTheme";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
   const { login, isLoginLoading } = useAuth();
+  const { c } = useTheme();
 
   const handleLogin = async () => {
     if (!email.trim() || !password.trim()) {
       Alert.alert("Error", "Please fill in all fields");
       return;
     }
-
     try {
       await login(email.trim().toLowerCase(), password);
     } catch (err) {
@@ -35,32 +37,36 @@ export default function LoginScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <SafeAreaView style={{ flex: 1, backgroundColor: c.bg }}>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        className="flex-1"
+        style={{ flex: 1 }}
       >
         <ScrollView
           contentContainerStyle={{ flexGrow: 1 }}
           keyboardShouldPersistTaps="handled"
         >
-          <View className="flex-1 justify-center px-6">
+          <View style={{ flex: 1, justifyContent: "center", paddingHorizontal: 24 }}>
             {/* Header */}
-            <View className="items-center mb-10">
-              <Text className="text-5xl mb-2">🍽️</Text>
-              <Text className="text-3xl font-bold text-dark">Welcome Back</Text>
-              <Text className="text-base text-gray-medium mt-2">
+            <View style={{ alignItems: "center", marginBottom: 40 }}>
+              <Text style={{ fontSize: 48, marginBottom: 8 }}>🍽️</Text>
+              <Text style={{ fontSize: 28, fontWeight: "bold", color: c.text }}>Welcome Back</Text>
+              <Text style={{ fontSize: 15, color: c.textSecondary, marginTop: 8 }}>
                 Sign in to your account
               </Text>
             </View>
 
-            {/* Email Input */}
-            <View className="mb-4">
-              <Text className="text-sm font-semibold text-dark mb-2">Email</Text>
+            {/* Email */}
+            <View style={{ marginBottom: 16 }}>
+              <Text style={{ fontSize: 13, fontWeight: "600", color: c.text, marginBottom: 8 }}>Email</Text>
               <TextInput
-                className="border border-gray-300 rounded-xl px-4 py-3.5 text-base text-dark bg-gray-light"
+                style={{
+                  borderWidth: 1, borderColor: c.borderInput, borderRadius: 12,
+                  paddingHorizontal: 16, paddingVertical: 14, fontSize: 15,
+                  color: c.text, backgroundColor: c.inputBg,
+                }}
                 placeholder="Enter your email"
-                placeholderTextColor="#9E9E9E"
+                placeholderTextColor={c.textSecondary}
                 value={email}
                 onChangeText={setEmail}
                 keyboardType="email-address"
@@ -69,23 +75,27 @@ export default function LoginScreen() {
               />
             </View>
 
-            {/* Password Input */}
-            <View className="mb-2">
-              <Text className="text-sm font-semibold text-dark mb-2">Password</Text>
-              <View className="relative">
+            {/* Password */}
+            <View style={{ marginBottom: 8 }}>
+              <Text style={{ fontSize: 13, fontWeight: "600", color: c.text, marginBottom: 8 }}>Password</Text>
+              <View style={{ position: "relative" }}>
                 <TextInput
-                  className="border border-gray-300 rounded-xl px-4 py-3.5 text-base text-dark bg-gray-light pr-16"
+                  style={{
+                    borderWidth: 1, borderColor: c.borderInput, borderRadius: 12,
+                    paddingHorizontal: 16, paddingVertical: 14, fontSize: 15,
+                    color: c.text, backgroundColor: c.inputBg, paddingRight: 64,
+                  }}
                   placeholder="Enter your password"
-                  placeholderTextColor="#9E9E9E"
+                  placeholderTextColor={c.textSecondary}
                   value={password}
                   onChangeText={setPassword}
                   secureTextEntry={!showPassword}
                 />
                 <TouchableOpacity
-                  className="absolute right-4 top-3.5"
+                  style={{ position: "absolute", right: 16, top: 14 }}
                   onPress={() => setShowPassword(!showPassword)}
                 >
-                  <Text className="text-primary font-semibold">
+                  <Text style={{ color: c.primary, fontWeight: "600" }}>
                     {showPassword ? "Hide" : "Show"}
                   </Text>
                 </TouchableOpacity>
@@ -93,17 +103,18 @@ export default function LoginScreen() {
             </View>
 
             {/* Forgot Password */}
-            <TouchableOpacity className="self-end mb-6">
-              <Text className="text-primary font-semibold text-sm">
+            <TouchableOpacity style={{ alignSelf: "flex-end", marginBottom: 24 }}>
+              <Text style={{ color: c.primary, fontWeight: "600", fontSize: 13 }}>
                 Forgot Password?
               </Text>
             </TouchableOpacity>
 
             {/* Login Button */}
             <TouchableOpacity
-              className={`rounded-xl py-4 items-center ${
-                isLoginLoading ? "bg-orange-300" : "bg-primary"
-              }`}
+              style={{
+                backgroundColor: isLoginLoading ? "#FDBA74" : c.primary,
+                borderRadius: 12, paddingVertical: 16, alignItems: "center",
+              }}
               onPress={handleLogin}
               disabled={isLoginLoading}
               activeOpacity={0.8}
@@ -111,20 +122,18 @@ export default function LoginScreen() {
               {isLoginLoading ? (
                 <ActivityIndicator color="#fff" />
               ) : (
-                <Text className="text-white text-lg font-bold">Sign In</Text>
+                <Text style={{ color: "#fff", fontSize: 17, fontWeight: "bold" }}>Sign In</Text>
               )}
             </TouchableOpacity>
 
             {/* Register Link */}
-            <View className="flex-row justify-center mt-6">
-              <Text className="text-gray-medium text-base">
+            <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 24 }}>
+              <Text style={{ color: c.textSecondary, fontSize: 15 }}>
                 Don't have an account?{" "}
               </Text>
-              <Link href="/(auth)/register" asChild>
-                <TouchableOpacity>
-                  <Text className="text-primary font-bold text-base">Sign Up</Text>
-                </TouchableOpacity>
-              </Link>
+              <TouchableOpacity onPress={() => router.push("/(auth)/register")}>
+                <Text style={{ color: c.primary, fontWeight: "bold", fontSize: 15 }}>Sign Up</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </ScrollView>

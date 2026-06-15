@@ -18,12 +18,14 @@ import { CURRENCY_SYMBOL } from "../../../src/constants/config";
 import OrderStatusTracker from "../../../src/components/common/OrderStatusTracker";
 import LoadingScreen from "../../../src/components/common/LoadingScreen";
 import ErrorScreen from "../../../src/components/common/ErrorScreen";
+import { useTheme } from "../../../src/hooks/useTheme";
 
 export default function OrderDetailScreen() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
+  const { c } = useTheme();
   const { data, isLoading, error, refetch } = useGetOrderDetailQuery(id, {
-    pollingInterval: 15000, // Poll every 15 seconds for status updates
+    pollingInterval: 15000,
   });
   const [cancelOrder, { isLoading: isCancelling }] = useCancelOrderMutation();
 
@@ -69,22 +71,22 @@ export default function OrderDetailScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <SafeAreaView style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Header */}
-        <View className="flex-row items-center justify-between px-5 pt-4 pb-3">
-          <View className="flex-row items-center">
+        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingTop: 16, paddingBottom: 12 }}>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
             <TouchableOpacity
-              className="mr-3 w-10 h-10 rounded-full bg-gray-light items-center justify-center"
+              style={{ marginRight: 12, width: 40, height: 40, borderRadius: 20, backgroundColor: c.bgSecondary, alignItems: "center", justifyContent: "center" }}
               onPress={() => router.back()}
             >
-              <Text className="text-lg">←</Text>
+              <Text style={{ fontSize: 18, color: c.text }}>←</Text>
             </TouchableOpacity>
             <View>
-              <Text className="text-xl font-bold text-dark">
+              <Text style={{ fontSize: 20, fontWeight: "bold", color: c.text }}>
                 #{order.order_number}
               </Text>
-              <Text className="text-xs text-gray-medium">
+              <Text style={{ fontSize: 12, color: c.textSecondary }}>
                 {formatDate(order.created_at || order.createdAt)}
               </Text>
             </View>
@@ -92,20 +94,20 @@ export default function OrderDetailScreen() {
         </View>
 
         {/* Status Tracker */}
-        <View className="px-5 mt-4">
-          <Text className="text-lg font-bold text-dark mb-3">Order Status</Text>
+        <View style={{ paddingHorizontal: 20, marginTop: 16 }}>
+          <Text style={{ fontSize: 18, fontWeight: "bold", color: c.text, marginBottom: 12 }}>Order Status</Text>
           <OrderStatusTracker currentStatus={order.status} />
         </View>
 
         {/* Estimated Delivery */}
         {order.status !== "delivered" && order.status !== "cancelled" ? (
-          <View className="mx-5 mt-4 bg-orange-50 rounded-xl p-4 flex-row items-center">
-            <Text className="text-2xl mr-3">⏱️</Text>
+          <View style={{ marginHorizontal: 20, marginTop: 16, backgroundColor: c.primaryLight, borderRadius: 12, padding: 16, flexDirection: "row", alignItems: "center" }}>
+            <Text style={{ fontSize: 24, marginRight: 12 }}>⏱️</Text>
             <View>
-              <Text className="text-sm font-bold text-dark">
+              <Text style={{ fontSize: 14, fontWeight: "bold", color: c.text }}>
                 Estimated Delivery
               </Text>
-              <Text className="text-sm text-gray-dark">
+              <Text style={{ fontSize: 14, color: c.textMuted }}>
                 {order.estimated_delivery_time} minutes
               </Text>
             </View>
@@ -114,43 +116,43 @@ export default function OrderDetailScreen() {
 
         {/* Cancel Reason */}
         {order.status === "cancelled" && order.cancel_reason ? (
-          <View className="mx-5 mt-4 bg-red-50 rounded-xl p-4">
-            <Text className="text-sm font-bold text-danger mb-1">
+          <View style={{ marginHorizontal: 20, marginTop: 16, backgroundColor: "#FEF2F2", borderRadius: 12, padding: 16 }}>
+            <Text style={{ fontSize: 14, fontWeight: "bold", color: "#EF4444", marginBottom: 4 }}>
               Cancellation Reason
             </Text>
-            <Text className="text-sm text-gray-dark">{order.cancel_reason}</Text>
+            <Text style={{ fontSize: 14, color: c.textMuted }}>{order.cancel_reason}</Text>
           </View>
         ) : null}
 
         {/* Order Items */}
-        <View className="px-5 mt-6">
-          <Text className="text-lg font-bold text-dark mb-3">Order Items</Text>
-          <View className="bg-gray-light rounded-xl p-4">
+        <View style={{ paddingHorizontal: 20, marginTop: 24 }}>
+          <Text style={{ fontSize: 18, fontWeight: "bold", color: c.text, marginBottom: 12 }}>Order Items</Text>
+          <View style={{ backgroundColor: c.bgSecondary, borderRadius: 12, padding: 16 }}>
             {order.items?.map((item) => (
               <View
                 key={item.id}
-                className="flex-row justify-between mb-3 pb-3 border-b border-gray-200 last:border-0 last:mb-0 last:pb-0"
+                style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 12, paddingBottom: 12, borderBottomWidth: 1, borderBottomColor: c.border }}
               >
-                <View className="flex-1 mr-3">
-                  <Text className="text-sm font-bold text-dark">
+                <View style={{ flex: 1, marginRight: 12 }}>
+                  <Text style={{ fontSize: 14, fontWeight: "bold", color: c.text }}>
                     {item.menuItem?.name || "Item"}
                   </Text>
                   {item.variation_name ? (
-                    <Text className="text-xs text-gray-medium mt-0.5">
+                    <Text style={{ fontSize: 12, color: c.textSecondary, marginTop: 2 }}>
                       Variant: {item.variation_name}
                     </Text>
                   ) : null}
                   {item.addons?.length > 0 ? (
-                    <Text className="text-xs text-gray-medium mt-0.5">
+                    <Text style={{ fontSize: 12, color: c.textSecondary, marginTop: 2 }}>
                       + {item.addons.map((a) => a.name).join(", ")}
                     </Text>
                   ) : null}
-                  <Text className="text-xs text-gray-medium mt-0.5">
+                  <Text style={{ fontSize: 12, color: c.textSecondary, marginTop: 2 }}>
                     Qty: {item.quantity} × {CURRENCY_SYMBOL}
                     {item.variation_price || item.unit_price}
                   </Text>
                 </View>
-                <Text className="text-sm font-bold text-dark">
+                <Text style={{ fontSize: 14, fontWeight: "bold", color: c.text }}>
                   {CURRENCY_SYMBOL}{item.subtotal}
                 </Text>
               </View>
@@ -159,38 +161,38 @@ export default function OrderDetailScreen() {
         </View>
 
         {/* Price Breakdown */}
-        <View className="px-5 mt-6">
-          <Text className="text-lg font-bold text-dark mb-3">Bill Details</Text>
-          <View className="bg-gray-light rounded-xl p-4">
-            <View className="flex-row justify-between mb-2">
-              <Text className="text-sm text-gray-medium">Subtotal</Text>
-              <Text className="text-sm text-dark">
+        <View style={{ paddingHorizontal: 20, marginTop: 24 }}>
+          <Text style={{ fontSize: 18, fontWeight: "bold", color: c.text, marginBottom: 12 }}>Bill Details</Text>
+          <View style={{ backgroundColor: c.bgSecondary, borderRadius: 12, padding: 16 }}>
+            <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 8 }}>
+              <Text style={{ fontSize: 14, color: c.textSecondary }}>Subtotal</Text>
+              <Text style={{ fontSize: 14, color: c.text }}>
                 {CURRENCY_SYMBOL}{order.subtotal}
               </Text>
             </View>
-            <View className="flex-row justify-between mb-2">
-              <Text className="text-sm text-gray-medium">Delivery Charge</Text>
-              <Text className="text-sm text-dark">
+            <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 8 }}>
+              <Text style={{ fontSize: 14, color: c.textSecondary }}>Delivery Charge</Text>
+              <Text style={{ fontSize: 14, color: c.text }}>
                 {CURRENCY_SYMBOL}{order.delivery_charge}
               </Text>
             </View>
-            <View className="flex-row justify-between mb-2">
-              <Text className="text-sm text-gray-medium">Tax</Text>
-              <Text className="text-sm text-dark">
+            <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 8 }}>
+              <Text style={{ fontSize: 14, color: c.textSecondary }}>Tax</Text>
+              <Text style={{ fontSize: 14, color: c.text }}>
                 {CURRENCY_SYMBOL}{order.tax}
               </Text>
             </View>
             {parseFloat(order.discount) > 0 ? (
-              <View className="flex-row justify-between mb-2">
-                <Text className="text-sm text-success">Discount</Text>
-                <Text className="text-sm text-success">
+              <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 8 }}>
+                <Text style={{ fontSize: 14, color: "#22C55E" }}>Discount</Text>
+                <Text style={{ fontSize: 14, color: "#22C55E" }}>
                   -{CURRENCY_SYMBOL}{order.discount}
                 </Text>
               </View>
             ) : null}
-            <View className="border-t border-gray-200 mt-2 pt-2 flex-row justify-between">
-              <Text className="text-base font-bold text-dark">Total</Text>
-              <Text className="text-base font-bold text-primary">
+            <View style={{ borderTopWidth: 1, borderTopColor: c.border, marginTop: 8, paddingTop: 8, flexDirection: "row", justifyContent: "space-between" }}>
+              <Text style={{ fontSize: 16, fontWeight: "bold", color: c.text }}>Total</Text>
+              <Text style={{ fontSize: 16, fontWeight: "bold", color: c.primary }}>
                 {CURRENCY_SYMBOL}{order.total}
               </Text>
             </View>
@@ -198,11 +200,11 @@ export default function OrderDetailScreen() {
         </View>
 
         {/* Payment Info */}
-        <View className="px-5 mt-6">
-          <Text className="text-lg font-bold text-dark mb-3">Payment</Text>
-          <View className="bg-gray-light rounded-xl p-4 flex-row justify-between">
-            <Text className="text-sm text-gray-medium">Method</Text>
-            <Text className="text-sm font-bold text-dark">
+        <View style={{ paddingHorizontal: 20, marginTop: 24 }}>
+          <Text style={{ fontSize: 18, fontWeight: "bold", color: c.text, marginBottom: 12 }}>Payment</Text>
+          <View style={{ backgroundColor: c.bgSecondary, borderRadius: 12, padding: 16, flexDirection: "row", justifyContent: "space-between" }}>
+            <Text style={{ fontSize: 14, color: c.textSecondary }}>Method</Text>
+            <Text style={{ fontSize: 14, fontWeight: "bold", color: c.text }}>
               {order.payment_method === "COD" ? "💵 Cash on Delivery" : "📱 Online"}
             </Text>
           </View>
@@ -210,19 +212,19 @@ export default function OrderDetailScreen() {
 
         {/* Delivery Address */}
         {order.deliveryAddress ? (
-          <View className="px-5 mt-6">
-            <Text className="text-lg font-bold text-dark mb-3">
+          <View style={{ paddingHorizontal: 20, marginTop: 24 }}>
+            <Text style={{ fontSize: 18, fontWeight: "bold", color: c.text, marginBottom: 12 }}>
               Delivery Address
             </Text>
-            <View className="bg-gray-light rounded-xl p-4">
-              <Text className="text-sm font-bold text-dark">
+            <View style={{ backgroundColor: c.bgSecondary, borderRadius: 12, padding: 16 }}>
+              <Text style={{ fontSize: 14, fontWeight: "bold", color: c.text }}>
                 {order.deliveryAddress.label}
               </Text>
-              <Text className="text-sm text-gray-dark mt-1">
+              <Text style={{ fontSize: 14, color: c.textMuted, marginTop: 4 }}>
                 {order.deliveryAddress.full_address}
               </Text>
               {order.deliveryAddress.area || order.deliveryAddress.city ? (
-                <Text className="text-xs text-gray-medium mt-1">
+                <Text style={{ fontSize: 12, color: c.textSecondary, marginTop: 4 }}>
                   {[order.deliveryAddress.area, order.deliveryAddress.city]
                     .filter(Boolean)
                     .join(", ")}
@@ -234,12 +236,12 @@ export default function OrderDetailScreen() {
 
         {/* Delivery Notes */}
         {order.delivery_notes ? (
-          <View className="px-5 mt-6">
-            <Text className="text-lg font-bold text-dark mb-3">
+          <View style={{ paddingHorizontal: 20, marginTop: 24 }}>
+            <Text style={{ fontSize: 18, fontWeight: "bold", color: c.text, marginBottom: 12 }}>
               Delivery Notes
             </Text>
-            <View className="bg-gray-light rounded-xl p-4">
-              <Text className="text-sm text-gray-dark">
+            <View style={{ backgroundColor: c.bgSecondary, borderRadius: 12, padding: 16 }}>
+              <Text style={{ fontSize: 14, color: c.textMuted }}>
                 {order.delivery_notes}
               </Text>
             </View>
@@ -248,22 +250,22 @@ export default function OrderDetailScreen() {
 
         {/* Delivery Boy Info */}
         {order.deliveryBoy ? (
-          <View className="px-5 mt-6">
-            <Text className="text-lg font-bold text-dark mb-3">
+          <View style={{ paddingHorizontal: 20, marginTop: 24 }}>
+            <Text style={{ fontSize: 18, fontWeight: "bold", color: c.text, marginBottom: 12 }}>
               Delivery Partner
             </Text>
-            <View className="bg-gray-light rounded-xl p-4 flex-row items-center">
-              <View className="w-12 h-12 rounded-full bg-primary items-center justify-center mr-3">
-                <Text className="text-white text-lg font-bold">
+            <View style={{ backgroundColor: c.bgSecondary, borderRadius: 12, padding: 16, flexDirection: "row", alignItems: "center" }}>
+              <View style={{ width: 48, height: 48, borderRadius: 24, backgroundColor: c.primary, alignItems: "center", justifyContent: "center", marginRight: 12 }}>
+                <Text style={{ color: "#FFFFFF", fontSize: 18, fontWeight: "bold" }}>
                   {order.deliveryBoy.name?.[0]?.toUpperCase() || "D"}
                 </Text>
               </View>
               <View>
-                <Text className="text-base font-bold text-dark">
+                <Text style={{ fontSize: 16, fontWeight: "bold", color: c.text }}>
                   {order.deliveryBoy.name}
                 </Text>
                 {order.deliveryBoy.phone ? (
-                  <Text className="text-sm text-gray-medium">
+                  <Text style={{ fontSize: 14, color: c.textSecondary }}>
                     📞 {order.deliveryBoy.phone}
                   </Text>
                 ) : null}
@@ -274,53 +276,67 @@ export default function OrderDetailScreen() {
 
         {/* Cancel Button */}
         {canCancel && !showCancelModal ? (
-          <View className="px-5 mt-6">
+          <View style={{ paddingHorizontal: 20, marginTop: 24 }}>
             <TouchableOpacity
-              className="border border-danger rounded-xl py-3.5 items-center"
+              style={{ borderWidth: 1, borderColor: "#EF4444", borderRadius: 12, paddingVertical: 14, alignItems: "center" }}
               onPress={handleCancel}
             >
-              <Text className="text-danger font-bold text-base">Cancel Order</Text>
+              <Text style={{ color: "#EF4444", fontWeight: "bold", fontSize: 16 }}>Cancel Order</Text>
             </TouchableOpacity>
           </View>
         ) : null}
 
         {/* Cancel Modal Inline */}
         {showCancelModal ? (
-          <View className="px-5 mt-6">
-            <View className="bg-red-50 rounded-xl p-4">
-              <Text className="text-base font-bold text-dark mb-3">
+          <View style={{ paddingHorizontal: 20, marginTop: 24 }}>
+            <View style={{ backgroundColor: "#FEF2F2", borderRadius: 12, padding: 16 }}>
+              <Text style={{ fontSize: 16, fontWeight: "bold", color: c.text, marginBottom: 12 }}>
                 Cancel this order?
               </Text>
               <TextInput
-                className="border border-gray-300 rounded-xl px-4 py-3 text-sm text-dark bg-white mb-3"
+                style={{
+                  borderWidth: 1,
+                  borderColor: c.borderInput,
+                  borderRadius: 12,
+                  paddingHorizontal: 16,
+                  paddingVertical: 12,
+                  fontSize: 14,
+                  color: c.text,
+                  backgroundColor: c.bg,
+                  marginBottom: 12,
+                }}
                 placeholder="Reason for cancellation (optional)"
-                placeholderTextColor="#9E9E9E"
+                placeholderTextColor={c.textSecondary}
                 value={cancelReason}
                 onChangeText={setCancelReason}
                 multiline
                 maxLength={500}
               />
-              <View className="flex-row">
+              <View style={{ flexDirection: "row" }}>
                 <TouchableOpacity
-                  className="flex-1 bg-gray-200 py-3 rounded-xl items-center mr-2"
+                  style={{ flex: 1, backgroundColor: c.bgSecondary, paddingVertical: 12, borderRadius: 12, alignItems: "center", marginRight: 8 }}
                   onPress={() => {
                     setShowCancelModal(false);
                     setCancelReason("");
                   }}
                 >
-                  <Text className="text-dark font-bold">Keep Order</Text>
+                  <Text style={{ color: c.text, fontWeight: "bold" }}>Keep Order</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  className={`flex-1 py-3 rounded-xl items-center ${
-                    isCancelling ? "bg-red-300" : "bg-danger"
-                  }`}
+                  style={{
+                    flex: 1,
+                    paddingVertical: 12,
+                    borderRadius: 12,
+                    alignItems: "center",
+                    backgroundColor: isCancelling ? "#FCA5A5" : "#EF4444",
+                  }}
                   onPress={confirmCancel}
                   disabled={isCancelling}
                 >
                   {isCancelling ? (
                     <ActivityIndicator color="#fff" />
                   ) : (
-                    <Text className="text-white font-bold">Yes, Cancel</Text>
+                    <Text style={{ color: "#FFFFFF", fontWeight: "bold" }}>Yes, Cancel</Text>
                   )}
                 </TouchableOpacity>
               </View>
@@ -329,7 +345,7 @@ export default function OrderDetailScreen() {
         ) : null}
 
         {/* Spacer */}
-        <View className="h-8" />
+        <View style={{ height: 32 }} />
       </ScrollView>
     </SafeAreaView>
   );

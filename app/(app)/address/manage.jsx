@@ -8,9 +8,11 @@ import {
 } from "../../../src/store/api/customerApi";
 import LoadingScreen from "../../../src/components/common/LoadingScreen";
 import ErrorScreen from "../../../src/components/common/ErrorScreen";
+import { useTheme } from "../../../src/hooks/useTheme";
 
 export default function ManageAddressScreen() {
   const router = useRouter();
+  const { c } = useTheme();
   const { data, isLoading, error, refetch } = useGetAddressesQuery();
   const [deleteAddress] = useDeleteAddressMutation();
   const [updateAddress] = useUpdateAddressMutation();
@@ -46,20 +48,20 @@ export default function ManageAddressScreen() {
   if (error) return <ErrorScreen message="Failed to load addresses" onRetry={refetch} />;
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <SafeAreaView style={{ flex: 1, backgroundColor: c.bg }}>
       {/* Header */}
-      <View className="flex-row items-center justify-between px-5 pt-4 pb-3">
-        <View className="flex-row items-center">
+      <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingTop: 16, paddingBottom: 12 }}>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
           <TouchableOpacity
-            className="mr-3 w-10 h-10 rounded-full bg-gray-light items-center justify-center"
+            style={{ marginRight: 12, width: 40, height: 40, borderRadius: 20, backgroundColor: c.bgSecondary, alignItems: "center", justifyContent: "center" }}
             onPress={() => router.back()}
           >
-            <Text className="text-lg">←</Text>
+            <Text style={{ fontSize: 18, color: c.text }}>←</Text>
           </TouchableOpacity>
-          <Text className="text-2xl font-bold text-dark">My Addresses</Text>
+          <Text style={{ fontSize: 24, fontWeight: "bold", color: c.text }}>My Addresses</Text>
         </View>
         <TouchableOpacity onPress={() => router.push("/(app)/address/add")}>
-          <Text className="text-primary font-bold text-base">+ Add</Text>
+          <Text style={{ color: c.primary, fontWeight: "bold", fontSize: 16 }}>+ Add</Text>
         </TouchableOpacity>
       </View>
 
@@ -69,54 +71,54 @@ export default function ManageAddressScreen() {
         contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 8, paddingBottom: 20 }}
         showsVerticalScrollIndicator={false}
         renderItem={({ item }) => (
-          <View className="border border-gray-200 rounded-xl p-4 mb-3">
-            <View className="flex-row items-center justify-between mb-2">
-              <View className="flex-row items-center">
-                <Text className="text-sm font-bold text-dark">{item.label}</Text>
+          <View style={{ borderWidth: 1, borderColor: c.border, borderRadius: 12, padding: 16, marginBottom: 12 }}>
+            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Text style={{ fontSize: 14, fontWeight: "bold", color: c.text }}>{item.label}</Text>
                 {item.is_default ? (
-                  <View className="bg-success px-2 py-0.5 rounded-full ml-2">
-                    <Text className="text-white text-xs font-bold">Default</Text>
+                  <View style={{ backgroundColor: "#22C55E", paddingHorizontal: 8, paddingVertical: 2, borderRadius: 20, marginLeft: 8 }}>
+                    <Text style={{ color: "#FFFFFF", fontSize: 12, fontWeight: "bold" }}>Default</Text>
                   </View>
                 ) : null}
               </View>
             </View>
 
-            <Text className="text-sm text-gray-dark" numberOfLines={2}>
+            <Text style={{ fontSize: 14, color: c.textMuted }} numberOfLines={2}>
               {item.full_address}
             </Text>
             {item.area || item.city ? (
-              <Text className="text-xs text-gray-medium mt-1">
+              <Text style={{ fontSize: 12, color: c.textSecondary, marginTop: 4 }}>
                 {[item.area, item.city].filter(Boolean).join(", ")}
               </Text>
             ) : null}
 
             {/* Actions */}
-            <View className="flex-row mt-3 pt-3 border-t border-gray-100">
+            <View style={{ flexDirection: "row", marginTop: 12, paddingTop: 12, borderTopWidth: 1, borderTopColor: c.border }}>
               {!item.is_default ? (
                 <TouchableOpacity
-                  className="mr-5"
+                  style={{ marginRight: 20 }}
                   onPress={() => handleSetDefault(item.id)}
                 >
-                  <Text className="text-primary font-semibold text-sm">
+                  <Text style={{ color: c.primary, fontWeight: "600", fontSize: 14 }}>
                     Set Default
                   </Text>
                 </TouchableOpacity>
               ) : null}
               <TouchableOpacity onPress={() => handleDelete(item.id)}>
-                <Text className="text-danger font-semibold text-sm">Delete</Text>
+                <Text style={{ color: "#EF4444", fontWeight: "600", fontSize: 14 }}>Delete</Text>
               </TouchableOpacity>
             </View>
           </View>
         )}
         ListEmptyComponent={
-          <View className="items-center py-12">
-            <Text className="text-4xl mb-3">📍</Text>
-            <Text className="text-gray-medium text-base mb-4">No addresses saved</Text>
+          <View style={{ alignItems: "center", paddingVertical: 48 }}>
+            <Text style={{ fontSize: 36, marginBottom: 12 }}>📍</Text>
+            <Text style={{ color: c.textSecondary, fontSize: 16, marginBottom: 16 }}>No addresses saved</Text>
             <TouchableOpacity
-              className="bg-primary px-6 py-3 rounded-xl"
+              style={{ backgroundColor: c.primary, paddingHorizontal: 24, paddingVertical: 12, borderRadius: 12 }}
               onPress={() => router.push("/(app)/address/add")}
             >
-              <Text className="text-white font-bold">Add Address</Text>
+              <Text style={{ color: "#FFFFFF", fontWeight: "bold" }}>Add Address</Text>
             </TouchableOpacity>
           </View>
         }

@@ -4,10 +4,12 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { useGetOrderDetailQuery } from "../../../src/store/api/orderApi";
 import { CURRENCY_SYMBOL } from "../../../src/constants/config";
 import LoadingScreen from "../../../src/components/common/LoadingScreen";
+import { useTheme } from "../../../src/hooks/useTheme";
 
 export default function OrderSuccessScreen() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
+  const { c } = useTheme();
   const { data, isLoading } = useGetOrderDetailQuery(id);
 
   const order = data?.data;
@@ -15,49 +17,49 @@ export default function OrderSuccessScreen() {
   if (isLoading) return <LoadingScreen message="Loading order..." />;
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
-      <View className="flex-1 items-center justify-center px-6">
+    <SafeAreaView style={{ flex: 1, backgroundColor: c.bg }}>
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 24 }}>
         {/* Success Icon */}
-        <View className="w-24 h-24 rounded-full bg-green-100 items-center justify-center mb-6">
-          <Text className="text-5xl">✅</Text>
+        <View style={{ width: 96, height: 96, borderRadius: 48, backgroundColor: "#DCFCE7", alignItems: "center", justifyContent: "center", marginBottom: 24 }}>
+          <Text style={{ fontSize: 48 }}>✅</Text>
         </View>
 
-        <Text className="text-2xl font-bold text-dark text-center">
+        <Text style={{ fontSize: 24, fontWeight: "bold", color: c.text, textAlign: "center" }}>
           Order Placed!
         </Text>
-        <Text className="text-gray-medium text-base mt-2 text-center">
+        <Text style={{ color: c.textSecondary, fontSize: 16, marginTop: 8, textAlign: "center" }}>
           Your order has been placed successfully
         </Text>
 
         {order ? (
-          <View className="bg-gray-light rounded-xl p-5 mt-6 w-full">
-            <View className="flex-row justify-between mb-2">
-              <Text className="text-sm text-gray-medium">Order Number</Text>
-              <Text className="text-sm font-bold text-dark">
+          <View style={{ backgroundColor: c.bgSecondary, borderRadius: 12, padding: 20, marginTop: 24, width: "100%" }}>
+            <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 8 }}>
+              <Text style={{ fontSize: 14, color: c.textSecondary }}>Order Number</Text>
+              <Text style={{ fontSize: 14, fontWeight: "bold", color: c.text }}>
                 {order.order_number}
               </Text>
             </View>
-            <View className="flex-row justify-between mb-2">
-              <Text className="text-sm text-gray-medium">Status</Text>
-              <Text className="text-sm font-bold text-success capitalize">
+            <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 8 }}>
+              <Text style={{ fontSize: 14, color: c.textSecondary }}>Status</Text>
+              <Text style={{ fontSize: 14, fontWeight: "bold", color: "#22C55E", textTransform: "capitalize" }}>
                 {order.status}
               </Text>
             </View>
-            <View className="flex-row justify-between mb-2">
-              <Text className="text-sm text-gray-medium">Payment</Text>
-              <Text className="text-sm font-bold text-dark">
+            <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 8 }}>
+              <Text style={{ fontSize: 14, color: c.textSecondary }}>Payment</Text>
+              <Text style={{ fontSize: 14, fontWeight: "bold", color: c.text }}>
                 {order.payment_method === "COD" ? "Cash on Delivery" : "Online"}
               </Text>
             </View>
-            <View className="flex-row justify-between mb-2">
-              <Text className="text-sm text-gray-medium">Total</Text>
-              <Text className="text-sm font-bold text-primary">
+            <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 8 }}>
+              <Text style={{ fontSize: 14, color: c.textSecondary }}>Total</Text>
+              <Text style={{ fontSize: 14, fontWeight: "bold", color: c.primary }}>
                 {CURRENCY_SYMBOL}{order.total}
               </Text>
             </View>
-            <View className="flex-row justify-between">
-              <Text className="text-sm text-gray-medium">Est. Delivery</Text>
-              <Text className="text-sm font-bold text-dark">
+            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+              <Text style={{ fontSize: 14, color: c.textSecondary }}>Est. Delivery</Text>
+              <Text style={{ fontSize: 14, fontWeight: "bold", color: c.text }}>
                 {order.estimated_delivery_time} mins
               </Text>
             </View>
@@ -65,25 +67,25 @@ export default function OrderSuccessScreen() {
         ) : null}
 
         {/* Actions */}
-        <View className="w-full mt-8">
+        <View style={{ width: "100%", marginTop: 32 }}>
           <TouchableOpacity
-            className="bg-primary py-4 rounded-xl items-center mb-3"
+            style={{ backgroundColor: c.primary, paddingVertical: 16, borderRadius: 12, alignItems: "center", marginBottom: 12 }}
             onPress={() => router.replace("/(tabs)/home")}
             activeOpacity={0.8}
           >
-            <Text className="text-white font-bold text-base">Back to Home</Text>
+            <Text style={{ color: "#FFFFFF", fontWeight: "bold", fontSize: 16 }}>Back to Home</Text>
           </TouchableOpacity>
 
           {order ? (
             <TouchableOpacity
-              className="bg-gray-light py-4 rounded-xl items-center"
+              style={{ backgroundColor: c.bgSecondary, paddingVertical: 16, borderRadius: 12, alignItems: "center" }}
               onPress={() => {
                 router.replace("/(tabs)/home");
                 setTimeout(() => router.push(`/(app)/order/${order.id}`), 100);
               }}
               activeOpacity={0.8}
             >
-              <Text className="text-dark font-bold text-base">Track Order</Text>
+              <Text style={{ color: c.text, fontWeight: "bold", fontSize: 16 }}>Track Order</Text>
             </TouchableOpacity>
           ) : null}
         </View>

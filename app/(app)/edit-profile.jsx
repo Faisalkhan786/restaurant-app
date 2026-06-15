@@ -13,10 +13,12 @@ import { useRouter } from "expo-router";
 import { useSelector, useDispatch } from "react-redux";
 import { useUpdateProfileMutation } from "../../src/store/api/customerApi";
 import { updateUser } from "../../src/store/slices/authSlice";
+import { useTheme } from "../../src/hooks/useTheme";
 
 export default function EditProfileScreen() {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { c } = useTheme();
   const { user } = useSelector((state) => state.auth);
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
 
@@ -54,51 +56,60 @@ export default function EditProfileScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <SafeAreaView style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView keyboardShouldPersistTaps="handled">
         {/* Header */}
-        <View className="flex-row items-center px-5 pt-4 pb-3">
+        <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 16, paddingBottom: 12 }}>
           <TouchableOpacity
-            className="mr-3 w-10 h-10 rounded-full bg-gray-light items-center justify-center"
+            style={{ marginRight: 12, width: 40, height: 40, borderRadius: 20, backgroundColor: c.bgSecondary, alignItems: "center", justifyContent: "center" }}
             onPress={() => router.back()}
           >
-            <Text className="text-lg">←</Text>
+            <Text style={{ fontSize: 18, color: c.text }}>←</Text>
           </TouchableOpacity>
-          <Text className="text-2xl font-bold text-dark">Edit Profile</Text>
+          <Text style={{ fontSize: 24, fontWeight: "bold", color: c.text }}>Edit Profile</Text>
         </View>
 
         {/* Avatar */}
-        <View className="items-center mt-6 mb-8">
-          <View className="w-24 h-24 rounded-full bg-primary items-center justify-center">
-            <Text className="text-white text-4xl font-bold">
+        <View style={{ alignItems: "center", marginTop: 24, marginBottom: 32 }}>
+          <View style={{ width: 96, height: 96, borderRadius: 48, backgroundColor: c.primary, alignItems: "center", justifyContent: "center" }}>
+            <Text style={{ color: "#FFFFFF", fontSize: 36, fontWeight: "bold" }}>
               {name?.[0]?.toUpperCase() || "U"}
             </Text>
           </View>
         </View>
 
-        <View className="px-5">
+        <View style={{ paddingHorizontal: 20 }}>
           {/* Email (read-only) */}
-          <View className="mb-4">
-            <Text className="text-sm font-semibold text-dark mb-2">Email</Text>
-            <View className="border border-gray-200 rounded-xl px-4 py-3.5 bg-gray-200">
-              <Text className="text-base text-gray-medium">
+          <View style={{ marginBottom: 16 }}>
+            <Text style={{ fontSize: 14, fontWeight: "600", color: c.text, marginBottom: 8 }}>Email</Text>
+            <View style={{ borderWidth: 1, borderColor: c.border, borderRadius: 12, paddingHorizontal: 16, paddingVertical: 14, backgroundColor: c.bgSecondary }}>
+              <Text style={{ fontSize: 16, color: c.textSecondary }}>
                 {user?.email || ""}
               </Text>
             </View>
-            <Text className="text-xs text-gray-medium mt-1">
+            <Text style={{ fontSize: 12, color: c.textSecondary, marginTop: 4 }}>
               Email cannot be changed
             </Text>
           </View>
 
           {/* Name */}
-          <View className="mb-4">
-            <Text className="text-sm font-semibold text-dark mb-2">
-              Full Name <Text className="text-danger">*</Text>
+          <View style={{ marginBottom: 16 }}>
+            <Text style={{ fontSize: 14, fontWeight: "600", color: c.text, marginBottom: 8 }}>
+              Full Name <Text style={{ color: "#EF4444" }}>*</Text>
             </Text>
             <TextInput
-              className="border border-gray-300 rounded-xl px-4 py-3.5 text-base text-dark bg-gray-light"
+              style={{
+                borderWidth: 1,
+                borderColor: c.borderInput,
+                borderRadius: 12,
+                paddingHorizontal: 16,
+                paddingVertical: 14,
+                fontSize: 16,
+                color: c.text,
+                backgroundColor: c.inputBg,
+              }}
               placeholder="Enter your name"
-              placeholderTextColor="#9E9E9E"
+              placeholderTextColor={c.textSecondary}
               value={name}
               onChangeText={setName}
               autoCapitalize="words"
@@ -106,14 +117,23 @@ export default function EditProfileScreen() {
           </View>
 
           {/* Phone */}
-          <View className="mb-4">
-            <Text className="text-sm font-semibold text-dark mb-2">
+          <View style={{ marginBottom: 16 }}>
+            <Text style={{ fontSize: 14, fontWeight: "600", color: c.text, marginBottom: 8 }}>
               Phone Number
             </Text>
             <TextInput
-              className="border border-gray-300 rounded-xl px-4 py-3.5 text-base text-dark bg-gray-light"
+              style={{
+                borderWidth: 1,
+                borderColor: c.borderInput,
+                borderRadius: 12,
+                paddingHorizontal: 16,
+                paddingVertical: 14,
+                fontSize: 16,
+                color: c.text,
+                backgroundColor: c.inputBg,
+              }}
               placeholder="Enter phone number"
-              placeholderTextColor="#9E9E9E"
+              placeholderTextColor={c.textSecondary}
               value={phone}
               onChangeText={setPhone}
               keyboardType="phone-pad"
@@ -122,10 +142,10 @@ export default function EditProfileScreen() {
           </View>
 
           {/* Role (read-only) */}
-          <View className="mb-8">
-            <Text className="text-sm font-semibold text-dark mb-2">Role</Text>
-            <View className="border border-gray-200 rounded-xl px-4 py-3.5 bg-gray-200">
-              <Text className="text-base text-gray-medium capitalize">
+          <View style={{ marginBottom: 32 }}>
+            <Text style={{ fontSize: 14, fontWeight: "600", color: c.text, marginBottom: 8 }}>Role</Text>
+            <View style={{ borderWidth: 1, borderColor: c.border, borderRadius: 12, paddingHorizontal: 16, paddingVertical: 14, backgroundColor: c.bgSecondary }}>
+              <Text style={{ fontSize: 16, color: c.textSecondary, textTransform: "capitalize" }}>
                 {user?.role || "customer"}
               </Text>
             </View>
@@ -133,9 +153,13 @@ export default function EditProfileScreen() {
 
           {/* Save Button */}
           <TouchableOpacity
-            className={`py-4 rounded-xl items-center mb-6 ${
-              isLoading ? "bg-orange-300" : "bg-primary"
-            }`}
+            style={{
+              paddingVertical: 16,
+              borderRadius: 12,
+              alignItems: "center",
+              marginBottom: 24,
+              backgroundColor: isLoading ? "#FDBA74" : c.primary,
+            }}
             onPress={handleSave}
             disabled={isLoading}
             activeOpacity={0.8}
@@ -143,7 +167,7 @@ export default function EditProfileScreen() {
             {isLoading ? (
               <ActivityIndicator color="#fff" />
             ) : (
-              <Text className="text-white font-bold text-lg">Save Changes</Text>
+              <Text style={{ color: "#FFFFFF", fontWeight: "bold", fontSize: 18 }}>Save Changes</Text>
             )}
           </TouchableOpacity>
         </View>

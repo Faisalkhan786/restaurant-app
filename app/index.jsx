@@ -2,9 +2,12 @@ import { Redirect } from "expo-router";
 import { useSelector } from "react-redux";
 
 export default function Index() {
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
 
   if (isAuthenticated) {
+    if (user?.role === "admin") {
+      return <Redirect href="/(admin)/dashboard" />;
+    }
     return <Redirect href="/(tabs)/home" />;
   }
 

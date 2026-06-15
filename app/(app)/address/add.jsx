@@ -12,11 +12,13 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { useAddAddressMutation } from "../../../src/store/api/customerApi";
+import { useTheme } from "../../../src/hooks/useTheme";
 
 const LABELS = ["Home", "Office", "Other"];
 
 export default function AddAddressScreen() {
   const router = useRouter();
+  const { c } = useTheme();
   const [addAddress, { isLoading }] = useAddAddressMutation();
 
   const [label, setLabel] = useState("Home");
@@ -48,35 +50,41 @@ export default function AddAddressScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <SafeAreaView style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView keyboardShouldPersistTaps="handled">
         {/* Header */}
-        <View className="flex-row items-center px-5 pt-4 pb-3">
+        <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 16, paddingBottom: 12 }}>
           <TouchableOpacity
-            className="mr-3 w-10 h-10 rounded-full bg-gray-light items-center justify-center"
+            style={{ marginRight: 12, width: 40, height: 40, borderRadius: 20, backgroundColor: c.bgSecondary, alignItems: "center", justifyContent: "center" }}
             onPress={() => router.back()}
           >
-            <Text className="text-lg">←</Text>
+            <Text style={{ fontSize: 18, color: c.text }}>←</Text>
           </TouchableOpacity>
-          <Text className="text-2xl font-bold text-dark">Add Address</Text>
+          <Text style={{ fontSize: 24, fontWeight: "bold", color: c.text }}>Add Address</Text>
         </View>
 
-        <View className="px-5 mt-4">
+        <View style={{ paddingHorizontal: 20, marginTop: 16 }}>
           {/* Label Selection */}
-          <Text className="text-sm font-semibold text-dark mb-2">Label</Text>
-          <View className="flex-row mb-5">
+          <Text style={{ fontSize: 14, fontWeight: "600", color: c.text, marginBottom: 8 }}>Label</Text>
+          <View style={{ flexDirection: "row", marginBottom: 20 }}>
             {LABELS.map((l) => (
               <TouchableOpacity
                 key={l}
-                className={`px-5 py-2.5 rounded-full mr-2 ${
-                  label === l ? "bg-primary" : "bg-gray-light"
-                }`}
+                style={{
+                  paddingHorizontal: 20,
+                  paddingVertical: 10,
+                  borderRadius: 20,
+                  marginRight: 8,
+                  backgroundColor: label === l ? c.primary : c.bgSecondary,
+                }}
                 onPress={() => setLabel(l)}
               >
                 <Text
-                  className={`text-sm font-semibold ${
-                    label === l ? "text-white" : "text-gray-dark"
-                  }`}
+                  style={{
+                    fontSize: 14,
+                    fontWeight: "600",
+                    color: label === l ? "#FFFFFF" : c.textMuted,
+                  }}
                 >
                   {l}
                 </Text>
@@ -85,13 +93,23 @@ export default function AddAddressScreen() {
           </View>
 
           {/* Full Address */}
-          <Text className="text-sm font-semibold text-dark mb-2">
-            Full Address <Text className="text-danger">*</Text>
+          <Text style={{ fontSize: 14, fontWeight: "600", color: c.text, marginBottom: 8 }}>
+            Full Address <Text style={{ color: "#EF4444" }}>*</Text>
           </Text>
           <TextInput
-            className="border border-gray-300 rounded-xl px-4 py-3.5 text-base text-dark bg-gray-light mb-4"
+            style={{
+              borderWidth: 1,
+              borderColor: c.borderInput,
+              borderRadius: 12,
+              paddingHorizontal: 16,
+              paddingVertical: 14,
+              fontSize: 16,
+              color: c.text,
+              backgroundColor: c.inputBg,
+              marginBottom: 16,
+            }}
             placeholder="House no, Street, Landmark"
-            placeholderTextColor="#9E9E9E"
+            placeholderTextColor={c.textSecondary}
             value={fullAddress}
             onChangeText={setFullAddress}
             multiline
@@ -100,28 +118,48 @@ export default function AddAddressScreen() {
           />
 
           {/* Area */}
-          <Text className="text-sm font-semibold text-dark mb-2">Area / Locality</Text>
+          <Text style={{ fontSize: 14, fontWeight: "600", color: c.text, marginBottom: 8 }}>Area / Locality</Text>
           <TextInput
-            className="border border-gray-300 rounded-xl px-4 py-3.5 text-base text-dark bg-gray-light mb-4"
+            style={{
+              borderWidth: 1,
+              borderColor: c.borderInput,
+              borderRadius: 12,
+              paddingHorizontal: 16,
+              paddingVertical: 14,
+              fontSize: 16,
+              color: c.text,
+              backgroundColor: c.inputBg,
+              marginBottom: 16,
+            }}
             placeholder="Neighbourhood / Area"
-            placeholderTextColor="#9E9E9E"
+            placeholderTextColor={c.textSecondary}
             value={area}
             onChangeText={setArea}
           />
 
           {/* City */}
-          <Text className="text-sm font-semibold text-dark mb-2">City</Text>
+          <Text style={{ fontSize: 14, fontWeight: "600", color: c.text, marginBottom: 8 }}>City</Text>
           <TextInput
-            className="border border-gray-300 rounded-xl px-4 py-3.5 text-base text-dark bg-gray-light mb-4"
+            style={{
+              borderWidth: 1,
+              borderColor: c.borderInput,
+              borderRadius: 12,
+              paddingHorizontal: 16,
+              paddingVertical: 14,
+              fontSize: 16,
+              color: c.text,
+              backgroundColor: c.inputBg,
+              marginBottom: 16,
+            }}
             placeholder="City name"
-            placeholderTextColor="#9E9E9E"
+            placeholderTextColor={c.textSecondary}
             value={city}
             onChangeText={setCity}
           />
 
           {/* Default Toggle */}
-          <View className="flex-row items-center justify-between py-3 mb-6">
-            <Text className="text-base text-dark">Set as default address</Text>
+          <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingVertical: 12, marginBottom: 24 }}>
+            <Text style={{ fontSize: 16, color: c.text }}>Set as default address</Text>
             <Switch
               value={isDefault}
               onValueChange={setIsDefault}
@@ -132,9 +170,13 @@ export default function AddAddressScreen() {
 
           {/* Save Button */}
           <TouchableOpacity
-            className={`py-4 rounded-xl items-center mb-6 ${
-              isLoading ? "bg-orange-300" : "bg-primary"
-            }`}
+            style={{
+              paddingVertical: 16,
+              borderRadius: 12,
+              alignItems: "center",
+              marginBottom: 24,
+              backgroundColor: isLoading ? "#FDBA74" : c.primary,
+            }}
             onPress={handleSave}
             disabled={isLoading}
             activeOpacity={0.8}
@@ -142,7 +184,7 @@ export default function AddAddressScreen() {
             {isLoading ? (
               <ActivityIndicator color="#fff" />
             ) : (
-              <Text className="text-white font-bold text-lg">Save Address</Text>
+              <Text style={{ color: "#FFFFFF", fontWeight: "bold", fontSize: 18 }}>Save Address</Text>
             )}
           </TouchableOpacity>
         </View>

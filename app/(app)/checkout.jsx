@@ -16,10 +16,12 @@ import { usePlaceOrderMutation } from "../../src/store/api/orderApi";
 import { clearCart } from "../../src/store/slices/cartSlice";
 import { CURRENCY_SYMBOL } from "../../src/constants/config";
 import LoadingScreen from "../../src/components/common/LoadingScreen";
+import { useTheme } from "../../src/hooks/useTheme";
 
 export default function CheckoutScreen() {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { c } = useTheme();
   const { items, totalAmount } = useSelector((state) => state.cart);
   const { data: addressData, isLoading: addressLoading } = useGetAddressesQuery();
   const [placeOrder, { isLoading: isPlacing }] = usePlaceOrderMutation();
@@ -74,68 +76,76 @@ export default function CheckoutScreen() {
   if (addressLoading) return <LoadingScreen message="Loading addresses..." />;
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <SafeAreaView style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Header */}
-        <View className="flex-row items-center px-5 pt-4 pb-3">
+        <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 16, paddingBottom: 12 }}>
           <TouchableOpacity
-            className="mr-3 w-10 h-10 rounded-full bg-gray-light items-center justify-center"
+            style={{ marginRight: 12, width: 40, height: 40, borderRadius: 20, backgroundColor: c.bgSecondary, alignItems: "center", justifyContent: "center" }}
             onPress={() => router.back()}
           >
-            <Text className="text-lg">←</Text>
+            <Text style={{ fontSize: 18, color: c.text }}>←</Text>
           </TouchableOpacity>
-          <Text className="text-2xl font-bold text-dark">Checkout</Text>
+          <Text style={{ fontSize: 24, fontWeight: "bold", color: c.text }}>Checkout</Text>
         </View>
 
         {/* Delivery Address */}
-        <View className="px-5 mt-4">
-          <View className="flex-row items-center justify-between mb-3">
-            <Text className="text-lg font-bold text-dark">📍 Delivery Address</Text>
+        <View style={{ paddingHorizontal: 20, marginTop: 16 }}>
+          <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+            <Text style={{ fontSize: 18, fontWeight: "bold", color: c.text }}>📍 Delivery Address</Text>
             <TouchableOpacity onPress={() => router.push("/(app)/address/manage")}>
-              <Text className="text-primary font-semibold text-sm">Manage</Text>
+              <Text style={{ color: c.primary, fontWeight: "600", fontSize: 14 }}>Manage</Text>
             </TouchableOpacity>
           </View>
 
           {addresses.length === 0 ? (
             <TouchableOpacity
-              className="border-2 border-dashed border-gray-300 rounded-xl p-5 items-center"
+              style={{ borderWidth: 2, borderStyle: "dashed", borderColor: c.borderInput, borderRadius: 12, padding: 20, alignItems: "center" }}
               onPress={() => router.push("/(app)/address/add")}
             >
-              <Text className="text-gray-medium text-base">+ Add Delivery Address</Text>
+              <Text style={{ color: c.textSecondary, fontSize: 16 }}>+ Add Delivery Address</Text>
             </TouchableOpacity>
           ) : (
             addresses.map((address) => (
               <TouchableOpacity
                 key={address.id}
-                className={`p-4 rounded-xl mb-2 border ${
-                  activeAddressId === address.id
-                    ? "border-primary bg-orange-50"
-                    : "border-gray-200"
-                }`}
+                style={{
+                  padding: 16,
+                  borderRadius: 12,
+                  marginBottom: 8,
+                  borderWidth: 1,
+                  borderColor: activeAddressId === address.id ? c.primary : c.border,
+                  backgroundColor: activeAddressId === address.id ? c.primaryLight : "transparent",
+                }}
                 onPress={() => setSelectedAddressId(address.id)}
               >
-                <View className="flex-row items-center">
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <View
-                    className={`w-5 h-5 rounded-full border-2 items-center justify-center mr-3 ${
-                      activeAddressId === address.id
-                        ? "border-primary"
-                        : "border-gray-300"
-                    }`}
+                    style={{
+                      width: 20,
+                      height: 20,
+                      borderRadius: 10,
+                      borderWidth: 2,
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginRight: 12,
+                      borderColor: activeAddressId === address.id ? c.primary : c.borderInput,
+                    }}
                   >
                     {activeAddressId === address.id ? (
-                      <View className="w-3 h-3 rounded-full bg-primary" />
+                      <View style={{ width: 12, height: 12, borderRadius: 6, backgroundColor: c.primary }} />
                     ) : null}
                   </View>
-                  <View className="flex-1">
-                    <Text className="text-sm font-bold text-dark">
+                  <View style={{ flex: 1 }}>
+                    <Text style={{ fontSize: 14, fontWeight: "bold", color: c.text }}>
                       {address.label}
                       {address.is_default ? " (Default)" : ""}
                     </Text>
-                    <Text className="text-sm text-gray-medium mt-1" numberOfLines={2}>
+                    <Text style={{ fontSize: 14, color: c.textSecondary, marginTop: 4 }} numberOfLines={2}>
                       {address.full_address}
                     </Text>
                     {address.area || address.city ? (
-                      <Text className="text-xs text-gray-medium mt-0.5">
+                      <Text style={{ fontSize: 12, color: c.textSecondary, marginTop: 2 }}>
                         {[address.area, address.city].filter(Boolean).join(", ")}
                       </Text>
                     ) : null}
@@ -147,66 +157,98 @@ export default function CheckoutScreen() {
         </View>
 
         {/* Payment Method */}
-        <View className="px-5 mt-6">
-          <Text className="text-lg font-bold text-dark mb-3">💳 Payment Method</Text>
+        <View style={{ paddingHorizontal: 20, marginTop: 24 }}>
+          <Text style={{ fontSize: 18, fontWeight: "bold", color: c.text, marginBottom: 12 }}>💳 Payment Method</Text>
           {[
             { key: "COD", label: "Cash on Delivery", icon: "💵" },
             { key: "online", label: "Online Payment", icon: "📱" },
           ].map((method) => (
             <TouchableOpacity
               key={method.key}
-              className={`flex-row items-center p-4 rounded-xl mb-2 border ${
-                paymentMethod === method.key
-                  ? "border-primary bg-orange-50"
-                  : "border-gray-200"
-              }`}
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                padding: 16,
+                borderRadius: 12,
+                marginBottom: 8,
+                borderWidth: 1,
+                borderColor: paymentMethod === method.key ? c.primary : c.border,
+                backgroundColor: paymentMethod === method.key ? c.primaryLight : "transparent",
+              }}
               onPress={() => setPaymentMethod(method.key)}
             >
               <View
-                className={`w-5 h-5 rounded-full border-2 items-center justify-center mr-3 ${
-                  paymentMethod === method.key ? "border-primary" : "border-gray-300"
-                }`}
+                style={{
+                  width: 20,
+                  height: 20,
+                  borderRadius: 10,
+                  borderWidth: 2,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginRight: 12,
+                  borderColor: paymentMethod === method.key ? c.primary : c.borderInput,
+                }}
               >
                 {paymentMethod === method.key ? (
-                  <View className="w-3 h-3 rounded-full bg-primary" />
+                  <View style={{ width: 12, height: 12, borderRadius: 6, backgroundColor: c.primary }} />
                 ) : null}
               </View>
-              <Text className="text-lg mr-2">{method.icon}</Text>
-              <Text className="text-base text-dark">{method.label}</Text>
+              <Text style={{ fontSize: 18, marginRight: 8 }}>{method.icon}</Text>
+              <Text style={{ fontSize: 16, color: c.text }}>{method.label}</Text>
             </TouchableOpacity>
           ))}
         </View>
 
         {/* Coupon Code */}
-        <View className="px-5 mt-6">
-          <Text className="text-lg font-bold text-dark mb-3">🏷️ Coupon Code</Text>
-          <View className="flex-row">
+        <View style={{ paddingHorizontal: 20, marginTop: 24 }}>
+          <Text style={{ fontSize: 18, fontWeight: "bold", color: c.text, marginBottom: 12 }}>🏷️ Coupon Code</Text>
+          <View style={{ flexDirection: "row" }}>
             <TextInput
-              className="flex-1 border border-gray-200 rounded-xl px-4 py-3 text-base text-dark bg-gray-light mr-2"
+              style={{
+                flex: 1,
+                borderWidth: 1,
+                borderColor: c.border,
+                borderRadius: 12,
+                paddingHorizontal: 16,
+                paddingVertical: 12,
+                fontSize: 16,
+                color: c.text,
+                backgroundColor: c.inputBg,
+                marginRight: 8,
+              }}
               placeholder="Enter coupon code"
-              placeholderTextColor="#9E9E9E"
+              placeholderTextColor={c.textSecondary}
               value={couponCode}
               onChangeText={setCouponCode}
               autoCapitalize="characters"
             />
             {couponCode ? (
               <TouchableOpacity
-                className="px-4 justify-center"
+                style={{ paddingHorizontal: 16, justifyContent: "center" }}
                 onPress={() => setCouponCode("")}
               >
-                <Text className="text-danger font-semibold">Clear</Text>
+                <Text style={{ color: "#EF4444", fontWeight: "600" }}>Clear</Text>
               </TouchableOpacity>
             ) : null}
           </View>
         </View>
 
         {/* Delivery Notes */}
-        <View className="px-5 mt-6">
-          <Text className="text-lg font-bold text-dark mb-3">📝 Delivery Notes</Text>
+        <View style={{ paddingHorizontal: 20, marginTop: 24 }}>
+          <Text style={{ fontSize: 18, fontWeight: "bold", color: c.text, marginBottom: 12 }}>📝 Delivery Notes</Text>
           <TextInput
-            className="border border-gray-200 rounded-xl px-4 py-3 text-base text-dark bg-gray-light"
+            style={{
+              borderWidth: 1,
+              borderColor: c.border,
+              borderRadius: 12,
+              paddingHorizontal: 16,
+              paddingVertical: 12,
+              fontSize: 16,
+              color: c.text,
+              backgroundColor: c.inputBg,
+            }}
             placeholder="Any special instructions? (optional)"
-            placeholderTextColor="#9E9E9E"
+            placeholderTextColor={c.textSecondary}
             value={deliveryNotes}
             onChangeText={setDeliveryNotes}
             multiline
@@ -217,34 +259,34 @@ export default function CheckoutScreen() {
         </View>
 
         {/* Order Summary */}
-        <View className="px-5 mt-6 mb-4">
-          <Text className="text-lg font-bold text-dark mb-3">🧾 Order Summary</Text>
-          <View className="bg-gray-light rounded-xl p-4">
+        <View style={{ paddingHorizontal: 20, marginTop: 24, marginBottom: 16 }}>
+          <Text style={{ fontSize: 18, fontWeight: "bold", color: c.text, marginBottom: 12 }}>🧾 Order Summary</Text>
+          <View style={{ backgroundColor: c.bgSecondary, borderRadius: 12, padding: 16 }}>
             {items.map((item) => (
-              <View key={item.id} className="flex-row justify-between mb-2">
-                <Text className="text-sm text-dark flex-1" numberOfLines={1}>
+              <View key={item.id} style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 8 }}>
+                <Text style={{ fontSize: 14, color: c.text, flex: 1 }} numberOfLines={1}>
                   {item.name} × {item.quantity}
                 </Text>
-                <Text className="text-sm font-semibold text-dark ml-2">
+                <Text style={{ fontSize: 14, fontWeight: "600", color: c.text, marginLeft: 8 }}>
                   {CURRENCY_SYMBOL}{(item.price * item.quantity).toFixed(2)}
                 </Text>
               </View>
             ))}
-            <View className="border-t border-gray-200 mt-2 pt-2">
-              <View className="flex-row justify-between">
-                <Text className="text-sm text-gray-medium">Subtotal</Text>
-                <Text className="text-sm font-semibold text-dark">
+            <View style={{ borderTopWidth: 1, borderTopColor: c.border, marginTop: 8, paddingTop: 8 }}>
+              <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                <Text style={{ fontSize: 14, color: c.textSecondary }}>Subtotal</Text>
+                <Text style={{ fontSize: 14, fontWeight: "600", color: c.text }}>
                   {CURRENCY_SYMBOL}{totalAmount.toFixed(2)}
                 </Text>
               </View>
-              <View className="flex-row justify-between mt-1">
-                <Text className="text-sm text-gray-medium">Delivery & Tax</Text>
-                <Text className="text-sm text-gray-medium">Added by restaurant</Text>
+              <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 4 }}>
+                <Text style={{ fontSize: 14, color: c.textSecondary }}>Delivery & Tax</Text>
+                <Text style={{ fontSize: 14, color: c.textSecondary }}>Added by restaurant</Text>
               </View>
               {couponCode.trim() ? (
-                <View className="flex-row justify-between mt-1">
-                  <Text className="text-sm text-success">Coupon: {couponCode}</Text>
-                  <Text className="text-sm text-success">Applied at checkout</Text>
+                <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 4 }}>
+                  <Text style={{ fontSize: 14, color: "#22C55E" }}>Coupon: {couponCode}</Text>
+                  <Text style={{ fontSize: 14, color: "#22C55E" }}>Applied at checkout</Text>
                 </View>
               ) : null}
             </View>
@@ -252,21 +294,24 @@ export default function CheckoutScreen() {
         </View>
 
         {/* Spacer */}
-        <View className="h-28" />
+        <View style={{ height: 112 }} />
       </ScrollView>
 
       {/* Bottom - Place Order */}
-      <View className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-5 py-4">
-        <View className="flex-row justify-between mb-3">
-          <Text className="text-lg font-bold text-dark">Estimated Total</Text>
-          <Text className="text-lg font-bold text-primary">
+      <View style={{ position: "absolute", bottom: 0, left: 0, right: 0, backgroundColor: c.bg, borderTopWidth: 1, borderTopColor: c.border, paddingHorizontal: 20, paddingVertical: 16 }}>
+        <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 12 }}>
+          <Text style={{ fontSize: 18, fontWeight: "bold", color: c.text }}>Estimated Total</Text>
+          <Text style={{ fontSize: 18, fontWeight: "bold", color: c.primary }}>
             {CURRENCY_SYMBOL}{totalAmount.toFixed(2)}+
           </Text>
         </View>
         <TouchableOpacity
-          className={`py-4 rounded-xl items-center ${
-            isPlacing ? "bg-orange-300" : "bg-primary"
-          }`}
+          style={{
+            paddingVertical: 16,
+            borderRadius: 12,
+            alignItems: "center",
+            backgroundColor: isPlacing ? "#FDBA74" : c.primary,
+          }}
           onPress={handlePlaceOrder}
           disabled={isPlacing}
           activeOpacity={0.8}
@@ -274,7 +319,7 @@ export default function CheckoutScreen() {
           {isPlacing ? (
             <ActivityIndicator color="#fff" />
           ) : (
-            <Text className="text-white font-bold text-lg">Place Order</Text>
+            <Text style={{ color: "#FFFFFF", fontWeight: "bold", fontSize: 18 }}>Place Order</Text>
           )}
         </TouchableOpacity>
       </View>

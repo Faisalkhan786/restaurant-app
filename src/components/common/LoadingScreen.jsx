@@ -1,10 +1,12 @@
 import { View, ActivityIndicator, Text } from "react-native";
+import { useTheme } from "../../hooks/useTheme";
 
 export default function LoadingScreen({ message = "Loading..." }) {
+  const { c } = useTheme();
   return (
-    <View className="flex-1 items-center justify-center bg-white">
-      <ActivityIndicator size="large" color="#FF6B35" />
-      <Text className="text-gray-medium mt-3 text-sm">{message}</Text>
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: c.bg }}>
+      <ActivityIndicator size="large" color={c.primary} />
+      <Text style={{ color: c.textSecondary, marginTop: 12, fontSize: 13 }}>{message}</Text>
     </View>
   );
 }

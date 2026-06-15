@@ -6,6 +6,7 @@ import { useGetMyOrdersQuery } from "../../src/store/api/orderApi";
 import OrderCard from "../../src/components/common/OrderCard";
 import LoadingScreen from "../../src/components/common/LoadingScreen";
 import ErrorScreen from "../../src/components/common/ErrorScreen";
+import { useTheme } from "../../src/hooks/useTheme";
 
 const FILTERS = [
   { key: null, label: "All" },
@@ -19,6 +20,7 @@ const FILTERS = [
 
 export default function OrdersScreen() {
   const router = useRouter();
+  const { c } = useTheme();
   const [statusFilter, setStatusFilter] = useState(null);
   const [page, setPage] = useState(1);
 
@@ -51,20 +53,20 @@ export default function OrdersScreen() {
   if (error) return <ErrorScreen message="Failed to load orders" onRetry={refetch} />;
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <SafeAreaView style={{ flex: 1, backgroundColor: c.bg }}>
       {/* Header */}
-      <View className="flex-row items-center px-5 pt-4 pb-3">
+      <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 16, paddingBottom: 12 }}>
         <TouchableOpacity
-          className="mr-3 w-10 h-10 rounded-full bg-gray-light items-center justify-center"
+          style={{ marginRight: 12, width: 40, height: 40, borderRadius: 20, backgroundColor: c.bgSecondary, alignItems: "center", justifyContent: "center" }}
           onPress={() => router.back()}
         >
-          <Text className="text-lg">←</Text>
+          <Text style={{ fontSize: 18, color: c.text }}>←</Text>
         </TouchableOpacity>
-        <Text className="text-2xl font-bold text-dark">My Orders</Text>
+        <Text style={{ fontSize: 24, fontWeight: "bold", color: c.text }}>My Orders</Text>
       </View>
 
       {/* Status Filters */}
-      <View className="mb-2">
+      <View style={{ marginBottom: 8 }}>
         <FlatList
           data={FILTERS}
           horizontal
@@ -73,15 +75,21 @@ export default function OrdersScreen() {
           keyExtractor={(item) => item.label}
           renderItem={({ item }) => (
             <TouchableOpacity
-              className={`px-4 py-2 mr-2 rounded-full ${
-                statusFilter === item.key ? "bg-primary" : "bg-gray-light"
-              }`}
+              style={{
+                paddingHorizontal: 16,
+                paddingVertical: 8,
+                marginRight: 8,
+                borderRadius: 20,
+                backgroundColor: statusFilter === item.key ? c.primary : c.bgSecondary,
+              }}
               onPress={() => handleFilterChange(item.key)}
             >
               <Text
-                className={`text-sm font-semibold ${
-                  statusFilter === item.key ? "text-white" : "text-gray-dark"
-                }`}
+                style={{
+                  fontSize: 14,
+                  fontWeight: "600",
+                  color: statusFilter === item.key ? "#FFFFFF" : c.textMuted,
+                }}
               >
                 {item.label}
               </Text>
@@ -103,24 +111,24 @@ export default function OrdersScreen() {
         onEndReachedThreshold={0.5}
         ListFooterComponent={
           isFetching && !isLoading ? (
-            <ActivityIndicator color="#FF6B35" style={{ padding: 16 }} />
+            <ActivityIndicator color={c.primary} style={{ padding: 16 }} />
           ) : null
         }
         ListEmptyComponent={
-          <View className="items-center py-16">
-            <Text className="text-5xl mb-3">📦</Text>
-            <Text className="text-lg font-bold text-dark">No Orders Yet</Text>
-            <Text className="text-gray-medium mt-1 text-center">
+          <View style={{ alignItems: "center", paddingVertical: 64 }}>
+            <Text style={{ fontSize: 48, marginBottom: 12 }}>📦</Text>
+            <Text style={{ fontSize: 18, fontWeight: "bold", color: c.text }}>No Orders Yet</Text>
+            <Text style={{ color: c.textSecondary, marginTop: 4, textAlign: "center" }}>
               {statusFilter
                 ? "No orders with this status"
                 : "Your order history will appear here"}
             </Text>
             {!statusFilter ? (
               <TouchableOpacity
-                className="bg-primary px-8 py-3 rounded-xl mt-5"
+                style={{ backgroundColor: c.primary, paddingHorizontal: 32, paddingVertical: 12, borderRadius: 12, marginTop: 20 }}
                 onPress={() => router.push("/(tabs)/menu")}
               >
-                <Text className="text-white font-bold">Order Now</Text>
+                <Text style={{ color: "#FFFFFF", fontWeight: "bold" }}>Order Now</Text>
               </TouchableOpacity>
             ) : null}
           </View>

@@ -1,6 +1,7 @@
 import { Tabs } from "expo-router";
 import { Text, View } from "react-native";
 import { useSelector } from "react-redux";
+import { useTheme } from "../../src/hooks/useTheme";
 
 function CartIcon({ color }) {
   const { totalItems } = useSelector((state) => state.cart);
@@ -10,9 +11,13 @@ function CartIcon({ color }) {
       <Text style={{ color, fontSize: 20 }}>🛒</Text>
       {totalItems > 0 ? (
         <View
-          className="absolute -top-1 -right-2 bg-primary rounded-full min-w-[18px] h-[18px] items-center justify-center"
+          style={{
+            position: "absolute", top: -4, right: -8,
+            backgroundColor: "#FF6B35", borderRadius: 9,
+            minWidth: 18, height: 18, alignItems: "center", justifyContent: "center",
+          }}
         >
-          <Text className="text-white text-[10px] font-bold">
+          <Text style={{ color: "#fff", fontSize: 10, fontWeight: "bold" }}>
             {totalItems > 99 ? "99+" : totalItems}
           </Text>
         </View>
@@ -22,16 +27,18 @@ function CartIcon({ color }) {
 }
 
 export default function TabsLayout() {
+  const { c } = useTheme();
+
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: "#FF6B35",
-        tabBarInactiveTintColor: "#9E9E9E",
+        tabBarActiveTintColor: c.primary,
+        tabBarInactiveTintColor: c.textSecondary,
         tabBarStyle: {
-          backgroundColor: "#FFFFFF",
+          backgroundColor: c.tabBar,
           borderTopWidth: 1,
-          borderTopColor: "#F0F0F0",
+          borderTopColor: c.tabBarBorder,
           height: 60,
           paddingBottom: 8,
           paddingTop: 8,
