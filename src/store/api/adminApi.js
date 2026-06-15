@@ -60,10 +60,10 @@ export const adminApi = apiSlice.injectEndpoints({
     }),
 
     updateItem: builder.mutation({
-      query: ({ id, ...data }) => ({
+      query: ({ id, body }) => ({
         url: `/admin/items/${id}`,
         method: "PUT",
-        body: data,
+        body: body,
       }),
       invalidatesTags: ["Menu"],
     }),

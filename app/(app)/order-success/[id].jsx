@@ -3,7 +3,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useGetOrderDetailQuery } from "../../../src/store/api/orderApi";
 import { CURRENCY_SYMBOL } from "../../../src/constants/config";
-import LoadingScreen from "../../../src/components/common/LoadingScreen";
+import AnimatedLoading from "../../../src/components/common/AnimatedLoading";
+import SuccessAnimation from "../../../src/components/common/SuccessAnimation";
 import { useTheme } from "../../../src/hooks/useTheme";
 
 export default function OrderSuccessScreen() {
@@ -14,22 +15,12 @@ export default function OrderSuccessScreen() {
 
   const order = data?.data;
 
-  if (isLoading) return <LoadingScreen message="Loading order..." />;
+  if (isLoading) return <AnimatedLoading message="Loading order..." />;
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: c.bg }}>
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 24 }}>
-        {/* Success Icon */}
-        <View style={{ width: 96, height: 96, borderRadius: 48, backgroundColor: "#DCFCE7", alignItems: "center", justifyContent: "center", marginBottom: 24 }}>
-          <Text style={{ fontSize: 48 }}>✅</Text>
-        </View>
-
-        <Text style={{ fontSize: 24, fontWeight: "bold", color: c.text, textAlign: "center" }}>
-          Order Placed!
-        </Text>
-        <Text style={{ color: c.textSecondary, fontSize: 16, marginTop: 8, textAlign: "center" }}>
-          Your order has been placed successfully
-        </Text>
+        <SuccessAnimation title="Order Placed!" subtitle="Your order has been placed successfully" />
 
         {order ? (
           <View style={{ backgroundColor: c.bgSecondary, borderRadius: 12, padding: 20, marginTop: 24, width: "100%" }}>

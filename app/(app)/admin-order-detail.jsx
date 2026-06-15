@@ -12,6 +12,8 @@ import {
   useGetDeliveryBoysQuery,
 } from "../../src/store/api/adminApi";
 import { useTheme } from "../../src/hooks/useTheme";
+import { Ionicons } from "@expo/vector-icons";
+import { fonts } from "../../src/utils/fonts";
 import { CURRENCY_SYMBOL } from "../../src/constants/config";
 import OrderStatusTracker from "../../src/components/common/OrderStatusTracker";
 import LoadingScreen from "../../src/components/common/LoadingScreen";
@@ -28,7 +30,7 @@ const NEXT_STATUS = {
 export default function AdminOrderDetailScreen() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
-  const { c } = useTheme();
+  const { c, shadow } = useTheme();
 
   const { data: ordersData, isLoading, error, refetch } = useGetAdminOrdersQuery({});
   const [updateStatus, { isLoading: isUpdating }] = useUpdateOrderStatusMutation();
@@ -97,13 +99,13 @@ export default function AdminOrderDetailScreen() {
         {/* Header */}
         <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 16, paddingBottom: 12 }}>
           <TouchableOpacity
-            style={{ marginRight: 12, width: 40, height: 40, borderRadius: 20, backgroundColor: c.bgSecondary, alignItems: "center", justifyContent: "center" }}
+            style={{ width: 42, height: 42, borderRadius: 14, backgroundColor: c.card, alignItems: "center", justifyContent: "center", marginRight: 12, ...shadow.sm }}
             onPress={() => router.back()}
           >
-            <Text style={{ fontSize: 18, color: c.text }}>←</Text>
+            <Ionicons name="chevron-back" size={22} color={c.text} />
           </TouchableOpacity>
           <View style={{ flex: 1 }}>
-            <Text style={{ fontSize: 20, fontWeight: "bold", color: c.text }}>#{order.order_number}</Text>
+            <Text style={{ fontSize: 20, fontWeight: "bold", color: c.text, fontFamily: fonts.bold }}>#{order.order_number}</Text>
             <Text style={{ fontSize: 12, color: c.textSecondary }}>{formatDate(order.created_at || order.createdAt)}</Text>
           </View>
         </View>

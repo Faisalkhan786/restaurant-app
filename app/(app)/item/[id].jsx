@@ -17,12 +17,14 @@ import LoadingScreen from "../../../src/components/common/LoadingScreen";
 import ErrorScreen from "../../../src/components/common/ErrorScreen";
 import Toast from "react-native-toast-message";
 import { useTheme } from "../../../src/hooks/useTheme";
+import { Ionicons } from "@expo/vector-icons";
+import { fonts } from "../../../src/utils/fonts";
 
 export default function ItemDetailScreen() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
   const dispatch = useDispatch();
-  const { c } = useTheme();
+  const { c, shadow } = useTheme();
   const { data, isLoading, error, refetch } = useGetItemDetailQuery(id);
 
   const [selectedVariation, setSelectedVariation] = useState(null);
@@ -84,10 +86,10 @@ export default function ItemDetailScreen() {
             </View>
           )}
           <TouchableOpacity
-            style={{ position: "absolute", top: 16, left: 16, backgroundColor: c.bg, width: 40, height: 40, borderRadius: 20, alignItems: "center", justifyContent: "center", shadowColor: "#000", shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.15, shadowRadius: 4, elevation: 3 }}
+            style={{ position: "absolute", top: 16, left: 16, width: 42, height: 42, borderRadius: 14, backgroundColor: c.card, alignItems: "center", justifyContent: "center", ...shadow.sm }}
             onPress={() => router.back()}
           >
-            <Text style={{ fontSize: 18, color: c.text }}>←</Text>
+            <Ionicons name="chevron-back" size={22} color={c.text} />
           </TouchableOpacity>
         </View>
 

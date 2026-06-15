@@ -7,14 +7,8 @@ export default function AppLayout() {
   return (
     <Stack
       screenOptions={{
-        headerShown: true,
-        headerTintColor: c.primary,
-        headerStyle: {
-          backgroundColor: c.bg,
-        },
-        headerTitleStyle: {
-          color: c.text,
-        },
+        headerShown: false,
+        contentStyle: { backgroundColor: c.bg },
       }}
     />
   );

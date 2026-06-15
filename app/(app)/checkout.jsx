@@ -17,11 +17,13 @@ import { clearCart } from "../../src/store/slices/cartSlice";
 import { CURRENCY_SYMBOL } from "../../src/constants/config";
 import LoadingScreen from "../../src/components/common/LoadingScreen";
 import { useTheme } from "../../src/hooks/useTheme";
+import { Ionicons } from "@expo/vector-icons";
+import { fonts } from "../../src/utils/fonts";
 
 export default function CheckoutScreen() {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { c } = useTheme();
+  const { c, shadow } = useTheme();
   const { items, totalAmount } = useSelector((state) => state.cart);
   const { data: addressData, isLoading: addressLoading } = useGetAddressesQuery();
   const [placeOrder, { isLoading: isPlacing }] = usePlaceOrderMutation();
@@ -81,12 +83,12 @@ export default function CheckoutScreen() {
         {/* Header */}
         <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 16, paddingBottom: 12 }}>
           <TouchableOpacity
-            style={{ marginRight: 12, width: 40, height: 40, borderRadius: 20, backgroundColor: c.bgSecondary, alignItems: "center", justifyContent: "center" }}
+            style={{ width: 42, height: 42, borderRadius: 14, backgroundColor: c.card, alignItems: "center", justifyContent: "center", ...shadow.sm }}
             onPress={() => router.back()}
           >
-            <Text style={{ fontSize: 18, color: c.text }}>←</Text>
+            <Ionicons name="chevron-back" size={22} color={c.text} />
           </TouchableOpacity>
-          <Text style={{ fontSize: 24, fontWeight: "bold", color: c.text }}>Checkout</Text>
+          <Text style={{ fontSize: 24, fontWeight: "bold", color: c.text, fontFamily: fonts.bold, marginLeft: 12 }}>Checkout</Text>
         </View>
 
         {/* Delivery Address */}

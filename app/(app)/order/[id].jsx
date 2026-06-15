@@ -19,11 +19,13 @@ import OrderStatusTracker from "../../../src/components/common/OrderStatusTracke
 import LoadingScreen from "../../../src/components/common/LoadingScreen";
 import ErrorScreen from "../../../src/components/common/ErrorScreen";
 import { useTheme } from "../../../src/hooks/useTheme";
+import { Ionicons } from "@expo/vector-icons";
+import { fonts } from "../../../src/utils/fonts";
 
 export default function OrderDetailScreen() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
-  const { c } = useTheme();
+  const { c, shadow } = useTheme();
   const { data, isLoading, error, refetch } = useGetOrderDetailQuery(id, {
     pollingInterval: 15000,
   });
@@ -77,13 +79,13 @@ export default function OrderDetailScreen() {
         <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingTop: 16, paddingBottom: 12 }}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <TouchableOpacity
-              style={{ marginRight: 12, width: 40, height: 40, borderRadius: 20, backgroundColor: c.bgSecondary, alignItems: "center", justifyContent: "center" }}
+              style={{ width: 42, height: 42, borderRadius: 14, backgroundColor: c.card, alignItems: "center", justifyContent: "center", marginRight: 12, ...shadow.sm }}
               onPress={() => router.back()}
             >
-              <Text style={{ fontSize: 18, color: c.text }}>←</Text>
+              <Ionicons name="chevron-back" size={22} color={c.text} />
             </TouchableOpacity>
             <View>
-              <Text style={{ fontSize: 20, fontWeight: "bold", color: c.text }}>
+              <Text style={{ fontSize: 20, fontWeight: "bold", color: c.text, fontFamily: fonts.bold }}>
                 #{order.order_number}
               </Text>
               <Text style={{ fontSize: 12, color: c.textSecondary }}>

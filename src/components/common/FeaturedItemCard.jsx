@@ -1,28 +1,37 @@
 import { TouchableOpacity, Text, Image, View } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { CURRENCY_SYMBOL } from "../../constants/config";
 import { useTheme } from "../../hooks/useTheme";
+import { fonts } from "../../utils/fonts";
 
 export default function FeaturedItemCard({ item, onPress }) {
-  const { c } = useTheme();
+  const { c, shadow } = useTheme();
   return (
     <TouchableOpacity
-      style={{ backgroundColor: c.card, borderRadius: 16, marginRight: 16, borderWidth: 1, borderColor: c.border, overflow: "hidden", width: 200 }}
+      style={{ backgroundColor: c.card, borderRadius: 20, marginRight: 14, overflow: "hidden", width: 200, ...shadow.md }}
       onPress={onPress}
       activeOpacity={0.7}
     >
       {item.image_url ? (
-        <Image source={{ uri: item.image_url }} style={{ width: "100%", height: 128 }} resizeMode="cover" />
+        <Image source={{ uri: item.image_url }} style={{ width: "100%", height: 130 }} resizeMode="cover" />
       ) : (
-        <View style={{ width: "100%", height: 128, backgroundColor: c.bgSecondary, alignItems: "center", justifyContent: "center" }}>
+        <LinearGradient
+          colors={[c.bgSecondary, c.border]}
+          style={{ width: "100%", height: 130, alignItems: "center", justifyContent: "center" }}
+        >
           <Text style={{ fontSize: 48 }}>🍔</Text>
-        </View>
+        </LinearGradient>
       )}
-      <View style={{ padding: 12 }}>
-        <Text style={{ fontSize: 13, fontWeight: "bold", color: c.text }} numberOfLines={1}>{item.name}</Text>
-        {item.description ? <Text style={{ fontSize: 11, color: c.textSecondary, marginTop: 4 }} numberOfLines={1}>{item.description}</Text> : null}
-        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 8 }}>
-          <Text style={{ fontSize: 15, fontWeight: "bold", color: c.primary }}>{CURRENCY_SYMBOL}{item.price}</Text>
-          {item.prep_time ? <Text style={{ fontSize: 11, color: c.textSecondary }}>⏱️ {item.prep_time}m</Text> : null}
+      {/* Featured badge */}
+      <View style={{ position: "absolute", top: 10, left: 10, backgroundColor: "rgba(255,107,53,0.9)", paddingHorizontal: 8, paddingVertical: 3, borderRadius: 8 }}>
+        <Text style={{ color: "#fff", fontSize: 10, fontFamily: fonts.bold }}>⭐ FEATURED</Text>
+      </View>
+      <View style={{ padding: 14 }}>
+        <Text style={{ fontSize: 14, fontFamily: fonts.bold, color: c.text }} numberOfLines={1}>{item.name}</Text>
+        {item.description ? <Text style={{ fontSize: 11, fontFamily: fonts.regular, color: c.textSecondary, marginTop: 4 }} numberOfLines={1}>{item.description}</Text> : null}
+        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 10 }}>
+          <Text style={{ fontSize: 17, fontFamily: fonts.extrabold, color: c.primary }}>{CURRENCY_SYMBOL}{item.price}</Text>
+          {item.prep_time ? <Text style={{ fontSize: 11, fontFamily: fonts.medium, color: c.textSecondary }}>⏱ {item.prep_time}m</Text> : null}
         </View>
       </View>
     </TouchableOpacity>

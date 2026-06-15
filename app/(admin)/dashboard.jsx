@@ -7,18 +7,20 @@ import { useAuth } from "../../src/hooks/useAuth";
 import { useTheme } from "../../src/hooks/useTheme";
 import { toggleTheme } from "../../src/store/slices/themeSlice";
 import { CURRENCY_SYMBOL } from "../../src/constants/config";
-import LoadingScreen from "../../src/components/common/LoadingScreen";
+import AnimatedLoading from "../../src/components/common/AnimatedLoading";
 import ErrorScreen from "../../src/components/common/ErrorScreen";
+import { fonts } from "../../src/utils/fonts";
+import AnimatedNumber from "../../src/components/common/AnimatedNumber";
 
-function StatCard({ icon, label, value, color, c }) {
+function StatCard({ icon, label, value, color, c, shadow }) {
   return (
     <View style={{
       backgroundColor: c.card, borderRadius: 16, padding: 16, flex: 1,
-      marginHorizontal: 4, borderWidth: 1, borderColor: c.border,
+      marginHorizontal: 4, borderWidth: 1, borderColor: c.border, ...shadow.md,
     }}>
       <Text style={{ fontSize: 28, marginBottom: 8 }}>{icon}</Text>
-      <Text style={{ fontSize: 22, fontWeight: "bold", color: color || c.text }}>{value}</Text>
-      <Text style={{ fontSize: 12, color: c.textSecondary, marginTop: 4 }}>{label}</Text>
+      <AnimatedNumber value={value} style={{ fontSize: 22, fontWeight: "bold", color: color || c.text, fontFamily: fonts.extrabold }} />
+      <Text style={{ fontSize: 12, color: c.textSecondary, marginTop: 4, fontFamily: fonts.regular }}>{label}</Text>
     </View>
   );
 }
@@ -27,14 +29,16 @@ export default function AdminDashboard() {
   const router = useRouter();
   const dispatch = useDispatch();
   const { user, logout } = useAuth();
-  const { isDark, c } = useTheme();
+  const { isDark, c, shadow } = useTheme();
   const { data, isLoading, error, refetch, isFetching } = useGetDashboardQuery(undefined, {
-    pollingInterval: 30000, // Refresh every 30 seconds
+    pollingInterval: 30000,
+    refetchOnMountOrArgChange: true,
+    refetchOnFocus: true,
   });
 
   const stats = data?.data;
 
-  if (isLoading) return <LoadingScreen message="Loading dashboard..." />;
+  if (isLoading) return <AnimatedLoading message="Loading dashboard..." />;
   if (error) return <ErrorScreen message="Failed to load dashboard" onRetry={refetch} />;
 
   const today = stats?.today || {};
@@ -49,8 +53,8 @@ export default function AdminDashboard() {
         <View style={{ paddingHorizontal: 20, paddingTop: 16, paddingBottom: 8 }}>
           <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
             <View>
-              <Text style={{ fontSize: 13, color: c.textSecondary }}>Admin Panel</Text>
-              <Text style={{ fontSize: 22, fontWeight: "bold", color: c.text, marginTop: 2 }}>
+              <Text style={{ fontSize: 13, color: c.textSecondary, fontFamily: fonts.regular }}>Admin Panel</Text>
+              <Text style={{ fontSize: 22, fontWeight: "bold", color: c.text, marginTop: 2, fontFamily: fonts.extrabold }}>
                 Hello, {user?.name || "Admin"} 👋
               </Text>
             </View>
@@ -71,75 +75,83 @@ export default function AdminDashboard() {
           </View>
         </View>
 
-        {/* Revenue Card */}
-        <View style={{ marginHorizontal: 20, marginTop: 16, backgroundColor: c.primary, borderRadius: 20, padding: 24 }}>
-          <Text style={{ fontSize: 14, color: "rgba(255,255,255,0.8)" }}>Today's Revenue</Text>
-          <Text style={{ fontSize: 36, fontWeight: "bold", color: "#fff", marginTop: 8 }}>
-            {CURRENCY_SYMBOL}{today.revenue || "0.00"}
-          </Text>
-          <View style={{ flexDirection: "row", marginTop: 16 }}>
-            <View style={{ flex: 1 }}>
-              <Text style={{ fontSize: 20, fontWeight: "bold", color: "#fff" }}>{today.total_orders || 0}</Text>
-              <Text style={{ fontSize: 12, color: "rgba(255,255,255,0.7)" }}>Total Orders</Text>
+        {/* Revenue Card - Gradient Style */}
+        <View style={{
+          marginHorizontal: 20, marginTop: 16, borderRadius: 24, padding: 24, overflow: "hidden",
+          backgroundColor: isDark ? "#1E1B4B" : "#312E81",
+        }}>
+          {/* Decorative circles */}
+          <View style={{ position: "absolute", top: -30, right: -30, width: 120, height: 120, borderRadius: 60, backgroundColor: "rgba(255,255,255,0.08)" }} />
+          <View style={{ position: "absolute", bottom: -40, left: -20, width: 100, height: 100, borderRadius: 50, backgroundColor: "rgba(255,255,255,0.05)" }} />
+
+          <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}>
+            <Text style={{ fontSize: 14, color: "rgba(255,255,255,0.6)", letterSpacing: 1, textTransform: "uppercase", fontFamily: fonts.semibold }}>Today's Revenue</Text>
+          </View>
+          <AnimatedNumber value={today.revenue || 0} prefix={CURRENCY_SYMBOL} style={{ fontSize: 42, fontWeight: "800", color: "#fff", marginTop: 4, letterSpacing: 1, fontFamily: fonts.extrabold }} duration={1200} />
+
+          <View style={{ flexDirection: "row", marginTop: 20, backgroundColor: "rgba(255,255,255,0.1)", borderRadius: 16, padding: 14 }}>
+            <View style={{ flex: 1, alignItems: "center", borderRightWidth: 1, borderRightColor: "rgba(255,255,255,0.15)" }}>
+              <AnimatedNumber value={today.total_orders || 0} style={{ fontSize: 22, fontWeight: "bold", color: "#fff", fontFamily: fonts.extrabold }} />
+              <Text style={{ fontSize: 11, color: "rgba(255,255,255,0.6)", marginTop: 4, fontFamily: fonts.regular }}>Total Orders</Text>
             </View>
-            <View style={{ flex: 1 }}>
-              <Text style={{ fontSize: 20, fontWeight: "bold", color: "#fff" }}>{today.delivered_orders || 0}</Text>
-              <Text style={{ fontSize: 12, color: "rgba(255,255,255,0.7)" }}>Delivered</Text>
+            <View style={{ flex: 1, alignItems: "center" }}>
+              <AnimatedNumber value={today.delivered_orders || 0} style={{ fontSize: 22, fontWeight: "bold", color: "#34D399", fontFamily: fonts.extrabold }} />
+              <Text style={{ fontSize: 11, color: "rgba(255,255,255,0.6)", marginTop: 4, fontFamily: fonts.regular }}>Delivered</Text>
             </View>
           </View>
         </View>
 
         {/* Stats Grid */}
         <View style={{ paddingHorizontal: 16, marginTop: 20 }}>
-          <Text style={{ fontSize: 17, fontWeight: "bold", color: c.text, paddingHorizontal: 4, marginBottom: 12 }}>Order Stats</Text>
+          <Text style={{ fontSize: 17, fontWeight: "bold", color: c.text, paddingHorizontal: 4, marginBottom: 12, fontFamily: fonts.bold }}>Order Stats</Text>
           <View style={{ flexDirection: "row", marginBottom: 8 }}>
-            <StatCard icon="⏳" label="Pending" value={today.pending_orders || 0} color="#F59E0B" c={c} />
-            <StatCard icon="🔥" label="Active" value={today.active_orders || 0} color="#3B82F6" c={c} />
+            <StatCard icon="⏳" label="Pending" value={today.pending_orders || 0} color="#F59E0B" c={c} shadow={shadow} />
+            <StatCard icon="🔥" label="Active" value={today.active_orders || 0} color="#3B82F6" c={c} shadow={shadow} />
           </View>
           <View style={{ flexDirection: "row", marginBottom: 8 }}>
-            <StatCard icon="✅" label="Delivered" value={today.delivered_orders || 0} color="#22C55E" c={c} />
-            <StatCard icon="❌" label="Cancelled" value={today.cancelled_orders || 0} color="#EF4444" c={c} />
+            <StatCard icon="✅" label="Delivered" value={today.delivered_orders || 0} color="#22C55E" c={c} shadow={shadow} />
+            <StatCard icon="❌" label="Cancelled" value={today.cancelled_orders || 0} color="#EF4444" c={c} shadow={shadow} />
           </View>
         </View>
 
         {/* Quick Info */}
         <View style={{ paddingHorizontal: 20, marginTop: 20 }}>
-          <Text style={{ fontSize: 17, fontWeight: "bold", color: c.text, marginBottom: 12 }}>Quick Info</Text>
-          <View style={{ backgroundColor: c.card, borderRadius: 16, borderWidth: 1, borderColor: c.border }}>
+          <Text style={{ fontSize: 17, fontWeight: "bold", color: c.text, marginBottom: 12, fontFamily: fonts.bold }}>Quick Info</Text>
+          <View style={{ backgroundColor: c.card, borderRadius: 16, borderWidth: 1, borderColor: c.border, ...shadow.md }}>
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", padding: 16, borderBottomWidth: 1, borderBottomColor: c.border }}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Text style={{ fontSize: 20, marginRight: 12 }}>👥</Text>
-                <Text style={{ fontSize: 15, color: c.text }}>Total Customers</Text>
+                <Text style={{ fontSize: 15, color: c.text, fontFamily: fonts.regular }}>Total Customers</Text>
               </View>
-              <Text style={{ fontSize: 17, fontWeight: "bold", color: c.text }}>{stats?.total_customers || 0}</Text>
+              <Text style={{ fontSize: 17, fontWeight: "bold", color: c.text, fontFamily: fonts.bold }}>{stats?.total_customers || 0}</Text>
             </View>
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", padding: 16 }}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Text style={{ fontSize: 20, marginRight: 12 }}>🏍️</Text>
-                <Text style={{ fontSize: 15, color: c.text }}>Online Riders</Text>
+                <Text style={{ fontSize: 15, color: c.text, fontFamily: fonts.regular }}>Online Riders</Text>
               </View>
-              <Text style={{ fontSize: 17, fontWeight: "bold", color: "#22C55E" }}>{stats?.online_riders || 0}</Text>
+              <Text style={{ fontSize: 17, fontWeight: "bold", color: "#22C55E", fontFamily: fonts.bold }}>{stats?.online_riders || 0}</Text>
             </View>
           </View>
         </View>
 
         {/* Quick Actions */}
         <View style={{ paddingHorizontal: 20, marginTop: 20, marginBottom: 24 }}>
-          <Text style={{ fontSize: 17, fontWeight: "bold", color: c.text, marginBottom: 12 }}>Quick Actions</Text>
+          <Text style={{ fontSize: 17, fontWeight: "bold", color: c.text, marginBottom: 12, fontFamily: fonts.bold }}>Quick Actions</Text>
           <View style={{ flexDirection: "row" }}>
             <TouchableOpacity
               style={{ flex: 1, backgroundColor: c.bgSecondary, borderRadius: 16, padding: 16, alignItems: "center", marginRight: 8 }}
               onPress={() => router.push("/(admin)/orders-mgmt")}
             >
               <Text style={{ fontSize: 28, marginBottom: 8 }}>📋</Text>
-              <Text style={{ fontSize: 13, fontWeight: "600", color: c.text }}>View Orders</Text>
+              <Text style={{ fontSize: 13, fontWeight: "600", color: c.text, fontFamily: fonts.semibold }}>View Orders</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={{ flex: 1, backgroundColor: c.bgSecondary, borderRadius: 16, padding: 16, alignItems: "center", marginLeft: 8 }}
               onPress={() => router.push("/(admin)/menu-mgmt")}
             >
               <Text style={{ fontSize: 28, marginBottom: 8 }}>🍔</Text>
-              <Text style={{ fontSize: 13, fontWeight: "600", color: c.text }}>Manage Menu</Text>
+              <Text style={{ fontSize: 13, fontWeight: "600", color: c.text, fontFamily: fonts.semibold }}>Manage Menu</Text>
             </TouchableOpacity>
           </View>
         </View>

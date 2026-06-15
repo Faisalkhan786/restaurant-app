@@ -5,12 +5,16 @@ import { useSelector, useDispatch } from "react-redux";
 import { removeFromCart, updateQuantity, clearCart } from "../../src/store/slices/cartSlice";
 import { CURRENCY_SYMBOL } from "../../src/constants/config";
 import { useTheme } from "../../src/hooks/useTheme";
+import EmptyState from "../../src/components/common/EmptyState";
+import { fonts } from "../../src/utils/fonts";
+import { haptic } from "../../src/utils/haptics";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function CartScreen() {
   const router = useRouter();
   const dispatch = useDispatch();
   const { items, totalAmount, totalItems } = useSelector((state) => state.cart);
-  const { c } = useTheme();
+  const { c, shadow } = useTheme();
 
   const handleRemove = (id) => {
     Alert.alert("Remove Item", "Are you sure?", [
@@ -27,7 +31,7 @@ export default function CartScreen() {
   };
 
   const renderItem = ({ item }) => (
-    <View style={{ flexDirection: "row", backgroundColor: c.card, borderRadius: 16, marginBottom: 12, padding: 12, borderWidth: 1, borderColor: c.border }}>
+    <View style={{ flexDirection: "row", backgroundColor: c.card, borderRadius: 16, marginBottom: 12, padding: 12, borderWidth: 1, borderColor: c.border, ...shadow.md }}>
       {item.image_url ? (
         <Image source={{ uri: item.image_url }} style={{ width: 80, height: 80, borderRadius: 12 }} resizeMode="cover" />
       ) : (
@@ -37,19 +41,19 @@ export default function CartScreen() {
       )}
       <View style={{ flex: 1, marginLeft: 12, justifyContent: "space-between" }}>
         <View>
-          <Text style={{ fontSize: 15, fontWeight: "bold", color: c.text }} numberOfLines={1}>{item.name}</Text>
-          {item.variation ? <Text style={{ fontSize: 11, color: c.textSecondary, marginTop: 2 }}>Variant: {item.variation}</Text> : null}
-          {item.addons?.length > 0 ? <Text style={{ fontSize: 11, color: c.textSecondary, marginTop: 2 }}>+ {item.addons.join(", ")}</Text> : null}
+          <Text style={{ fontSize: 15, fontWeight: "bold", color: c.text, fontFamily: fonts.bold }} numberOfLines={1}>{item.name}</Text>
+          {item.variation ? <Text style={{ fontSize: 11, color: c.textSecondary, marginTop: 2, fontFamily: fonts.regular }}>Variant: {item.variation}</Text> : null}
+          {item.addons?.length > 0 ? <Text style={{ fontSize: 11, color: c.textSecondary, marginTop: 2, fontFamily: fonts.regular }}>+ {item.addons.join(", ")}</Text> : null}
         </View>
         <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 8 }}>
-          <Text style={{ fontSize: 15, fontWeight: "bold", color: c.primary }}>{CURRENCY_SYMBOL}{(item.price * item.quantity).toFixed(2)}</Text>
+          <Text style={{ fontSize: 15, fontWeight: "bold", color: c.primary, fontFamily: fonts.bold }}>{CURRENCY_SYMBOL}{(item.price * item.quantity).toFixed(2)}</Text>
           <View style={{ flexDirection: "row", alignItems: "center", backgroundColor: c.bgSecondary, borderRadius: 8 }}>
-            <TouchableOpacity style={{ paddingHorizontal: 12, paddingVertical: 6 }} onPress={() => item.quantity <= 1 ? handleRemove(item.id) : dispatch(updateQuantity({ id: item.id, quantity: item.quantity - 1 }))}>
-              <Text style={{ fontSize: 15, fontWeight: "bold", color: c.text }}>−</Text>
+            <TouchableOpacity style={{ paddingHorizontal: 12, paddingVertical: 6 }} onPress={() => { haptic.light(); item.quantity <= 1 ? handleRemove(item.id) : dispatch(updateQuantity({ id: item.id, quantity: item.quantity - 1 })); }}>
+              <Text style={{ fontSize: 15, fontWeight: "bold", color: c.text, fontFamily: fonts.bold }}>−</Text>
             </TouchableOpacity>
-            <Text style={{ fontSize: 15, fontWeight: "bold", color: c.text, paddingHorizontal: 8 }}>{item.quantity}</Text>
-            <TouchableOpacity style={{ paddingHorizontal: 12, paddingVertical: 6 }} onPress={() => dispatch(updateQuantity({ id: item.id, quantity: item.quantity + 1 }))}>
-              <Text style={{ fontSize: 15, fontWeight: "bold", color: c.text }}>+</Text>
+            <Text style={{ fontSize: 15, fontWeight: "bold", color: c.text, paddingHorizontal: 8, fontFamily: fonts.bold }}>{item.quantity}</Text>
+            <TouchableOpacity style={{ paddingHorizontal: 12, paddingVertical: 6 }} onPress={() => { haptic.light(); dispatch(updateQuantity({ id: item.id, quantity: item.quantity + 1 })); }}>
+              <Text style={{ fontSize: 15, fontWeight: "bold", color: c.text, fontFamily: fonts.bold }}>+</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -62,15 +66,8 @@ export default function CartScreen() {
 
   if (items.length === 0) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: c.bg }}>
-        <View style={{ flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 24 }}>
-          <Text style={{ fontSize: 56, marginBottom: 16 }}>🛒</Text>
-          <Text style={{ fontSize: 22, fontWeight: "bold", color: c.text }}>Cart is Empty</Text>
-          <Text style={{ color: c.textSecondary, marginTop: 8, textAlign: "center" }}>Add some delicious items from our menu</Text>
-          <TouchableOpacity style={{ backgroundColor: c.primary, paddingHorizontal: 32, paddingVertical: 14, borderRadius: 12, marginTop: 24 }} onPress={() => router.push("/(tabs)/menu")} activeOpacity={0.8}>
-            <Text style={{ color: "#fff", fontWeight: "bold", fontSize: 15 }}>Browse Menu</Text>
-          </TouchableOpacity>
-        </View>
+      <SafeAreaView style={{ flex: 1, backgroundColor: c.bg, justifyContent: "center" }}>
+        <EmptyState type="cart" actionLabel="Browse Menu" onAction={() => router.push("/(tabs)/menu")} />
       </SafeAreaView>
     );
   }
@@ -79,11 +76,11 @@ export default function CartScreen() {
     <SafeAreaView style={{ flex: 1, backgroundColor: c.bg }}>
       <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingTop: 16, paddingBottom: 12 }}>
         <View>
-          <Text style={{ fontSize: 22, fontWeight: "bold", color: c.text }}>Your Cart</Text>
-          <Text style={{ fontSize: 13, color: c.textSecondary, marginTop: 2 }}>{totalItems} item{totalItems !== 1 ? "s" : ""}</Text>
+          <Text style={{ fontSize: 22, fontWeight: "bold", color: c.text, fontFamily: fonts.extrabold }}>Your Cart</Text>
+          <Text style={{ fontSize: 13, color: c.textSecondary, marginTop: 2, fontFamily: fonts.regular }}>{totalItems} item{totalItems !== 1 ? "s" : ""}</Text>
         </View>
         <TouchableOpacity onPress={handleClearCart}>
-          <Text style={{ color: "#F44336", fontWeight: "600", fontSize: 13 }}>Clear All</Text>
+          <Text style={{ color: "#F44336", fontWeight: "600", fontSize: 13, fontFamily: fonts.semibold }}>Clear All</Text>
         </TouchableOpacity>
       </View>
 
@@ -91,19 +88,21 @@ export default function CartScreen() {
 
       <View style={{ position: "absolute", bottom: 0, left: 0, right: 0, backgroundColor: c.bg, borderTopWidth: 1, borderTopColor: c.border, paddingHorizontal: 20, paddingVertical: 16 }}>
         <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 4 }}>
-          <Text style={{ fontSize: 13, color: c.textSecondary }}>Subtotal</Text>
-          <Text style={{ fontSize: 13, color: c.text, fontWeight: "600" }}>{CURRENCY_SYMBOL}{totalAmount.toFixed(2)}</Text>
+          <Text style={{ fontSize: 13, color: c.textSecondary, fontFamily: fonts.regular }}>Subtotal</Text>
+          <Text style={{ fontSize: 13, color: c.text, fontWeight: "600", fontFamily: fonts.semibold }}>{CURRENCY_SYMBOL}{totalAmount.toFixed(2)}</Text>
         </View>
         <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 12 }}>
-          <Text style={{ fontSize: 13, color: c.textSecondary }}>Delivery & Tax</Text>
-          <Text style={{ fontSize: 13, color: c.textSecondary }}>Calculated at checkout</Text>
+          <Text style={{ fontSize: 13, color: c.textSecondary, fontFamily: fonts.regular }}>Delivery & Tax</Text>
+          <Text style={{ fontSize: 13, color: c.textSecondary, fontFamily: fonts.regular }}>Calculated at checkout</Text>
         </View>
         <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 16 }}>
-          <Text style={{ fontSize: 17, fontWeight: "bold", color: c.text }}>Total</Text>
-          <Text style={{ fontSize: 17, fontWeight: "bold", color: c.primary }}>{CURRENCY_SYMBOL}{totalAmount.toFixed(2)}</Text>
+          <Text style={{ fontSize: 17, fontWeight: "bold", color: c.text, fontFamily: fonts.bold }}>Total</Text>
+          <Text style={{ fontSize: 17, fontWeight: "bold", color: c.primary, fontFamily: fonts.bold }}>{CURRENCY_SYMBOL}{totalAmount.toFixed(2)}</Text>
         </View>
-        <TouchableOpacity style={{ backgroundColor: c.primary, paddingVertical: 16, borderRadius: 12, alignItems: "center" }} onPress={() => router.push("/(app)/checkout")} activeOpacity={0.8}>
-          <Text style={{ color: "#fff", fontWeight: "bold", fontSize: 17 }}>Proceed to Checkout</Text>
+        <TouchableOpacity style={{ borderRadius: 12, overflow: "hidden" }} onPress={() => router.push("/(app)/checkout")} activeOpacity={0.8}>
+          <LinearGradient colors={c.gradient.primary} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={{ paddingVertical: 16, alignItems: "center", borderRadius: 12 }}>
+            <Text style={{ color: "#fff", fontWeight: "bold", fontSize: 17, fontFamily: fonts.bold }}>Proceed to Checkout</Text>
+          </LinearGradient>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

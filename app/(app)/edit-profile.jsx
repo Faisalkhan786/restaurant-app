@@ -14,11 +14,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { useUpdateProfileMutation } from "../../src/store/api/customerApi";
 import { updateUser } from "../../src/store/slices/authSlice";
 import { useTheme } from "../../src/hooks/useTheme";
+import { Ionicons } from "@expo/vector-icons";
+import { fonts } from "../../src/utils/fonts";
 
 export default function EditProfileScreen() {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { c } = useTheme();
+  const { c, shadow } = useTheme();
   const { user } = useSelector((state) => state.auth);
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
 
@@ -61,12 +63,12 @@ export default function EditProfileScreen() {
         {/* Header */}
         <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 16, paddingBottom: 12 }}>
           <TouchableOpacity
-            style={{ marginRight: 12, width: 40, height: 40, borderRadius: 20, backgroundColor: c.bgSecondary, alignItems: "center", justifyContent: "center" }}
+            style={{ width: 42, height: 42, borderRadius: 14, backgroundColor: c.card, alignItems: "center", justifyContent: "center", ...shadow.sm }}
             onPress={() => router.back()}
           >
-            <Text style={{ fontSize: 18, color: c.text }}>←</Text>
+            <Ionicons name="chevron-back" size={22} color={c.text} />
           </TouchableOpacity>
-          <Text style={{ fontSize: 24, fontWeight: "bold", color: c.text }}>Edit Profile</Text>
+          <Text style={{ fontSize: 24, fontWeight: "bold", color: c.text, fontFamily: fonts.bold, marginLeft: 12 }}>Edit Profile</Text>
         </View>
 
         {/* Avatar */}

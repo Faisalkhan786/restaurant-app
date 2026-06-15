@@ -12,12 +12,16 @@ import {
   useUpdateItemMutation,
 } from "../../src/store/api/adminApi";
 import { useTheme } from "../../src/hooks/useTheme";
+import { Ionicons } from "@expo/vector-icons";
+import { fonts } from "../../src/utils/fonts";
+import { haptic } from "../../src/utils/haptics";
 import { CURRENCY_SYMBOL } from "../../src/constants/config";
+import ImagePickerBox from "../../src/components/common/ImagePickerBox";
 
 export default function AdminItemFormScreen() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
-  const { c } = useTheme();
+  const { c, shadow } = useTheme();
   const isEdit = !!id;
 
   const { data: catData } = useGetAdminCategoriesQuery();
@@ -38,6 +42,8 @@ export default function AdminItemFormScreen() {
   const [isAvailable, setIsAvailable] = useState(true);
   const [variations, setVariations] = useState([]);
   const [addons, setAddons] = useState([]);
+  const [imageUri, setImageUri] = useState(null);
+
 
   // Load existing item data
   useEffect(() => {
@@ -51,6 +57,7 @@ export default function AdminItemFormScreen() {
       setIsAvailable(existingItem.is_available !== false);
       setVariations(existingItem.variations?.map((v) => ({ name: v.name, price: v.price.toString() })) || []);
       setAddons(existingItem.addons?.map((a) => ({ name: a.name, price: a.price.toString() })) || []);
+      if (existingItem.image_url) setImageUri(existingItem.image_url);
     }
   }, [existingItem]);
 
@@ -79,25 +86,32 @@ export default function AdminItemFormScreen() {
     const validVariations = variations.filter((v) => v.name.trim() && v.price);
     const validAddons = addons.filter((a) => a.name.trim() && a.price);
 
-    const body = {
-      category_id: parseInt(categoryId),
-      name: name.trim(),
-      price: parseFloat(price),
-      is_available: isAvailable,
-      is_featured: isFeatured,
-    };
+    const formData = new FormData();
+    formData.append("category_id", parseInt(categoryId));
+    formData.append("name", name.trim());
+    formData.append("price", parseFloat(price));
+    formData.append("is_available", isAvailable);
+    formData.append("is_featured", isFeatured);
+    if (description.trim()) formData.append("description", description.trim());
+    if (prepTime) formData.append("prep_time", parseInt(prepTime));
+    if (validVariations.length > 0) formData.append("variations", JSON.stringify(validVariations.map((v) => ({ name: v.name.trim(), price: parseFloat(v.price) }))));
+    if (validAddons.length > 0) formData.append("addons", JSON.stringify(validAddons.map((a) => ({ name: a.name.trim(), price: parseFloat(a.price) }))));
 
-    if (description.trim()) body.description = description.trim();
-    if (prepTime) body.prep_time = parseInt(prepTime);
-    if (validVariations.length > 0) body.variations = JSON.stringify(validVariations.map((v) => ({ name: v.name.trim(), price: parseFloat(v.price) })));
-    if (validAddons.length > 0) body.addons = JSON.stringify(validAddons.map((a) => ({ name: a.name.trim(), price: parseFloat(a.price) })));
+    // Add image if picked from device (not a URL)
+    if (imageUri && !imageUri.startsWith("http")) {
+      const filename = imageUri.split("/").pop();
+      const ext = filename.split(".").pop();
+      formData.append("image", { uri: imageUri, name: filename, type: `image/${ext}` });
+    }
 
     try {
+      haptic.medium();
       if (isEdit) {
-        await updateItem({ id: parseInt(id), ...body }).unwrap();
+        await updateItem({ id: parseInt(id), body: formData }).unwrap();
       } else {
-        await createItem(body).unwrap();
+        await createItem(formData).unwrap();
       }
+      haptic.success();
       router.back();
     } catch (err) {
       Alert.alert("Error", err?.data?.message || "Failed to save item");
@@ -116,15 +130,21 @@ export default function AdminItemFormScreen() {
         {/* Header */}
         <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 16, paddingBottom: 12 }}>
           <TouchableOpacity
-            style={{ marginRight: 12, width: 40, height: 40, borderRadius: 20, backgroundColor: c.bgSecondary, alignItems: "center", justifyContent: "center" }}
+            style={{ width: 42, height: 42, borderRadius: 14, backgroundColor: c.card, alignItems: "center", justifyContent: "center", ...shadow.sm }}
             onPress={() => router.back()}
           >
-            <Text style={{ fontSize: 18, color: c.text }}>←</Text>
+            <Ionicons name="chevron-back" size={22} color={c.text} />
           </TouchableOpacity>
-          <Text style={{ fontSize: 22, fontWeight: "bold", color: c.text }}>{isEdit ? "Edit Item" : "Add Item"}</Text>
+          <Text style={{ fontSize: 22, fontWeight: "bold", color: c.text, fontFamily: fonts.bold, marginLeft: 12 }}>{isEdit ? "Edit Item" : "Add Item"}</Text>
         </View>
 
         <View style={{ paddingHorizontal: 20 }}>
+          {/* Image Picker */}
+          <Text style={{ fontSize: 13, fontFamily: fonts.semibold, color: c.text, marginBottom: 8 }}>Item Photo</Text>
+          <View style={{ marginBottom: 20 }}>
+            <ImagePickerBox imageUri={imageUri} onImagePicked={setImageUri} height={180} label="Tap to add item photo" />
+          </View>
+
           {/* Category Picker */}
           <Text style={{ fontSize: 13, fontWeight: "600", color: c.text, marginBottom: 8 }}>Category *</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 16 }}>

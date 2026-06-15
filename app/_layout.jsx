@@ -11,6 +11,7 @@ import Toast from "react-native-toast-message";
 import { toastConfig } from "../src/utils/toastConfig";
 import { API_BASE_URL } from "../src/constants/config";
 import { useTheme } from "../src/hooks/useTheme";
+import { useAppFonts } from "../src/utils/fonts";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -130,6 +131,10 @@ function AuthGate() {
 }
 
 export default function RootLayout() {
+  const fontsLoaded = useAppFonts();
+
+  if (!fontsLoaded) return null;
+
   return (
     <Provider store={store}>
       <AuthGate />

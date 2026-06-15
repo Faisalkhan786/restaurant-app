@@ -1,25 +1,40 @@
 import { TouchableOpacity, Text, Image, View } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { useTheme } from "../../hooks/useTheme";
+import { fonts } from "../../utils/fonts";
 
 export default function CategoryCard({ category, onPress, isActive }) {
-  const { c } = useTheme();
+  const { c, shadow } = useTheme();
   return (
     <TouchableOpacity
-      style={{
-        alignItems: "center", marginRight: 16, paddingHorizontal: 12, paddingVertical: 8,
-        borderRadius: 16, backgroundColor: isActive ? c.primary : c.bgSecondary,
-      }}
+      style={{ alignItems: "center", marginRight: 14, ...shadow.sm }}
       onPress={onPress}
       activeOpacity={0.7}
     >
-      {category.image_url ? (
-        <Image source={{ uri: category.image_url }} style={{ width: 56, height: 56, borderRadius: 28, marginBottom: 4 }} resizeMode="cover" />
+      {isActive ? (
+        <LinearGradient
+          colors={c.gradient.primary}
+          style={{ width: 64, height: 64, borderRadius: 22, alignItems: "center", justifyContent: "center" }}
+        >
+          {category.image_url ? (
+            <Image source={{ uri: category.image_url }} style={{ width: 60, height: 60, borderRadius: 20 }} resizeMode="cover" />
+          ) : (
+            <Text style={{ fontSize: 28 }}>🍽️</Text>
+          )}
+        </LinearGradient>
       ) : (
-        <View style={{ width: 56, height: 56, borderRadius: 28, backgroundColor: c.border, alignItems: "center", justifyContent: "center", marginBottom: 4 }}>
-          <Text style={{ fontSize: 24 }}>🍽️</Text>
+        <View style={{ width: 64, height: 64, borderRadius: 22, backgroundColor: c.card, alignItems: "center", justifyContent: "center", borderWidth: 1.5, borderColor: c.border }}>
+          {category.image_url ? (
+            <Image source={{ uri: category.image_url }} style={{ width: 60, height: 60, borderRadius: 20 }} resizeMode="cover" />
+          ) : (
+            <Text style={{ fontSize: 28 }}>🍽️</Text>
+          )}
         </View>
       )}
-      <Text style={{ fontSize: 11, fontWeight: "600", marginTop: 4, color: isActive ? "#fff" : c.text }} numberOfLines={1}>
+      <Text
+        style={{ fontSize: 11, fontFamily: isActive ? fonts.bold : fonts.medium, marginTop: 6, color: isActive ? c.primary : c.textMuted }}
+        numberOfLines={1}
+      >
         {category.name}
       </Text>
     </TouchableOpacity>

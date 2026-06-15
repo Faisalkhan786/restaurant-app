@@ -18,11 +18,13 @@ import { useTheme } from "../../src/hooks/useTheme";
 import { CURRENCY_SYMBOL } from "../../src/constants/config";
 import LoadingScreen from "../../src/components/common/LoadingScreen";
 import ErrorScreen from "../../src/components/common/ErrorScreen";
+import ImagePickerBox from "../../src/components/common/ImagePickerBox";
 
 // ==================== CATEGORY MODAL ====================
 function CategoryModal({ visible, onClose, category, c }) {
   const [name, setName] = useState(category?.name || "");
   const [sortOrder, setSortOrder] = useState(category?.sort_order?.toString() || "0");
+  const [imageUri, setImageUri] = useState(category?.image_url || null);
   const [createCategory, { isLoading: isCreating }] = useCreateCategoryMutation();
   const [updateCategory, { isLoading: isUpdating }] = useUpdateCategoryMutation();
   const isEdit = !!category;
@@ -31,10 +33,20 @@ function CategoryModal({ visible, onClose, category, c }) {
   const handleSave = async () => {
     if (!name.trim()) { Alert.alert("Error", "Category name is required"); return; }
     try {
+      const formData = new FormData();
+      formData.append("name", name.trim());
+      formData.append("sort_order", parseInt(sortOrder) || 0);
+
+      if (imageUri && !imageUri.startsWith("http")) {
+        const filename = imageUri.split("/").pop();
+        const ext = filename.split(".").pop();
+        formData.append("image", { uri: imageUri, name: filename, type: `image/${ext}` });
+      }
+
       if (isEdit) {
-        await updateCategory({ id: category.id, name: name.trim(), sort_order: parseInt(sortOrder) || 0 }).unwrap();
+        await updateCategory({ id: category.id, ...Object.fromEntries([["name", name.trim()], ["sort_order", parseInt(sortOrder) || 0]]) }).unwrap();
       } else {
-        await createCategory({ name: name.trim(), sort_order: parseInt(sortOrder) || 0 }).unwrap();
+        await createCategory(formData).unwrap();
       }
       onClose();
     } catch (err) {
@@ -49,6 +61,11 @@ function CategoryModal({ visible, onClose, category, c }) {
           <Text style={{ fontSize: 20, fontWeight: "bold", color: c.text, marginBottom: 20 }}>
             {isEdit ? "Edit Category" : "Add Category"}
           </Text>
+
+          <Text style={{ fontSize: 13, fontWeight: "600", color: c.text, marginBottom: 8 }}>Category Image</Text>
+          <View style={{ marginBottom: 16 }}>
+            <ImagePickerBox imageUri={imageUri} onImagePicked={setImageUri} height={120} label="Tap to add category photo" />
+          </View>
 
           <Text style={{ fontSize: 13, fontWeight: "600", color: c.text, marginBottom: 8 }}>Name *</Text>
           <TextInput

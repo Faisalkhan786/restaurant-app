@@ -7,6 +7,8 @@ import OrderCard from "../../src/components/common/OrderCard";
 import LoadingScreen from "../../src/components/common/LoadingScreen";
 import ErrorScreen from "../../src/components/common/ErrorScreen";
 import { useTheme } from "../../src/hooks/useTheme";
+import { Ionicons } from "@expo/vector-icons";
+import { fonts } from "../../src/utils/fonts";
 
 const FILTERS = [
   { key: null, label: "All" },
@@ -20,7 +22,7 @@ const FILTERS = [
 
 export default function OrdersScreen() {
   const router = useRouter();
-  const { c } = useTheme();
+  const { c, shadow } = useTheme();
   const [statusFilter, setStatusFilter] = useState(null);
   const [page, setPage] = useState(1);
 
@@ -57,12 +59,12 @@ export default function OrdersScreen() {
       {/* Header */}
       <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 16, paddingBottom: 12 }}>
         <TouchableOpacity
-          style={{ marginRight: 12, width: 40, height: 40, borderRadius: 20, backgroundColor: c.bgSecondary, alignItems: "center", justifyContent: "center" }}
+          style={{ width: 42, height: 42, borderRadius: 14, backgroundColor: c.card, alignItems: "center", justifyContent: "center", ...shadow.sm }}
           onPress={() => router.back()}
         >
-          <Text style={{ fontSize: 18, color: c.text }}>←</Text>
+          <Ionicons name="chevron-back" size={22} color={c.text} />
         </TouchableOpacity>
-        <Text style={{ fontSize: 24, fontWeight: "bold", color: c.text }}>My Orders</Text>
+        <Text style={{ fontSize: 24, fontWeight: "bold", color: c.text, fontFamily: fonts.bold, marginLeft: 12 }}>My Orders</Text>
       </View>
 
       {/* Status Filters */}

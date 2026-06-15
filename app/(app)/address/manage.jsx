@@ -9,10 +9,12 @@ import {
 import LoadingScreen from "../../../src/components/common/LoadingScreen";
 import ErrorScreen from "../../../src/components/common/ErrorScreen";
 import { useTheme } from "../../../src/hooks/useTheme";
+import { Ionicons } from "@expo/vector-icons";
+import { fonts } from "../../../src/utils/fonts";
 
 export default function ManageAddressScreen() {
   const router = useRouter();
-  const { c } = useTheme();
+  const { c, shadow } = useTheme();
   const { data, isLoading, error, refetch } = useGetAddressesQuery();
   const [deleteAddress] = useDeleteAddressMutation();
   const [updateAddress] = useUpdateAddressMutation();
@@ -53,12 +55,12 @@ export default function ManageAddressScreen() {
       <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingTop: 16, paddingBottom: 12 }}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <TouchableOpacity
-            style={{ marginRight: 12, width: 40, height: 40, borderRadius: 20, backgroundColor: c.bgSecondary, alignItems: "center", justifyContent: "center" }}
+            style={{ width: 42, height: 42, borderRadius: 14, backgroundColor: c.card, alignItems: "center", justifyContent: "center", marginRight: 12, ...shadow.sm }}
             onPress={() => router.back()}
           >
-            <Text style={{ fontSize: 18, color: c.text }}>←</Text>
+            <Ionicons name="chevron-back" size={22} color={c.text} />
           </TouchableOpacity>
-          <Text style={{ fontSize: 24, fontWeight: "bold", color: c.text }}>My Addresses</Text>
+          <Text style={{ fontSize: 24, fontWeight: "bold", color: c.text, fontFamily: fonts.bold }}>My Addresses</Text>
         </View>
         <TouchableOpacity onPress={() => router.push("/(app)/address/add")}>
           <Text style={{ color: c.primary, fontWeight: "bold", fontSize: 16 }}>+ Add</Text>

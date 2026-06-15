@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { setupListeners } from "@reduxjs/toolkit/query";
 import { apiSlice } from "./api/apiSlice";
 import authReducer from "./slices/authSlice";
 import cartReducer from "./slices/cartSlice";
@@ -14,3 +15,6 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(apiSlice.middleware),
 });
+
+// Enable refetchOnFocus and refetchOnReconnect
+setupListeners(store.dispatch);
