@@ -47,7 +47,7 @@ export default function RegisterScreen() {
   });
 
   const label = (text, required) => (
-    <Text style={{ fontSize: 13, fontFamily: fonts.semibold, color: c.textMuted, marginBottom: 8, marginLeft: 4 }}>
+    <Text style={{ fontSize: 14, fontFamily: fonts.semibold, color: c.textMuted, marginBottom: 8, marginLeft: 4 }}>
       {text} {required ? <Text style={{ color: "#EF4444" }}>*</Text> : <Text style={{ fontFamily: fonts.regular, color: c.textSecondary }}>(optional)</Text>}
     </Text>
   );
@@ -68,7 +68,7 @@ export default function RegisterScreen() {
                 <Text style={{ fontSize: 38 }}>🍽️</Text>
               </LinearGradient>
               <Text style={{ fontSize: 28, fontFamily: fonts.extrabold, color: c.text, marginTop: 18 }}>Create Account</Text>
-              <Text style={{ fontSize: 15, fontFamily: fonts.regular, color: c.textSecondary, marginTop: 6 }}>Sign up to get started</Text>
+              <Text style={{ fontSize: 16, fontFamily: fonts.regular, color: c.textSecondary, marginTop: 6 }}>Sign up to get started</Text>
             </View>
 
             {/* Name */}
@@ -95,7 +95,7 @@ export default function RegisterScreen() {
               <View style={{ position: "relative" }}>
                 <TextInput style={{ ...inputStyle("password"), paddingRight: 70 }} placeholder="Min 6 characters" placeholderTextColor={c.textSecondary} value={password} onChangeText={setPassword} secureTextEntry={!showPassword} onFocus={() => setFocusedField("password")} onBlur={() => setFocusedField(null)} />
                 <TouchableOpacity style={{ position: "absolute", right: 18, top: 16 }} onPress={() => setShowPassword(!showPassword)}>
-                  <Text style={{ color: c.primary, fontFamily: fonts.semibold, fontSize: 13 }}>{showPassword ? "HIDE" : "SHOW"}</Text>
+                  <Text style={{ color: c.primary, fontFamily: fonts.semibold, fontSize: 14 }}>{showPassword ? "HIDE" : "SHOW"}</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -109,19 +109,19 @@ export default function RegisterScreen() {
             {/* Register Button */}
             <TouchableOpacity onPress={handleRegister} disabled={isRegisterLoading} activeOpacity={0.85}>
               <LinearGradient
-                colors={isRegisterLoading ? ["#FDBA74", "#FDBA74"] : c.gradient.primary}
+                colors={isRegisterLoading ? ["#A5B4FC", "#A5B4FC"] : c.gradient.primary}
                 start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
                 style={{ borderRadius: 16, paddingVertical: 18, alignItems: "center", ...shadow.md }}
               >
-                {isRegisterLoading ? <ActivityIndicator color="#fff" /> : <Text style={{ color: "#fff", fontSize: 17, fontFamily: fonts.bold, letterSpacing: 0.5 }}>Create Account</Text>}
+                {isRegisterLoading ? <ActivityIndicator color="#fff" /> : <Text style={{ color: "#fff", fontSize: 18, fontFamily: fonts.bold, letterSpacing: 0.5 }}>Create Account</Text>}
               </LinearGradient>
             </TouchableOpacity>
 
             {/* Login Link */}
             <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 24 }}>
-              <Text style={{ color: c.textSecondary, fontSize: 15, fontFamily: fonts.regular }}>Already have an account? </Text>
+              <Text style={{ color: c.textSecondary, fontSize: 16, fontFamily: fonts.regular }}>Already have an account? </Text>
               <TouchableOpacity onPress={() => router.push("/(auth)/login")}>
-                <Text style={{ color: c.primary, fontFamily: fonts.bold, fontSize: 15 }}>Sign In</Text>
+                <Text style={{ color: c.primary, fontFamily: fonts.bold, fontSize: 16 }}>Sign In</Text>
               </TouchableOpacity>
             </View>
           </View>

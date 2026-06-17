@@ -59,7 +59,7 @@ export default function SuccessAnimation({ title = "Success!", subtitle }) {
       <Animated.View style={{ alignItems: "center", opacity: textFade, marginTop: 20 }}>
         <Text style={{ fontSize: 24, fontWeight: "bold", color: c.text, textAlign: "center", fontFamily: fonts.extrabold }}>{title}</Text>
         {subtitle ? (
-          <Text style={{ fontSize: 15, color: c.textSecondary, marginTop: 8, textAlign: "center", fontFamily: fonts.regular }}>{subtitle}</Text>
+          <Text style={{ fontSize: 16, color: c.textSecondary, marginTop: 8, textAlign: "center", fontFamily: fonts.regular }}>{subtitle}</Text>
         ) : null}
       </Animated.View>
     </View>

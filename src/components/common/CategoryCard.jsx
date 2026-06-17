@@ -32,7 +32,7 @@ export default function CategoryCard({ category, onPress, isActive }) {
         </View>
       )}
       <Text
-        style={{ fontSize: 11, fontFamily: isActive ? fonts.bold : fonts.medium, marginTop: 6, color: isActive ? c.primary : c.textMuted }}
+        style={{ fontSize: 14, fontFamily: isActive ? fonts.bold : fonts.medium, marginTop: 6, color: isActive ? c.primary : c.textMuted }}
         numberOfLines={1}
       >
         {category.name}

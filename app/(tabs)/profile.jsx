@@ -30,10 +30,10 @@ export default function ProfileScreen() {
     >
       <Text style={{ fontSize: 20, marginRight: 16 }}>{icon}</Text>
       <View style={{ flex: 1 }}>
-        <Text style={{ fontSize: 15, color: danger ? "#F44336" : c.text, fontWeight: "500", fontFamily: fonts.semibold }}>{label}</Text>
+        <Text style={{ fontSize: 16, color: danger ? "#F44336" : c.text, fontWeight: "500", fontFamily: fonts.semibold }}>{label}</Text>
         {subtitle ? <Text style={{ fontSize: 12, color: c.textSecondary, marginTop: 2, fontFamily: fonts.regular }}>{subtitle}</Text> : null}
       </View>
-      {rightElement || <Text style={{ color: c.textSecondary, fontSize: 17 }}>›</Text>}
+      {rightElement || <Text style={{ color: c.textSecondary, fontSize: 18 }}>›</Text>}
     </TouchableOpacity>
   );
 
@@ -41,7 +41,7 @@ export default function ProfileScreen() {
     <SafeAreaView style={{ flex: 1, backgroundColor: c.bg }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{ paddingHorizontal: 20, paddingTop: 16, paddingBottom: 8 }}>
-          <Text style={{ fontSize: 22, fontWeight: "bold", color: c.text, fontFamily: fonts.extrabold }}>Profile</Text>
+          <Text style={{ fontSize: 24, fontWeight: "bold", color: c.text, fontFamily: fonts.extrabold }}>Profile</Text>
         </View>
 
         {/* User Card */}
@@ -55,15 +55,15 @@ export default function ProfileScreen() {
             <Text style={{ color: "#fff", fontSize: 24, fontWeight: "bold", fontFamily: fonts.bold }}>{user?.name?.[0]?.toUpperCase() || "U"}</Text>
           </LinearGradient>
           <View style={{ flex: 1 }}>
-            <Text style={{ fontSize: 17, fontWeight: "bold", color: c.text, fontFamily: fonts.bold }}>{user?.name || "User"}</Text>
-            <Text style={{ fontSize: 13, color: c.textSecondary, fontFamily: fonts.regular }}>{user?.email || ""}</Text>
-            {user?.phone ? <Text style={{ fontSize: 13, color: c.textSecondary, fontFamily: fonts.regular }}>📞 {user.phone}</Text> : null}
+            <Text style={{ fontSize: 18, fontWeight: "bold", color: c.text, fontFamily: fonts.bold }}>{user?.name || "User"}</Text>
+            <Text style={{ fontSize: 14, color: c.textSecondary, fontFamily: fonts.regular }}>{user?.email || ""}</Text>
+            {user?.phone ? <Text style={{ fontSize: 14, color: c.textSecondary, fontFamily: fonts.regular }}>📞 {user.phone}</Text> : null}
           </View>
           <TouchableOpacity
             style={{ backgroundColor: c.bg, paddingHorizontal: 16, paddingVertical: 8, borderRadius: 12 }}
             onPress={() => router.push("/(app)/edit-profile")}
           >
-            <Text style={{ color: c.primary, fontWeight: "600", fontSize: 13, fontFamily: fonts.semibold }}>Edit</Text>
+            <Text style={{ color: c.primary, fontWeight: "600", fontSize: 14, fontFamily: fonts.semibold }}>Edit</Text>
           </TouchableOpacity>
         </View>
 
@@ -79,8 +79,8 @@ export default function ProfileScreen() {
               <Switch
                 value={isDark}
                 onValueChange={() => dispatch(toggleTheme())}
-                trackColor={{ false: "#E0E0E0", true: "#FFB563" }}
-                thumbColor={isDark ? "#FF6B35" : "#F5F5F5"}
+                trackColor={{ false: "#E0E0E0", true: "#818CF8" }}
+                thumbColor={isDark ? "#4F46E5" : "#F5F5F5"}
               />
             }
           />

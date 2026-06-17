@@ -18,7 +18,7 @@ export default function OrderStatusTracker({ currentStatus }) {
     return (
       <View style={{ backgroundColor: "#FEE2E2", borderRadius: 12, padding: 16, alignItems: "center" }}>
         <Text style={{ fontSize: 28, marginBottom: 8 }}>❌</Text>
-        <Text style={{ fontSize: 17, fontWeight: "bold", color: "#DC2626", fontFamily: fonts.bold }}>Order Cancelled</Text>
+        <Text style={{ fontSize: 18, fontWeight: "bold", color: "#DC2626", fontFamily: fonts.bold }}>Order Cancelled</Text>
       </View>
     );
   }
@@ -38,17 +38,17 @@ export default function OrderStatusTracker({ currentStatus }) {
               <View style={{
                 width: 36, height: 36, borderRadius: 18, alignItems: "center", justifyContent: "center",
                 backgroundColor: isCompleted ? c.primary : c.bgSecondary,
-                borderWidth: isCurrent ? 2 : 0, borderColor: "#FFB563",
+                borderWidth: isCurrent ? 2 : 0, borderColor: "#818CF8",
               }}>
-                <Text style={{ fontSize: 15 }}>{status.icon}</Text>
+                <Text style={{ fontSize: 16 }}>{status.icon}</Text>
               </View>
               {!isLast ? <View style={{ width: 2, flex: 1, marginVertical: 4, minHeight: 24, backgroundColor: index < currentIndex ? c.primary : c.bgSecondary }} /> : null}
             </View>
             <View style={{ flex: 1, paddingTop: 6, paddingBottom: 16 }}>
-              <Text style={{ fontSize: 15, fontWeight: "600", color: isCurrent ? c.primary : isCompleted ? c.text : c.textSecondary, fontFamily: fonts.semibold }}>
+              <Text style={{ fontSize: 16, fontWeight: "600", color: isCurrent ? c.primary : isCompleted ? c.text : c.textSecondary, fontFamily: fonts.semibold }}>
                 {status.label}
               </Text>
-              {isCurrent ? <Text style={{ fontSize: 11, color: c.textSecondary, marginTop: 2, fontFamily: fonts.regular }}>Current status</Text> : null}
+              {isCurrent ? <Text style={{ fontSize: 14, color: c.textSecondary, marginTop: 2, fontFamily: fonts.regular }}>Current status</Text> : null}
             </View>
           </View>
         );

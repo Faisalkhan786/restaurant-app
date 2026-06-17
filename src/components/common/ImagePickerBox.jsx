@@ -48,7 +48,7 @@ export default function ImagePickerBox({ imageUri, onImagePicked, height = 150, 
           }}
         >
           <Ionicons name="camera-outline" size={36} color={c.textSecondary} />
-          <Text style={{ color: c.textSecondary, fontSize: 13, fontFamily: fonts.medium, marginTop: 8 }}>{label}</Text>
+          <Text style={{ color: c.textSecondary, fontSize: 14, fontFamily: fonts.medium, marginTop: 8 }}>{label}</Text>
         </LinearGradient>
       )}
     </TouchableOpacity>

@@ -24,7 +24,7 @@ const STATUS_COLORS = {
   confirmed: { bg: "#DCFCE7", text: "#16A34A" },
   preparing: { bg: "#FEF9C3", text: "#CA8A04" },
   ready: { bg: "#F3E8FF", text: "#9333EA" },
-  out_for_delivery: { bg: "#FFF7ED", text: "#EA580C" },
+  out_for_delivery: { bg: "#EEF2FF", text: "#4F46E5" },
   delivered: { bg: "#DCFCE7", text: "#16A34A" },
   cancelled: { bg: "#FEE2E2", text: "#DC2626" },
 };
@@ -60,8 +60,8 @@ export default function OrdersManagementScreen() {
     <SafeAreaView style={{ flex: 1, backgroundColor: c.bg }}>
       {/* Header */}
       <View style={{ paddingHorizontal: 20, paddingTop: 16, paddingBottom: 8 }}>
-        <Text style={{ fontSize: 22, fontWeight: "bold", color: c.text }}>Order Management</Text>
-        <Text style={{ fontSize: 13, color: c.textSecondary, marginTop: 2 }}>
+        <Text style={{ fontSize: 24, fontWeight: "bold", color: c.text }}>Order Management</Text>
+        <Text style={{ fontSize: 14, color: c.textSecondary, marginTop: 2 }}>
           {pagination?.total || 0} total orders
         </Text>
       </View>
@@ -69,7 +69,7 @@ export default function OrdersManagementScreen() {
       {/* Search */}
       <View style={{ paddingHorizontal: 20, marginTop: 8, marginBottom: 8 }}>
         <View style={{ backgroundColor: c.inputBg, borderRadius: 12, flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingVertical: 10, borderWidth: 1, borderColor: c.borderInput }}>
-          <Text style={{ marginRight: 8, fontSize: 15 }}>🔍</Text>
+          <Text style={{ marginRight: 8, fontSize: 16 }}>🔍</Text>
           <TextInput
             style={{ flex: 1, fontSize: 14, color: c.text }}
             placeholder="Search by order number..."
@@ -129,14 +129,14 @@ export default function OrdersManagementScreen() {
             >
               {/* Top Row */}
               <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
-                <Text style={{ fontSize: 15, fontWeight: "bold", color: c.text }}>#{order.order_number}</Text>
+                <Text style={{ fontSize: 16, fontWeight: "bold", color: c.text }}>#{order.order_number}</Text>
                 <View style={{ paddingHorizontal: 10, paddingVertical: 4, borderRadius: 10, backgroundColor: sc.bg }}>
-                  <Text style={{ fontSize: 11, fontWeight: "bold", color: sc.text }}>{STATUS_LABELS[order.status]}</Text>
+                  <Text style={{ fontSize: 14, fontWeight: "bold", color: sc.text }}>{STATUS_LABELS[order.status]}</Text>
                 </View>
               </View>
 
               {/* Customer */}
-              <Text style={{ fontSize: 13, color: c.textMuted, marginBottom: 4 }}>
+              <Text style={{ fontSize: 14, color: c.textMuted, marginBottom: 4 }}>
                 👤 {order.customer?.name || "Customer"} {order.customer?.phone ? `• ${order.customer.phone}` : ""}
               </Text>
 
@@ -147,16 +147,16 @@ export default function OrdersManagementScreen() {
 
               {/* Bottom Row */}
               <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingTop: 8, borderTopWidth: 1, borderTopColor: c.border }}>
-                <Text style={{ fontSize: 11, color: c.textSecondary }}>
+                <Text style={{ fontSize: 14, color: c.textSecondary }}>
                   {new Date(order.created_at || order.createdAt).toLocaleString("en-IN", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}
                 </Text>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   {order.deliveryBoy ? (
-                    <Text style={{ fontSize: 11, color: c.textSecondary, marginRight: 12 }}>🏍️ {order.deliveryBoy.name}</Text>
+                    <Text style={{ fontSize: 14, color: c.textSecondary, marginRight: 12 }}>🏍️ {order.deliveryBoy.name}</Text>
                   ) : order.status !== "cancelled" && order.status !== "placed" ? (
-                    <Text style={{ fontSize: 11, color: "#F59E0B", marginRight: 12 }}>⚠️ No rider</Text>
+                    <Text style={{ fontSize: 14, color: "#F59E0B", marginRight: 12 }}>⚠️ No rider</Text>
                   ) : null}
-                  <Text style={{ fontSize: 15, fontWeight: "bold", color: c.primary }}>{CURRENCY_SYMBOL}{order.total}</Text>
+                  <Text style={{ fontSize: 16, fontWeight: "bold", color: c.primary }}>{CURRENCY_SYMBOL}{order.total}</Text>
                 </View>
               </View>
             </TouchableOpacity>
@@ -168,7 +168,7 @@ export default function OrdersManagementScreen() {
         ListEmptyComponent={
           <View style={{ alignItems: "center", paddingVertical: 48 }}>
             <Text style={{ fontSize: 48, marginBottom: 12 }}>📦</Text>
-            <Text style={{ fontSize: 17, fontWeight: "bold", color: c.text }}>No Orders</Text>
+            <Text style={{ fontSize: 18, fontWeight: "bold", color: c.text }}>No Orders</Text>
             <Text style={{ color: c.textSecondary, marginTop: 4 }}>
               {statusFilter ? "No orders with this status" : "Orders will appear here"}
             </Text>

@@ -50,7 +50,7 @@ export default function EmptyState({ type = "cart", title, subtitle, actionLabel
             onPress={onAction}
             activeOpacity={0.8}
           >
-            <Text style={{ color: "#fff", fontWeight: "bold", fontSize: 15, fontFamily: fonts.bold }}>{actionLabel}</Text>
+            <Text style={{ color: "#fff", fontWeight: "bold", fontSize: 16, fontFamily: fonts.bold }}>{actionLabel}</Text>
           </TouchableOpacity>
         ) : null}
       </Animated.View>

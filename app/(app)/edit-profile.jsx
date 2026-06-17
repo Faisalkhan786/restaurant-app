@@ -160,7 +160,7 @@ export default function EditProfileScreen() {
               borderRadius: 12,
               alignItems: "center",
               marginBottom: 24,
-              backgroundColor: isLoading ? "#FDBA74" : c.primary,
+              backgroundColor: isLoading ? "#A5B4FC" : c.primary,
             }}
             onPress={handleSave}
             disabled={isLoading}

@@ -50,16 +50,16 @@ export default function HomeScreen() {
       <ScrollView showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={isFetching && !isLoading} onRefresh={refetch} tintColor={c.primary} />}>
         {/* Header */}
         <View style={{ paddingHorizontal: 20, paddingTop: 16, paddingBottom: 8 }}>
-          <Text style={{ color: c.textSecondary, fontSize: 13, fontFamily: fonts.regular }}>Hello, {user?.name || "Guest"} 👋</Text>
-          <Text style={{ fontSize: 22, fontWeight: "bold", color: c.text, marginTop: 4, fontFamily: fonts.extrabold }}>What would you like to eat?</Text>
+          <Text style={{ color: c.textSecondary, fontSize: 14, fontFamily: fonts.regular }}>Hello, {user?.name || "Guest"} 👋</Text>
+          <Text style={{ fontSize: 24, fontWeight: "bold", color: c.text, marginTop: 4, fontFamily: fonts.extrabold }}>What would you like to eat?</Text>
         </View>
 
         {/* Search */}
         <View style={{ paddingHorizontal: 20, marginTop: 12, marginBottom: 16 }}>
           <View style={{ backgroundColor: c.inputBg, borderRadius: 12, flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingVertical: 12 }}>
-            <Text style={{ marginRight: 8, fontSize: 17 }}>🔍</Text>
+            <Text style={{ marginRight: 8, fontSize: 18 }}>🔍</Text>
             <TextInput
-              style={{ flex: 1, fontSize: 15, color: c.text, fontFamily: fonts.regular }}
+              style={{ flex: 1, fontSize: 16, color: c.text, fontFamily: fonts.regular }}
               placeholder="Search dishes..."
               placeholderTextColor={c.textSecondary}
               value={searchQuery}
@@ -67,7 +67,7 @@ export default function HomeScreen() {
             />
             {searchQuery ? (
               <TouchableOpacity onPress={() => setSearchQuery("")}>
-                <Text style={{ color: c.textSecondary, fontSize: 17 }}>✕</Text>
+                <Text style={{ color: c.textSecondary, fontSize: 18 }}>✕</Text>
               </TouchableOpacity>
             ) : null}
           </View>
@@ -75,7 +75,7 @@ export default function HomeScreen() {
 
         {debouncedSearch.trim() ? (
           <View style={{ paddingHorizontal: 20 }}>
-            <Text style={{ fontSize: 17, fontWeight: "bold", color: c.text, marginBottom: 12, fontFamily: fonts.bold }}>Results ({searchResults.length})</Text>
+            <Text style={{ fontSize: 18, fontWeight: "bold", color: c.text, marginBottom: 12, fontFamily: fonts.bold }}>Results ({searchResults.length})</Text>
             {searchResults.length === 0 ? (
               <EmptyState type="search" />
             ) : (
@@ -86,20 +86,20 @@ export default function HomeScreen() {
           <>
             {categories.length > 0 ? (
               <View style={{ marginBottom: 16 }}>
-                <Text style={{ fontSize: 17, fontWeight: "bold", color: c.text, paddingHorizontal: 20, marginBottom: 12, fontFamily: fonts.bold }}>Categories</Text>
+                <Text style={{ fontSize: 18, fontWeight: "bold", color: c.text, paddingHorizontal: 20, marginBottom: 12, fontFamily: fonts.bold }}>Categories</Text>
                 <FlatList data={categories} horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20 }} keyExtractor={(item) => item.id.toString()} renderItem={({ item }) => <CategoryCard category={item} onPress={() => handleCategoryPress(item)} />} />
               </View>
             ) : null}
 
             {featuredItems.length > 0 ? (
               <View style={{ marginBottom: 16 }}>
-                <Text style={{ fontSize: 17, fontWeight: "bold", color: c.text, paddingHorizontal: 20, marginBottom: 12, fontFamily: fonts.bold }}>⭐ Featured</Text>
+                <Text style={{ fontSize: 18, fontWeight: "bold", color: c.text, paddingHorizontal: 20, marginBottom: 12, fontFamily: fonts.bold }}>⭐ Featured</Text>
                 <FlatList data={featuredItems} horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20 }} keyExtractor={(item) => `featured-${item.id}`} renderItem={({ item }) => <FeaturedItemCard item={item} onPress={() => handleItemPress(item)} />} />
               </View>
             ) : null}
 
             <View style={{ paddingHorizontal: 20, marginBottom: 24 }}>
-              <Text style={{ fontSize: 17, fontWeight: "bold", color: c.text, marginBottom: 12, fontFamily: fonts.bold }}>🔥 Popular Items</Text>
+              <Text style={{ fontSize: 18, fontWeight: "bold", color: c.text, marginBottom: 12, fontFamily: fonts.bold }}>🔥 Popular Items</Text>
               {allItems.slice(0, 6).map((item) => <MenuItemCard key={item.id} item={item} onPress={() => handleItemPress(item)} onAddToCart={handleAddToCart} />)}
             </View>
           </>

@@ -13,11 +13,11 @@ function CartIcon({ color }) {
         <View
           style={{
             position: "absolute", top: -4, right: -8,
-            backgroundColor: "#FF6B35", borderRadius: 9,
+            backgroundColor: "#4F46E5", borderRadius: 9,
             minWidth: 18, height: 18, alignItems: "center", justifyContent: "center",
           }}
         >
-          <Text style={{ color: "#fff", fontSize: 10, fontWeight: "bold" }}>
+          <Text style={{ color: "#fff", fontSize: 12, fontWeight: "bold" }}>
             {totalItems > 99 ? "99+" : totalItems}
           </Text>
         </View>

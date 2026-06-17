@@ -312,7 +312,7 @@ export default function CheckoutScreen() {
             paddingVertical: 16,
             borderRadius: 12,
             alignItems: "center",
-            backgroundColor: isPlacing ? "#FDBA74" : c.primary,
+            backgroundColor: isPlacing ? "#A5B4FC" : c.primary,
           }}
           onPress={handlePlaceOrder}
           disabled={isPlacing}

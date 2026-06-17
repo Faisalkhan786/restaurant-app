@@ -46,7 +46,7 @@ function AddStaffModal({ visible, onClose, c }) {
 
   const inputStyle = {
     borderWidth: 1, borderColor: c.borderInput, borderRadius: 12,
-    paddingHorizontal: 16, paddingVertical: 12, fontSize: 15,
+    paddingHorizontal: 16, paddingVertical: 12, fontSize: 16,
     color: c.text, backgroundColor: c.inputBg, marginBottom: 12,
   };
 
@@ -62,7 +62,7 @@ function AddStaffModal({ visible, onClose, c }) {
           </View>
 
           {/* Role Picker */}
-          <Text style={{ fontSize: 13, fontWeight: "600", color: c.text, marginBottom: 8 }}>Role *</Text>
+          <Text style={{ fontSize: 14, fontWeight: "600", color: c.text, marginBottom: 8 }}>Role *</Text>
           <View style={{ flexDirection: "row", marginBottom: 16 }}>
             {[
               { key: "delivery_boy", label: "🏍️ Delivery Boy" },
@@ -81,20 +81,20 @@ function AddStaffModal({ visible, onClose, c }) {
             ))}
           </View>
 
-          <Text style={{ fontSize: 13, fontWeight: "600", color: c.text, marginBottom: 8 }}>Full Name *</Text>
+          <Text style={{ fontSize: 14, fontWeight: "600", color: c.text, marginBottom: 8 }}>Full Name *</Text>
           <TextInput style={inputStyle} placeholder="Enter name" placeholderTextColor={c.textSecondary} value={name} onChangeText={setName} autoCapitalize="words" />
 
-          <Text style={{ fontSize: 13, fontWeight: "600", color: c.text, marginBottom: 8 }}>Email *</Text>
+          <Text style={{ fontSize: 14, fontWeight: "600", color: c.text, marginBottom: 8 }}>Email *</Text>
           <TextInput style={inputStyle} placeholder="Enter email" placeholderTextColor={c.textSecondary} value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" />
 
-          <Text style={{ fontSize: 13, fontWeight: "600", color: c.text, marginBottom: 8 }}>Phone (optional)</Text>
+          <Text style={{ fontSize: 14, fontWeight: "600", color: c.text, marginBottom: 8 }}>Phone (optional)</Text>
           <TextInput style={inputStyle} placeholder="10-15 digit phone" placeholderTextColor={c.textSecondary} value={phone} onChangeText={setPhone} keyboardType="phone-pad" maxLength={15} />
 
-          <Text style={{ fontSize: 13, fontWeight: "600", color: c.text, marginBottom: 8 }}>Password *</Text>
+          <Text style={{ fontSize: 14, fontWeight: "600", color: c.text, marginBottom: 8 }}>Password *</Text>
           <TextInput style={inputStyle} placeholder="Min 6 characters" placeholderTextColor={c.textSecondary} value={password} onChangeText={setPassword} secureTextEntry />
 
           <TouchableOpacity
-            style={{ paddingVertical: 14, borderRadius: 12, alignItems: "center", backgroundColor: isLoading ? "#FDBA74" : c.primary, marginTop: 8 }}
+            style={{ paddingVertical: 14, borderRadius: 12, alignItems: "center", backgroundColor: isLoading ? "#A5B4FC" : c.primary, marginTop: 8 }}
             onPress={handleCreate}
             disabled={isLoading}
           >
@@ -122,8 +122,8 @@ export default function StaffScreen() {
       {/* Header */}
       <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingTop: 16, paddingBottom: 8 }}>
         <View>
-          <Text style={{ fontSize: 22, fontWeight: "bold", color: c.text }}>Staff</Text>
-          <Text style={{ fontSize: 13, color: c.textSecondary, marginTop: 2 }}>{staff.length} delivery partner{staff.length !== 1 ? "s" : ""}</Text>
+          <Text style={{ fontSize: 24, fontWeight: "bold", color: c.text }}>Staff</Text>
+          <Text style={{ fontSize: 14, color: c.textSecondary, marginTop: 2 }}>{staff.length} delivery partner{staff.length !== 1 ? "s" : ""}</Text>
         </View>
         <TouchableOpacity
           style={{ backgroundColor: c.primary, paddingHorizontal: 16, paddingVertical: 8, borderRadius: 10 }}
@@ -156,8 +156,8 @@ export default function StaffScreen() {
                     backgroundColor: boy.deliveryProfile?.is_available ? "#22C55E" : "#9CA3AF",
                   }} />
                 </View>
-                <Text style={{ fontSize: 13, color: c.textSecondary, marginTop: 2 }}>{boy.email}</Text>
-                {boy.phone ? <Text style={{ fontSize: 13, color: c.textSecondary, marginTop: 1 }}>📞 {boy.phone}</Text> : null}
+                <Text style={{ fontSize: 14, color: c.textSecondary, marginTop: 2 }}>{boy.email}</Text>
+                {boy.phone ? <Text style={{ fontSize: 14, color: c.textSecondary, marginTop: 1 }}>📞 {boy.phone}</Text> : null}
               </View>
             </View>
 
@@ -165,19 +165,19 @@ export default function StaffScreen() {
             <View style={{ flexDirection: "row", marginTop: 12, paddingTop: 12, borderTopWidth: 1, borderTopColor: c.border }}>
               <View style={{ flex: 1, alignItems: "center" }}>
                 <Text style={{ fontSize: 18, fontWeight: "bold", color: c.text }}>{boy.total_deliveries || 0}</Text>
-                <Text style={{ fontSize: 11, color: c.textSecondary, marginTop: 2 }}>Total Deliveries</Text>
+                <Text style={{ fontSize: 14, color: c.textSecondary, marginTop: 2 }}>Total Deliveries</Text>
               </View>
               <View style={{ width: 1, backgroundColor: c.border }} />
               <View style={{ flex: 1, alignItems: "center" }}>
                 <Text style={{ fontSize: 18, fontWeight: "bold", color: boy.active_orders > 0 ? "#F59E0B" : c.text }}>{boy.active_orders || 0}</Text>
-                <Text style={{ fontSize: 11, color: c.textSecondary, marginTop: 2 }}>Active Orders</Text>
+                <Text style={{ fontSize: 14, color: c.textSecondary, marginTop: 2 }}>Active Orders</Text>
               </View>
               <View style={{ width: 1, backgroundColor: c.border }} />
               <View style={{ flex: 1, alignItems: "center" }}>
                 <Text style={{ fontSize: 18, fontWeight: "bold", color: boy.deliveryProfile?.is_available ? "#22C55E" : "#9CA3AF" }}>
                   {boy.deliveryProfile?.is_available ? "Online" : "Offline"}
                 </Text>
-                <Text style={{ fontSize: 11, color: c.textSecondary, marginTop: 2 }}>Status</Text>
+                <Text style={{ fontSize: 14, color: c.textSecondary, marginTop: 2 }}>Status</Text>
               </View>
             </View>
 
@@ -192,7 +192,7 @@ export default function StaffScreen() {
         ListEmptyComponent={
           <View style={{ alignItems: "center", paddingVertical: 48 }}>
             <Text style={{ fontSize: 48, marginBottom: 12 }}>👥</Text>
-            <Text style={{ fontSize: 17, fontWeight: "bold", color: c.text }}>No Staff Yet</Text>
+            <Text style={{ fontSize: 18, fontWeight: "bold", color: c.text }}>No Staff Yet</Text>
             <Text style={{ color: c.textSecondary, marginTop: 4, textAlign: "center" }}>
               Add delivery partners to start assigning orders
             </Text>

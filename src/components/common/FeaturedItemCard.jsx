@@ -23,15 +23,15 @@ export default function FeaturedItemCard({ item, onPress }) {
         </LinearGradient>
       )}
       {/* Featured badge */}
-      <View style={{ position: "absolute", top: 10, left: 10, backgroundColor: "rgba(255,107,53,0.9)", paddingHorizontal: 8, paddingVertical: 3, borderRadius: 8 }}>
-        <Text style={{ color: "#fff", fontSize: 10, fontFamily: fonts.bold }}>⭐ FEATURED</Text>
+      <View style={{ position: "absolute", top: 10, left: 10, backgroundColor: "rgba(79,70,229,0.9)", paddingHorizontal: 8, paddingVertical: 3, borderRadius: 8 }}>
+        <Text style={{ color: "#fff", fontSize: 12, fontFamily: fonts.bold }}>⭐ FEATURED</Text>
       </View>
       <View style={{ padding: 14 }}>
         <Text style={{ fontSize: 14, fontFamily: fonts.bold, color: c.text }} numberOfLines={1}>{item.name}</Text>
-        {item.description ? <Text style={{ fontSize: 11, fontFamily: fonts.regular, color: c.textSecondary, marginTop: 4 }} numberOfLines={1}>{item.description}</Text> : null}
+        {item.description ? <Text style={{ fontSize: 14, fontFamily: fonts.regular, color: c.textSecondary, marginTop: 4 }} numberOfLines={1}>{item.description}</Text> : null}
         <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 10 }}>
-          <Text style={{ fontSize: 17, fontFamily: fonts.extrabold, color: c.primary }}>{CURRENCY_SYMBOL}{item.price}</Text>
-          {item.prep_time ? <Text style={{ fontSize: 11, fontFamily: fonts.medium, color: c.textSecondary }}>⏱ {item.prep_time}m</Text> : null}
+          <Text style={{ fontSize: 18, fontFamily: fonts.extrabold, color: c.primary }}>{CURRENCY_SYMBOL}{item.price}</Text>
+          {item.prep_time ? <Text style={{ fontSize: 14, fontFamily: fonts.medium, color: c.textSecondary }}>⏱ {item.prep_time}m</Text> : null}
         </View>
       </View>
     </TouchableOpacity>

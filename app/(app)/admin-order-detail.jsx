@@ -23,7 +23,7 @@ const NEXT_STATUS = {
   placed: [{ key: "confirmed", label: "Confirm Order", color: "#22C55E", icon: "✅" }],
   confirmed: [{ key: "preparing", label: "Start Preparing", color: "#3B82F6", icon: "👨‍🍳" }],
   preparing: [{ key: "ready", label: "Mark Ready", color: "#9333EA", icon: "📦" }],
-  ready: [{ key: "out_for_delivery", label: "Out for Delivery", color: "#EA580C", icon: "🚀" }],
+  ready: [{ key: "out_for_delivery", label: "Out for Delivery", color: "#4F46E5", icon: "🚀" }],
   out_for_delivery: [{ key: "delivered", label: "Mark Delivered", color: "#16A34A", icon: "🎉" }],
 };
 
@@ -112,7 +112,7 @@ export default function AdminOrderDetailScreen() {
 
         {/* Status Tracker */}
         <View style={{ paddingHorizontal: 20, marginTop: 8 }}>
-          <Text style={{ fontSize: 17, fontWeight: "bold", color: c.text, marginBottom: 12 }}>Order Status</Text>
+          <Text style={{ fontSize: 18, fontWeight: "bold", color: c.text, marginBottom: 12 }}>Order Status</Text>
           <OrderStatusTracker currentStatus={order.status} />
         </View>
 
@@ -140,7 +140,7 @@ export default function AdminOrderDetailScreen() {
         {/* Assign Rider */}
         {order.status !== "cancelled" && order.status !== "delivered" ? (
           <View style={{ paddingHorizontal: 20, marginTop: 16 }}>
-            <Text style={{ fontSize: 17, fontWeight: "bold", color: c.text, marginBottom: 12 }}>Delivery Partner</Text>
+            <Text style={{ fontSize: 18, fontWeight: "bold", color: c.text, marginBottom: 12 }}>Delivery Partner</Text>
             {order.deliveryBoy ? (
               <View style={{ backgroundColor: c.bgSecondary, borderRadius: 12, padding: 16, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -148,7 +148,7 @@ export default function AdminOrderDetailScreen() {
                     <Text style={{ color: "#fff", fontWeight: "bold" }}>{order.deliveryBoy.name?.[0]}</Text>
                   </View>
                   <View>
-                    <Text style={{ fontSize: 15, fontWeight: "bold", color: c.text }}>{order.deliveryBoy.name}</Text>
+                    <Text style={{ fontSize: 16, fontWeight: "bold", color: c.text }}>{order.deliveryBoy.name}</Text>
                     {order.deliveryBoy.phone ? <Text style={{ fontSize: 12, color: c.textSecondary }}>📞 {order.deliveryBoy.phone}</Text> : null}
                   </View>
                 </View>
@@ -156,7 +156,7 @@ export default function AdminOrderDetailScreen() {
                   style={{ paddingHorizontal: 12, paddingVertical: 6, borderRadius: 8, backgroundColor: c.bg }}
                   onPress={() => setRiderModal(true)}
                 >
-                  <Text style={{ fontSize: 13, fontWeight: "600", color: c.primary }}>Change</Text>
+                  <Text style={{ fontSize: 14, fontWeight: "600", color: c.primary }}>Change</Text>
                 </TouchableOpacity>
               </View>
             ) : (
@@ -164,7 +164,7 @@ export default function AdminOrderDetailScreen() {
                 style={{ borderWidth: 2, borderStyle: "dashed", borderColor: c.borderInput, borderRadius: 12, padding: 16, alignItems: "center" }}
                 onPress={() => setRiderModal(true)}
               >
-                <Text style={{ color: c.primary, fontWeight: "600", fontSize: 15 }}>🏍️ Assign Delivery Partner</Text>
+                <Text style={{ color: c.primary, fontWeight: "600", fontSize: 16 }}>🏍️ Assign Delivery Partner</Text>
               </TouchableOpacity>
             )}
           </View>
@@ -172,18 +172,18 @@ export default function AdminOrderDetailScreen() {
 
         {/* Customer Info */}
         <View style={{ paddingHorizontal: 20, marginTop: 20 }}>
-          <Text style={{ fontSize: 17, fontWeight: "bold", color: c.text, marginBottom: 12 }}>Customer</Text>
+          <Text style={{ fontSize: 18, fontWeight: "bold", color: c.text, marginBottom: 12 }}>Customer</Text>
           <View style={{ backgroundColor: c.bgSecondary, borderRadius: 12, padding: 16 }}>
-            <Text style={{ fontSize: 15, fontWeight: "bold", color: c.text }}>{order.customer?.name || "Customer"}</Text>
-            {order.customer?.email ? <Text style={{ fontSize: 13, color: c.textSecondary, marginTop: 4 }}>📧 {order.customer.email}</Text> : null}
-            {order.customer?.phone ? <Text style={{ fontSize: 13, color: c.textSecondary, marginTop: 2 }}>📞 {order.customer.phone}</Text> : null}
+            <Text style={{ fontSize: 16, fontWeight: "bold", color: c.text }}>{order.customer?.name || "Customer"}</Text>
+            {order.customer?.email ? <Text style={{ fontSize: 14, color: c.textSecondary, marginTop: 4 }}>📧 {order.customer.email}</Text> : null}
+            {order.customer?.phone ? <Text style={{ fontSize: 14, color: c.textSecondary, marginTop: 2 }}>📞 {order.customer.phone}</Text> : null}
           </View>
         </View>
 
         {/* Delivery Address */}
         {order.deliveryAddress ? (
           <View style={{ paddingHorizontal: 20, marginTop: 20 }}>
-            <Text style={{ fontSize: 17, fontWeight: "bold", color: c.text, marginBottom: 12 }}>Delivery Address</Text>
+            <Text style={{ fontSize: 18, fontWeight: "bold", color: c.text, marginBottom: 12 }}>Delivery Address</Text>
             <View style={{ backgroundColor: c.bgSecondary, borderRadius: 12, padding: 16 }}>
               <Text style={{ fontSize: 14, fontWeight: "bold", color: c.text }}>{order.deliveryAddress.label}</Text>
               <Text style={{ fontSize: 14, color: c.textMuted, marginTop: 4 }}>{order.deliveryAddress.full_address}</Text>
@@ -199,7 +199,7 @@ export default function AdminOrderDetailScreen() {
         {/* Delivery Notes */}
         {order.delivery_notes ? (
           <View style={{ paddingHorizontal: 20, marginTop: 20 }}>
-            <Text style={{ fontSize: 17, fontWeight: "bold", color: c.text, marginBottom: 12 }}>Delivery Notes</Text>
+            <Text style={{ fontSize: 18, fontWeight: "bold", color: c.text, marginBottom: 12 }}>Delivery Notes</Text>
             <View style={{ backgroundColor: c.primaryLight, borderRadius: 12, padding: 16 }}>
               <Text style={{ fontSize: 14, color: c.text }}>{order.delivery_notes}</Text>
             </View>
@@ -208,7 +208,7 @@ export default function AdminOrderDetailScreen() {
 
         {/* Order Items */}
         <View style={{ paddingHorizontal: 20, marginTop: 20 }}>
-          <Text style={{ fontSize: 17, fontWeight: "bold", color: c.text, marginBottom: 12 }}>Items</Text>
+          <Text style={{ fontSize: 18, fontWeight: "bold", color: c.text, marginBottom: 12 }}>Items</Text>
           <View style={{ backgroundColor: c.bgSecondary, borderRadius: 12, padding: 16 }}>
             {order.items?.map((item) => (
               <View key={item.id} style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 12, paddingBottom: 12, borderBottomWidth: 1, borderBottomColor: c.border }}>
@@ -226,7 +226,7 @@ export default function AdminOrderDetailScreen() {
 
         {/* Bill */}
         <View style={{ paddingHorizontal: 20, marginTop: 20 }}>
-          <Text style={{ fontSize: 17, fontWeight: "bold", color: c.text, marginBottom: 12 }}>Bill Summary</Text>
+          <Text style={{ fontSize: 18, fontWeight: "bold", color: c.text, marginBottom: 12 }}>Bill Summary</Text>
           <View style={{ backgroundColor: c.bgSecondary, borderRadius: 12, padding: 16 }}>
             <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 6 }}>
               <Text style={{ fontSize: 14, color: c.textSecondary }}>Subtotal</Text>
@@ -251,8 +251,8 @@ export default function AdminOrderDetailScreen() {
               <Text style={{ fontSize: 16, fontWeight: "bold", color: c.primary }}>{CURRENCY_SYMBOL}{order.total}</Text>
             </View>
             <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 8 }}>
-              <Text style={{ fontSize: 13, color: c.textSecondary }}>Payment</Text>
-              <Text style={{ fontSize: 13, fontWeight: "600", color: c.text }}>{order.payment_method === "COD" ? "💵 COD" : "📱 Online"} • {order.payment_status}</Text>
+              <Text style={{ fontSize: 14, color: c.textSecondary }}>Payment</Text>
+              <Text style={{ fontSize: 14, fontWeight: "600", color: c.text }}>{order.payment_method === "COD" ? "💵 COD" : "📱 Online"} • {order.payment_status}</Text>
             </View>
           </View>
         </View>
@@ -264,7 +264,7 @@ export default function AdminOrderDetailScreen() {
               style={{ borderWidth: 1, borderColor: "#EF4444", borderRadius: 12, paddingVertical: 14, alignItems: "center" }}
               onPress={handleCancel}
             >
-              <Text style={{ color: "#EF4444", fontWeight: "bold", fontSize: 15 }}>Cancel Order</Text>
+              <Text style={{ color: "#EF4444", fontWeight: "bold", fontSize: 16 }}>Cancel Order</Text>
             </TouchableOpacity>
           </View>
         ) : null}
@@ -298,12 +298,12 @@ export default function AdminOrderDetailScreen() {
                       <Text style={{ color: "#fff", fontWeight: "bold", fontSize: 16 }}>{boy.name?.[0]}</Text>
                     </View>
                     <View style={{ flex: 1 }}>
-                      <Text style={{ fontSize: 15, fontWeight: "bold", color: c.text }}>{boy.name}</Text>
+                      <Text style={{ fontSize: 16, fontWeight: "bold", color: c.text }}>{boy.name}</Text>
                       <Text style={{ fontSize: 12, color: c.textSecondary }}>{boy.phone || boy.email}</Text>
                     </View>
                     <View style={{ alignItems: "flex-end" }}>
                       <View style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: boy.deliveryProfile?.is_available ? "#22C55E" : "#9CA3AF", marginBottom: 4 }} />
-                      <Text style={{ fontSize: 11, color: c.textSecondary }}>{boy.active_orders || 0} active</Text>
+                      <Text style={{ fontSize: 14, color: c.textSecondary }}>{boy.active_orders || 0} active</Text>
                     </View>
                   </TouchableOpacity>
                 )}

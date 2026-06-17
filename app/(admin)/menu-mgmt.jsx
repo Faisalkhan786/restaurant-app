@@ -62,23 +62,23 @@ function CategoryModal({ visible, onClose, category, c }) {
             {isEdit ? "Edit Category" : "Add Category"}
           </Text>
 
-          <Text style={{ fontSize: 13, fontWeight: "600", color: c.text, marginBottom: 8 }}>Category Image</Text>
+          <Text style={{ fontSize: 14, fontWeight: "600", color: c.text, marginBottom: 8 }}>Category Image</Text>
           <View style={{ marginBottom: 16 }}>
             <ImagePickerBox imageUri={imageUri} onImagePicked={setImageUri} height={120} label="Tap to add category photo" />
           </View>
 
-          <Text style={{ fontSize: 13, fontWeight: "600", color: c.text, marginBottom: 8 }}>Name *</Text>
+          <Text style={{ fontSize: 14, fontWeight: "600", color: c.text, marginBottom: 8 }}>Name *</Text>
           <TextInput
-            style={{ borderWidth: 1, borderColor: c.borderInput, borderRadius: 12, paddingHorizontal: 16, paddingVertical: 12, fontSize: 15, color: c.text, backgroundColor: c.inputBg, marginBottom: 16 }}
+            style={{ borderWidth: 1, borderColor: c.borderInput, borderRadius: 12, paddingHorizontal: 16, paddingVertical: 12, fontSize: 16, color: c.text, backgroundColor: c.inputBg, marginBottom: 16 }}
             placeholder="Category name"
             placeholderTextColor={c.textSecondary}
             value={name}
             onChangeText={setName}
           />
 
-          <Text style={{ fontSize: 13, fontWeight: "600", color: c.text, marginBottom: 8 }}>Sort Order</Text>
+          <Text style={{ fontSize: 14, fontWeight: "600", color: c.text, marginBottom: 8 }}>Sort Order</Text>
           <TextInput
-            style={{ borderWidth: 1, borderColor: c.borderInput, borderRadius: 12, paddingHorizontal: 16, paddingVertical: 12, fontSize: 15, color: c.text, backgroundColor: c.inputBg, marginBottom: 24 }}
+            style={{ borderWidth: 1, borderColor: c.borderInput, borderRadius: 12, paddingHorizontal: 16, paddingVertical: 12, fontSize: 16, color: c.text, backgroundColor: c.inputBg, marginBottom: 24 }}
             placeholder="0"
             placeholderTextColor={c.textSecondary}
             value={sortOrder}
@@ -88,14 +88,14 @@ function CategoryModal({ visible, onClose, category, c }) {
 
           <View style={{ flexDirection: "row" }}>
             <TouchableOpacity style={{ flex: 1, paddingVertical: 14, borderRadius: 12, alignItems: "center", backgroundColor: c.bgSecondary, marginRight: 8 }} onPress={onClose}>
-              <Text style={{ fontWeight: "bold", color: c.text, fontSize: 15 }}>Cancel</Text>
+              <Text style={{ fontWeight: "bold", color: c.text, fontSize: 16 }}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={{ flex: 1, paddingVertical: 14, borderRadius: 12, alignItems: "center", backgroundColor: isLoading ? "#FDBA74" : c.primary, marginLeft: 8 }}
+              style={{ flex: 1, paddingVertical: 14, borderRadius: 12, alignItems: "center", backgroundColor: isLoading ? "#A5B4FC" : c.primary, marginLeft: 8 }}
               onPress={handleSave}
               disabled={isLoading}
             >
-              {isLoading ? <ActivityIndicator color="#fff" /> : <Text style={{ fontWeight: "bold", color: "#fff", fontSize: 15 }}>Save</Text>}
+              {isLoading ? <ActivityIndicator color="#fff" /> : <Text style={{ fontWeight: "bold", color: "#fff", fontSize: 16 }}>Save</Text>}
             </TouchableOpacity>
           </View>
         </View>
@@ -158,7 +158,7 @@ export default function MenuManagementScreen() {
     <SafeAreaView style={{ flex: 1, backgroundColor: c.bg }}>
       {/* Header */}
       <View style={{ paddingHorizontal: 20, paddingTop: 16, paddingBottom: 8 }}>
-        <Text style={{ fontSize: 22, fontWeight: "bold", color: c.text }}>Menu Management</Text>
+        <Text style={{ fontSize: 24, fontWeight: "bold", color: c.text }}>Menu Management</Text>
       </View>
 
       {/* Tab Switcher */}
@@ -193,13 +193,13 @@ export default function MenuManagementScreen() {
                       style={{ paddingHorizontal: 12, paddingVertical: 6, borderRadius: 8, backgroundColor: c.bgSecondary, marginRight: 8 }}
                       onPress={() => setCategoryModal({ visible: true, category: item })}
                     >
-                      <Text style={{ fontSize: 13, fontWeight: "600", color: c.primary }}>Edit</Text>
+                      <Text style={{ fontSize: 14, fontWeight: "600", color: c.primary }}>Edit</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                       style={{ paddingHorizontal: 12, paddingVertical: 6, borderRadius: 8, backgroundColor: "#FEE2E2" }}
                       onPress={() => handleDeleteCategory(item.id, item.name)}
                     >
-                      <Text style={{ fontSize: 13, fontWeight: "600", color: "#EF4444" }}>Delete</Text>
+                      <Text style={{ fontSize: 14, fontWeight: "600", color: "#EF4444" }}>Delete</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -208,7 +208,7 @@ export default function MenuManagementScreen() {
             ListEmptyComponent={
               <View style={{ alignItems: "center", paddingVertical: 48 }}>
                 <Text style={{ fontSize: 36, marginBottom: 12 }}>📂</Text>
-                <Text style={{ color: c.textSecondary, fontSize: 15 }}>No categories yet</Text>
+                <Text style={{ color: c.textSecondary, fontSize: 16 }}>No categories yet</Text>
               </View>
             }
           />
@@ -242,7 +242,7 @@ export default function MenuManagementScreen() {
                   style={{ paddingHorizontal: 16, paddingVertical: 8, marginRight: 8, borderRadius: 20, backgroundColor: selectedCategoryId === item.id ? c.primary : c.bgSecondary }}
                   onPress={() => setSelectedCategoryId(item.id)}
                 >
-                  <Text style={{ fontSize: 13, fontWeight: "600", color: selectedCategoryId === item.id ? "#fff" : c.textMuted }}>{item.name}</Text>
+                  <Text style={{ fontSize: 14, fontWeight: "600", color: selectedCategoryId === item.id ? "#fff" : c.textMuted }}>{item.name}</Text>
                 </TouchableOpacity>
               )}
             />
@@ -261,12 +261,12 @@ export default function MenuManagementScreen() {
                 <View style={{ backgroundColor: c.card, borderRadius: 16, padding: 16, marginBottom: 12, borderWidth: 1, borderColor: c.border }}>
                   <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
                     <View style={{ flex: 1, marginRight: 12 }}>
-                      <Text style={{ fontSize: 15, fontWeight: "bold", color: c.text }}>{item.name}</Text>
-                      <Text style={{ fontSize: 13, color: c.primary, fontWeight: "bold", marginTop: 4 }}>{CURRENCY_SYMBOL}{item.price}</Text>
+                      <Text style={{ fontSize: 16, fontWeight: "bold", color: c.text }}>{item.name}</Text>
+                      <Text style={{ fontSize: 14, color: c.primary, fontWeight: "bold", marginTop: 4 }}>{CURRENCY_SYMBOL}{item.price}</Text>
                       {item.description ? <Text style={{ fontSize: 12, color: c.textSecondary, marginTop: 4 }} numberOfLines={1}>{item.description}</Text> : null}
                       <View style={{ flexDirection: "row", alignItems: "center", marginTop: 6 }}>
-                        {item.is_featured ? <View style={{ backgroundColor: "#FDE68A", paddingHorizontal: 8, paddingVertical: 2, borderRadius: 8, marginRight: 8 }}><Text style={{ fontSize: 10, fontWeight: "bold" }}>⭐ Featured</Text></View> : null}
-                        {item.prep_time ? <Text style={{ fontSize: 11, color: c.textSecondary }}>⏱️ {item.prep_time}m</Text> : null}
+                        {item.is_featured ? <View style={{ backgroundColor: "#E0E7FF", paddingHorizontal: 8, paddingVertical: 2, borderRadius: 8, marginRight: 8 }}><Text style={{ fontSize: 12, fontWeight: "bold" }}>⭐ Featured</Text></View> : null}
+                        {item.prep_time ? <Text style={{ fontSize: 14, color: c.textSecondary }}>⏱️ {item.prep_time}m</Text> : null}
                       </View>
                     </View>
                     <View style={{ alignItems: "center" }}>
@@ -276,7 +276,7 @@ export default function MenuManagementScreen() {
                         trackColor={{ false: "#E0E0E0", true: "#86EFAC" }}
                         thumbColor={item.is_available ? "#22C55E" : "#9CA3AF"}
                       />
-                      <Text style={{ fontSize: 10, color: item.is_available ? "#22C55E" : "#EF4444", marginTop: 2 }}>
+                      <Text style={{ fontSize: 12, color: item.is_available ? "#22C55E" : "#EF4444", marginTop: 2 }}>
                         {item.is_available ? "Available" : "Unavailable"}
                       </Text>
                     </View>
@@ -288,13 +288,13 @@ export default function MenuManagementScreen() {
                       style={{ flex: 1, paddingVertical: 8, borderRadius: 8, alignItems: "center", backgroundColor: c.bgSecondary, marginRight: 8 }}
                       onPress={() => router.push(`/(app)/admin-item-form?id=${item.id}`)}
                     >
-                      <Text style={{ fontSize: 13, fontWeight: "600", color: c.primary }}>Edit</Text>
+                      <Text style={{ fontSize: 14, fontWeight: "600", color: c.primary }}>Edit</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                       style={{ flex: 1, paddingVertical: 8, borderRadius: 8, alignItems: "center", backgroundColor: "#FEE2E2", marginLeft: 8 }}
                       onPress={() => handleDeleteItem(item.id, item.name)}
                     >
-                      <Text style={{ fontSize: 13, fontWeight: "600", color: "#EF4444" }}>Delete</Text>
+                      <Text style={{ fontSize: 14, fontWeight: "600", color: "#EF4444" }}>Delete</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -302,7 +302,7 @@ export default function MenuManagementScreen() {
               ListEmptyComponent={
                 <View style={{ alignItems: "center", paddingVertical: 48 }}>
                   <Text style={{ fontSize: 36, marginBottom: 12 }}>🍔</Text>
-                  <Text style={{ color: c.textSecondary, fontSize: 15 }}>No items found</Text>
+                  <Text style={{ color: c.textSecondary, fontSize: 16 }}>No items found</Text>
                 </View>
               }
             />

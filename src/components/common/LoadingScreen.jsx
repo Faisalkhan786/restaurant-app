@@ -6,7 +6,7 @@ export default function LoadingScreen({ message = "Loading..." }) {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: c.bg }}>
       <ActivityIndicator size="large" color={c.primary} />
-      <Text style={{ color: c.textSecondary, marginTop: 12, fontSize: 13 }}>{message}</Text>
+      <Text style={{ color: c.textSecondary, marginTop: 12, fontSize: 14 }}>{message}</Text>
     </View>
   );
 }

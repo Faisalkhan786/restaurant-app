@@ -8,7 +8,7 @@
     "userInterfaceStyle": "light",
     "scheme": "restaurant-app",
     "splash": {
-      "backgroundColor": "#FF6B35",
+      "backgroundColor": "#4F46E5",
       "resizeMode": "contain"
     },
     "ios": {
@@ -17,7 +17,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#FF6B35",
+        "backgroundColor": "#4F46E5",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"

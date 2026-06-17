@@ -52,7 +52,7 @@ export default function CategoryDetailScreen() {
           <Text style={{ fontSize: 20, fontFamily: fonts.bold, color: c.text }}>
             {category?.name || "Category"}
           </Text>
-          <Text style={{ fontSize: 13, fontFamily: fonts.regular, color: c.textSecondary, marginTop: 2 }}>
+          <Text style={{ fontSize: 14, fontFamily: fonts.regular, color: c.textSecondary, marginTop: 2 }}>
             {items.length} item{items.length !== 1 ? "s" : ""} available
           </Text>
         </View>

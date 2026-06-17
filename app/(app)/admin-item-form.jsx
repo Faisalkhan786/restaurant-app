@@ -120,7 +120,7 @@ export default function AdminItemFormScreen() {
 
   const inputStyle = {
     borderWidth: 1, borderColor: c.borderInput, borderRadius: 12,
-    paddingHorizontal: 16, paddingVertical: 12, fontSize: 15,
+    paddingHorizontal: 16, paddingVertical: 12, fontSize: 16,
     color: c.text, backgroundColor: c.inputBg,
   };
 
@@ -135,18 +135,18 @@ export default function AdminItemFormScreen() {
           >
             <Ionicons name="chevron-back" size={22} color={c.text} />
           </TouchableOpacity>
-          <Text style={{ fontSize: 22, fontWeight: "bold", color: c.text, fontFamily: fonts.bold, marginLeft: 12 }}>{isEdit ? "Edit Item" : "Add Item"}</Text>
+          <Text style={{ fontSize: 24, fontWeight: "bold", color: c.text, fontFamily: fonts.bold, marginLeft: 12 }}>{isEdit ? "Edit Item" : "Add Item"}</Text>
         </View>
 
         <View style={{ paddingHorizontal: 20 }}>
           {/* Image Picker */}
-          <Text style={{ fontSize: 13, fontFamily: fonts.semibold, color: c.text, marginBottom: 8 }}>Item Photo</Text>
+          <Text style={{ fontSize: 14, fontFamily: fonts.semibold, color: c.text, marginBottom: 8 }}>Item Photo</Text>
           <View style={{ marginBottom: 20 }}>
             <ImagePickerBox imageUri={imageUri} onImagePicked={setImageUri} height={180} label="Tap to add item photo" />
           </View>
 
           {/* Category Picker */}
-          <Text style={{ fontSize: 13, fontWeight: "600", color: c.text, marginBottom: 8 }}>Category *</Text>
+          <Text style={{ fontSize: 14, fontWeight: "600", color: c.text, marginBottom: 8 }}>Category *</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 16 }}>
             {categories.map((cat) => (
               <TouchableOpacity
@@ -154,27 +154,27 @@ export default function AdminItemFormScreen() {
                 style={{ paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20, marginRight: 8, backgroundColor: categoryId === cat.id.toString() ? c.primary : c.bgSecondary }}
                 onPress={() => setCategoryId(cat.id.toString())}
               >
-                <Text style={{ fontSize: 13, fontWeight: "600", color: categoryId === cat.id.toString() ? "#fff" : c.textMuted }}>{cat.name}</Text>
+                <Text style={{ fontSize: 14, fontWeight: "600", color: categoryId === cat.id.toString() ? "#fff" : c.textMuted }}>{cat.name}</Text>
               </TouchableOpacity>
             ))}
           </ScrollView>
 
           {/* Name */}
-          <Text style={{ fontSize: 13, fontWeight: "600", color: c.text, marginBottom: 8 }}>Name *</Text>
+          <Text style={{ fontSize: 14, fontWeight: "600", color: c.text, marginBottom: 8 }}>Name *</Text>
           <TextInput style={{ ...inputStyle, marginBottom: 16 }} placeholder="Item name" placeholderTextColor={c.textSecondary} value={name} onChangeText={setName} />
 
           {/* Description */}
-          <Text style={{ fontSize: 13, fontWeight: "600", color: c.text, marginBottom: 8 }}>Description</Text>
+          <Text style={{ fontSize: 14, fontWeight: "600", color: c.text, marginBottom: 8 }}>Description</Text>
           <TextInput style={{ ...inputStyle, marginBottom: 16, minHeight: 80, textAlignVertical: "top" }} placeholder="Item description" placeholderTextColor={c.textSecondary} value={description} onChangeText={setDescription} multiline />
 
           {/* Price & Prep Time */}
           <View style={{ flexDirection: "row", marginBottom: 16 }}>
             <View style={{ flex: 1, marginRight: 8 }}>
-              <Text style={{ fontSize: 13, fontWeight: "600", color: c.text, marginBottom: 8 }}>Price ({CURRENCY_SYMBOL}) *</Text>
+              <Text style={{ fontSize: 14, fontWeight: "600", color: c.text, marginBottom: 8 }}>Price ({CURRENCY_SYMBOL}) *</Text>
               <TextInput style={inputStyle} placeholder="0.00" placeholderTextColor={c.textSecondary} value={price} onChangeText={setPrice} keyboardType="decimal-pad" />
             </View>
             <View style={{ flex: 1, marginLeft: 8 }}>
-              <Text style={{ fontSize: 13, fontWeight: "600", color: c.text, marginBottom: 8 }}>Prep Time (min)</Text>
+              <Text style={{ fontSize: 14, fontWeight: "600", color: c.text, marginBottom: 8 }}>Prep Time (min)</Text>
               <TextInput style={inputStyle} placeholder="e.g. 15" placeholderTextColor={c.textSecondary} value={prepTime} onChangeText={setPrepTime} keyboardType="number-pad" />
             </View>
           </View>
@@ -187,7 +187,7 @@ export default function AdminItemFormScreen() {
             </View>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text style={{ fontSize: 14, color: c.text, marginRight: 8 }}>⭐ Featured</Text>
-              <Switch value={isFeatured} onValueChange={setIsFeatured} trackColor={{ false: "#E0E0E0", true: "#FDE68A" }} thumbColor={isFeatured ? "#F59E0B" : "#9CA3AF"} />
+              <Switch value={isFeatured} onValueChange={setIsFeatured} trackColor={{ false: "#E0E0E0", true: "#C7D2FE" }} thumbColor={isFeatured ? "#4F46E5" : "#9CA3AF"} />
             </View>
           </View>
 
@@ -253,12 +253,12 @@ export default function AdminItemFormScreen() {
 
           {/* Save Button */}
           <TouchableOpacity
-            style={{ paddingVertical: 16, borderRadius: 12, alignItems: "center", marginBottom: 32, backgroundColor: isLoading ? "#FDBA74" : c.primary }}
+            style={{ paddingVertical: 16, borderRadius: 12, alignItems: "center", marginBottom: 32, backgroundColor: isLoading ? "#A5B4FC" : c.primary }}
             onPress={handleSave}
             disabled={isLoading}
             activeOpacity={0.8}
           >
-            {isLoading ? <ActivityIndicator color="#fff" /> : <Text style={{ color: "#fff", fontWeight: "bold", fontSize: 17 }}>{isEdit ? "Update Item" : "Add Item"}</Text>}
+            {isLoading ? <ActivityIndicator color="#fff" /> : <Text style={{ color: "#fff", fontWeight: "bold", fontSize: 18 }}>{isEdit ? "Update Item" : "Add Item"}</Text>}
           </TouchableOpacity>
         </View>
       </ScrollView>

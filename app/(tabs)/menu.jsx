@@ -40,7 +40,7 @@ export default function MenuScreen() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: c.bg }}>
       <View style={{ paddingHorizontal: 20, paddingTop: 16, paddingBottom: 12 }}>
-        <Text style={{ fontSize: 22, fontWeight: "bold", color: c.text, fontFamily: fonts.extrabold }}>Our Menu</Text>
+        <Text style={{ fontSize: 24, fontWeight: "bold", color: c.text, fontFamily: fonts.extrabold }}>Our Menu</Text>
       </View>
 
       {/* Category Tabs */}
@@ -60,7 +60,7 @@ export default function MenuScreen() {
               onPress={() => setActiveCategoryId(item.id)}
               activeOpacity={0.7}
             >
-              <Text style={{ fontSize: 13, fontWeight: "600", color: selectedCategoryId === item.id ? "#fff" : c.textMuted, fontFamily: fonts.semibold }}>
+              <Text style={{ fontSize: 14, fontWeight: "600", color: selectedCategoryId === item.id ? "#fff" : c.textMuted, fontFamily: fonts.semibold }}>
                 {item.name}
               </Text>
             </TouchableOpacity>

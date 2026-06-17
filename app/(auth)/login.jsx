@@ -100,7 +100,7 @@ export default function LoginScreen() {
                 </LinearGradient>
               </View>
               <Text style={{ fontSize: 30, fontFamily: fonts.extrabold, color: c.text, marginTop: 20 }}>Welcome Back</Text>
-              <Text style={{ fontSize: 15, fontFamily: fonts.regular, color: c.textSecondary, marginTop: 6 }}>
+              <Text style={{ fontSize: 16, fontFamily: fonts.regular, color: c.textSecondary, marginTop: 6 }}>
                 Sign in to your account
               </Text>
             </Animated.View>
@@ -109,7 +109,7 @@ export default function LoginScreen() {
             <Animated.View style={{ opacity: formOpacity, transform: [{ translateY: formSlide }] }}>
               {/* Email */}
               <View style={{ marginBottom: 18 }}>
-                <Text style={{ fontSize: 13, fontFamily: fonts.semibold, color: c.textMuted, marginBottom: 8, marginLeft: 4 }}>EMAIL</Text>
+                <Text style={{ fontSize: 14, fontFamily: fonts.semibold, color: c.textMuted, marginBottom: 8, marginLeft: 4 }}>EMAIL</Text>
                 <TextInput
                   style={inputContainer("email")}
                   placeholder="your@email.com"
@@ -125,7 +125,7 @@ export default function LoginScreen() {
 
               {/* Password */}
               <View style={{ marginBottom: 10 }}>
-                <Text style={{ fontSize: 13, fontFamily: fonts.semibold, color: c.textMuted, marginBottom: 8, marginLeft: 4 }}>PASSWORD</Text>
+                <Text style={{ fontSize: 14, fontFamily: fonts.semibold, color: c.textMuted, marginBottom: 8, marginLeft: 4 }}>PASSWORD</Text>
                 <View style={{ position: "relative" }}>
                   <TextInput
                     style={{ ...inputContainer("password"), paddingRight: 70 }}
@@ -141,7 +141,7 @@ export default function LoginScreen() {
                     style={{ position: "absolute", right: 18, top: 16 }}
                     onPress={() => setShowPassword(!showPassword)}
                   >
-                    <Text style={{ color: c.primary, fontFamily: fonts.semibold, fontSize: 13 }}>
+                    <Text style={{ color: c.primary, fontFamily: fonts.semibold, fontSize: 14 }}>
                       {showPassword ? "HIDE" : "SHOW"}
                     </Text>
                   </TouchableOpacity>
@@ -149,14 +149,14 @@ export default function LoginScreen() {
               </View>
 
               {/* Forgot */}
-              <TouchableOpacity style={{ alignSelf: "flex-end", marginBottom: 28 }}>
-                <Text style={{ color: c.primary, fontFamily: fonts.semibold, fontSize: 13 }}>Forgot Password?</Text>
+              <TouchableOpacity style={{ alignSelf: "flex-end", marginBottom: 28 }} onPress={() => router.push("/(auth)/forgot-password")}>
+                <Text style={{ color: c.primary, fontFamily: fonts.semibold, fontSize: 14 }}>Forgot Password?</Text>
               </TouchableOpacity>
 
               {/* Login Button */}
               <TouchableOpacity onPress={handleLogin} disabled={isLoginLoading} activeOpacity={0.85}>
                 <LinearGradient
-                  colors={isLoginLoading ? ["#FDBA74", "#FDBA74"] : c.gradient.primary}
+                  colors={isLoginLoading ? ["#A5B4FC", "#A5B4FC"] : c.gradient.primary}
                   start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
                   style={{
                     borderRadius: 16, paddingVertical: 18, alignItems: "center",
@@ -166,18 +166,18 @@ export default function LoginScreen() {
                   {isLoginLoading ? (
                     <ActivityIndicator color="#fff" />
                   ) : (
-                    <Text style={{ color: "#fff", fontSize: 17, fontFamily: fonts.bold, letterSpacing: 0.5 }}>Sign In</Text>
+                    <Text style={{ color: "#fff", fontSize: 18, fontFamily: fonts.bold, letterSpacing: 0.5 }}>Sign In</Text>
                   )}
                 </LinearGradient>
               </TouchableOpacity>
 
               {/* Register Link */}
               <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 28 }}>
-                <Text style={{ color: c.textSecondary, fontSize: 15, fontFamily: fonts.regular }}>
+                <Text style={{ color: c.textSecondary, fontSize: 16, fontFamily: fonts.regular }}>
                   Don't have an account?{" "}
                 </Text>
                 <TouchableOpacity onPress={() => router.push("/(auth)/register")}>
-                  <Text style={{ color: c.primary, fontFamily: fonts.bold, fontSize: 15 }}>Sign Up</Text>
+                  <Text style={{ color: c.primary, fontFamily: fonts.bold, fontSize: 16 }}>Sign Up</Text>
                 </TouchableOpacity>
               </View>
             </Animated.View>

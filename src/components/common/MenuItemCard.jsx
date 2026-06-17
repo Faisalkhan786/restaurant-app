@@ -33,14 +33,14 @@ export default function MenuItemCard({ item, onPress, onAddToCart }) {
         </View>
         <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 8 }}>
           <Text style={{ fontSize: 18, fontFamily: fonts.extrabold, color: c.primary }}>{CURRENCY_SYMBOL}{item.price}</Text>
-          {item.prep_time ? <Text style={{ fontSize: 11, fontFamily: fonts.medium, color: c.textSecondary }}>⏱ {item.prep_time}m</Text> : null}
+          {item.prep_time ? <Text style={{ fontSize: 14, fontFamily: fonts.medium, color: c.textSecondary }}>⏱ {item.prep_time}m</Text> : null}
           <TouchableOpacity onPress={(e) => { e.stopPropagation?.(); haptic.light(); onAddToCart?.(item); }} activeOpacity={0.8}>
             <LinearGradient
               colors={c.gradient.primary}
               start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
               style={{ paddingHorizontal: 18, paddingVertical: 7, borderRadius: 10 }}
             >
-              <Text style={{ color: "#fff", fontSize: 13, fontFamily: fonts.bold }}>ADD</Text>
+              <Text style={{ color: "#fff", fontSize: 14, fontFamily: fonts.bold }}>ADD</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>

@@ -100,7 +100,7 @@ export default function ItemDetailScreen() {
               {item.name}
             </Text>
             {item.is_featured ? (
-              <View style={{ backgroundColor: "#FDE68A", paddingHorizontal: 12, paddingVertical: 4, borderRadius: 20 }}>
+              <View style={{ backgroundColor: "#E0E7FF", paddingHorizontal: 12, paddingVertical: 4, borderRadius: 20 }}>
                 <Text style={{ fontSize: 12, fontWeight: "bold", color: c.text }}>⭐ Featured</Text>
               </View>
             ) : null}

@@ -165,8 +165,8 @@ export default function AddAddressScreen() {
             <Switch
               value={isDefault}
               onValueChange={setIsDefault}
-              trackColor={{ false: "#E0E0E0", true: "#FFB563" }}
-              thumbColor={isDefault ? "#FF6B35" : "#F5F5F5"}
+              trackColor={{ false: "#E0E0E0", true: "#818CF8" }}
+              thumbColor={isDefault ? "#4F46E5" : "#F5F5F5"}
             />
           </View>
 
@@ -177,7 +177,7 @@ export default function AddAddressScreen() {
               borderRadius: 12,
               alignItems: "center",
               marginBottom: 24,
-              backgroundColor: isLoading ? "#FDBA74" : c.primary,
+              backgroundColor: isLoading ? "#A5B4FC" : c.primary,
             }}
             onPress={handleSave}
             disabled={isLoading}
